@@ -2,6 +2,10 @@
 
 Simple flutter calendar based on [flutter_clean_calendar](https://github.com/pmcarlos/flutter_clean_calendar) package.
 
+![](/img/screen1.png)
+![](/img/screen2.png)
+![](/img/screen3.png)
+
 ## Usage
 
 Embed the 'Calendar' widget in a column. Below the calendar (as the second widget in the Column) place a 'ListView.builder' widget for rendereing the list of events.
