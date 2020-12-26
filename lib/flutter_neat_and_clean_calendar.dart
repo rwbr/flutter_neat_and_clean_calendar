@@ -9,6 +9,8 @@ import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 typedef DayBuilder(BuildContext context, DateTime day);
+typedef EventListBuilder(
+    BuildContext context, List<NeatCleanCalendarEvent> events);
 
 class Range {
   final DateTime from;
@@ -30,10 +32,13 @@ class Range {
 ///     executed when the view changes to expanded or to condensed
 /// [onRangeSelected] contains a callback function of type [ValueChanged], that gets called on changes
 ///     of the range (switch to next or previous week or month)
+/// [onEventSelected] is of type [ValueChanged<NeatCleanCalendarEvent>] and it contains a callback function
+///     executed when an event of the event list is selected
 /// [isExpandable] is a [bool]. With this parameter you can control, if the view can expand from week view
 ///     to month view. Default is [false].
 /// [dayBuilder] can contain a [Widget]. If this property is not null (!= null), this widget will get used to
 ///     render the calenar tiles (so you can customize the view)
+/// [eventListBuilder] can optionally contain a [Widget] that gets used to render the event list
 /// [hideArrows] is a bool. When set to [true] the arrows to navigate to the next or previous week/month in the
 ///     top bar well get suppressed. Default is [false].
 /// [hideTodayIcon] is a bool. When set to [true] the dispaly of the Today-Icon (button to navigate to today) in the
@@ -64,8 +69,10 @@ class Calendar extends StatefulWidget {
   final ValueChanged<DateTime> onMonthChanged;
   final ValueChanged<bool> onExpandStateChanged;
   final ValueChanged onRangeSelected;
+  final ValueChanged<NeatCleanCalendarEvent> onEventSelected;
   final bool isExpandable;
   final DayBuilder dayBuilder;
+  final EventListBuilder eventListBuilder;
   final bool hideArrows;
   final bool hideTodayIcon;
   final Map<DateTime, List<NeatCleanCalendarEvent>> events;
@@ -91,10 +98,12 @@ class Calendar extends StatefulWidget {
     this.onDateSelected,
     this.onRangeSelected,
     this.onExpandStateChanged,
+    this.onEventSelected,
     this.hideBottomBar: false,
     this.isExpandable: false,
     this.events,
     this.dayBuilder,
+    this.eventListBuilder,
     this.hideTodayIcon: false,
     this.hideArrows: false,
     this.selectedColor,
@@ -127,6 +136,7 @@ class _CalendarState extends State<Calendar> {
   bool isExpanded = false;
   String displayMonth = '';
   DateTime get selectedDate => _selectedDate;
+  List<NeatCleanCalendarEvent> _selectedEvents;
 
   void initState() {
     super.initState();
@@ -142,6 +152,9 @@ class _CalendarState extends State<Calendar> {
           displayMonth =
               '${monthFormat[0].toUpperCase()}${monthFormat.substring(1)}';
         }));
+    _selectedEvents = widget.events[DateTime(
+            _selectedDate.year, _selectedDate.month, _selectedDate.day)] ??
+        [];
   }
 
   Widget get nameAndIconRow {
@@ -358,6 +371,45 @@ class _CalendarState extends State<Calendar> {
     }
   }
 
+  Widget get eventList {
+    if (widget.eventListBuilder == null) {
+      return Expanded(
+        child: _selectedEvents != null && _selectedEvents.isNotEmpty
+            ? ListView.builder(
+                padding: EdgeInsets.all(0.0),
+                itemBuilder: (BuildContext context, int index) {
+                  final NeatCleanCalendarEvent event = _selectedEvents[index];
+                  final String start =
+                      DateFormat('HH:mm').format(event.startTime).toString();
+                  final String end =
+                      DateFormat('HH:mm').format(event.endTime).toString();
+                  return ListTile(
+                    contentPadding: EdgeInsets.only(
+                        left: 2.0, right: 8.0, top: 2.0, bottom: 2.0),
+                    leading: Container(
+                      width: 10.0,
+                      color: event.color,
+                    ),
+                    title: Text(event.summary),
+                    subtitle: event.description.isNotEmpty
+                        ? Text(event.description)
+                        : null,
+                    trailing: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [Text(start), Text(end)],
+                    ),
+                    onTap: () {},
+                  );
+                },
+                itemCount: _selectedEvents.length,
+              )
+            : Container(),
+      );
+    } else {
+      return widget.eventListBuilder(context, _selectedEvents);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -371,7 +423,8 @@ class _CalendarState extends State<Calendar> {
             expanded: calendarGridView,
             isExpanded: isExpanded,
           ),
-          expansionButtonRow
+          expansionButtonRow,
+          eventList
         ],
       ),
     );
@@ -394,6 +447,9 @@ class _CalendarState extends State<Calendar> {
           DateFormat('MMMM yyyy', widget.locale).format(_selectedDate);
       displayMonth =
           '${monthFormat[0].toUpperCase()}${monthFormat.substring(1)}';
+      _selectedEvents = widget.events[DateTime(
+              _selectedDate.year, _selectedDate.month, _selectedDate.day)] ??
+          [];
     });
 
     _launchDateSelectionCallback(_selectedDate);
@@ -410,6 +466,9 @@ class _CalendarState extends State<Calendar> {
           DateFormat('MMMM yyyy', widget.locale).format(_selectedDate);
       displayMonth =
           '${monthFormat[0].toUpperCase()}${monthFormat.substring(1)}';
+      _selectedEvents = widget.events[DateTime(
+              _selectedDate.year, _selectedDate.month, _selectedDate.day)] ??
+          [];
     });
     _launchDateSelectionCallback(_selectedDate);
   }
@@ -425,6 +484,9 @@ class _CalendarState extends State<Calendar> {
           DateFormat('MMMM yyyy', widget.locale).format(_selectedDate);
       displayMonth =
           '${monthFormat[0].toUpperCase()}${monthFormat.substring(1)}';
+      _selectedEvents = widget.events[DateTime(
+              _selectedDate.year, _selectedDate.month, _selectedDate.day)] ??
+          [];
     });
     _launchDateSelectionCallback(_selectedDate);
   }
@@ -442,6 +504,9 @@ class _CalendarState extends State<Calendar> {
           DateFormat('MMMM yyyy', widget.locale).format(_selectedDate);
       displayMonth =
           '${monthFormat[0].toUpperCase()}${monthFormat.substring(1)}';
+      _selectedEvents = widget.events[DateTime(
+              _selectedDate.year, _selectedDate.month, _selectedDate.day)] ??
+          [];
     });
     _launchDateSelectionCallback(_selectedDate);
   }
@@ -459,6 +524,9 @@ class _CalendarState extends State<Calendar> {
           DateFormat('MMMM yyyy', widget.locale).format(_selectedDate);
       displayMonth =
           '${monthFormat[0].toUpperCase()}${monthFormat.substring(1)}';
+      _selectedEvents = widget.events[DateTime(
+              _selectedDate.year, _selectedDate.month, _selectedDate.day)] ??
+          [];
     });
     _launchDateSelectionCallback(_selectedDate);
   }
@@ -518,6 +586,7 @@ class _CalendarState extends State<Calendar> {
           Utils.daysInRange(firstDayOfCurrentWeek, lastDayOfCurrentWeek)
               .toList();
       selectedMonthsDays = _daysInMonth(day);
+      _selectedEvents = widget.events[_selectedDate] ?? [];
     });
     _launchDateSelectionCallback(day);
   }
@@ -572,18 +641,15 @@ class ExpansionCrossFade extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Flexible(
-      flex: 1,
-      child: AnimatedCrossFade(
-        firstChild: collapsed,
-        secondChild: expanded,
-        firstCurve: const Interval(0.0, 1.0, curve: Curves.fastOutSlowIn),
-        secondCurve: const Interval(0.0, 1.0, curve: Curves.fastOutSlowIn),
-        sizeCurve: Curves.decelerate,
-        crossFadeState:
-            isExpanded ? CrossFadeState.showSecond : CrossFadeState.showFirst,
-        duration: const Duration(milliseconds: 300),
-      ),
+    return AnimatedCrossFade(
+      firstChild: collapsed,
+      secondChild: expanded,
+      firstCurve: const Interval(0.0, 1.0, curve: Curves.fastOutSlowIn),
+      secondCurve: const Interval(0.0, 1.0, curve: Curves.fastOutSlowIn),
+      sizeCurve: Curves.decelerate,
+      crossFadeState:
+          isExpanded ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+      duration: const Duration(milliseconds: 300),
     );
   }
 }
