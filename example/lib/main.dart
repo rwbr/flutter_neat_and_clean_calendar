@@ -24,17 +24,6 @@ class CalendarScreen extends StatefulWidget {
 }
 
 class _CalendarScreenState extends State<CalendarScreen> {
-  void _handleNewDate(date) {
-    setState(() {
-      _selectedDay = date;
-      _selectedEvents = _events[_selectedDay] ?? [];
-    });
-    print(_selectedEvents);
-  }
-
-  List<NeatCleanCalendarEvent> _selectedEvents;
-  DateTime _selectedDay;
-
   final Map<DateTime, List<NeatCleanCalendarEvent>> _events = {
     DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day): [
       NeatCleanCalendarEvent('Event A',
@@ -60,6 +49,69 @@ class _CalendarScreenState extends State<CalendarScreen> {
               DateTime.now().day + 2, 17, 0),
           color: Colors.pink),
     ],
+    DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 3):
+        [
+      NeatCleanCalendarEvent('Event B',
+          startTime: DateTime(DateTime.now().year, DateTime.now().month,
+              DateTime.now().day + 2, 10, 0),
+          endTime: DateTime(DateTime.now().year, DateTime.now().month,
+              DateTime.now().day + 2, 12, 0),
+          color: Colors.orange),
+      NeatCleanCalendarEvent('Event C',
+          startTime: DateTime(DateTime.now().year, DateTime.now().month,
+              DateTime.now().day + 2, 14, 30),
+          endTime: DateTime(DateTime.now().year, DateTime.now().month,
+              DateTime.now().day + 2, 17, 0),
+          color: Colors.pink),
+      NeatCleanCalendarEvent('Event C',
+          startTime: DateTime(DateTime.now().year, DateTime.now().month,
+              DateTime.now().day + 2, 14, 30),
+          endTime: DateTime(DateTime.now().year, DateTime.now().month,
+              DateTime.now().day + 2, 17, 0),
+          color: Colors.pink),
+      NeatCleanCalendarEvent('Event C',
+          startTime: DateTime(DateTime.now().year, DateTime.now().month,
+              DateTime.now().day + 2, 14, 30),
+          endTime: DateTime(DateTime.now().year, DateTime.now().month,
+              DateTime.now().day + 2, 17, 0),
+          color: Colors.pink),
+      NeatCleanCalendarEvent('Event C',
+          startTime: DateTime(DateTime.now().year, DateTime.now().month,
+              DateTime.now().day + 2, 14, 30),
+          endTime: DateTime(DateTime.now().year, DateTime.now().month,
+              DateTime.now().day + 2, 17, 0),
+          color: Colors.pink),
+      NeatCleanCalendarEvent('Event C',
+          startTime: DateTime(DateTime.now().year, DateTime.now().month,
+              DateTime.now().day + 2, 14, 30),
+          endTime: DateTime(DateTime.now().year, DateTime.now().month,
+              DateTime.now().day + 2, 17, 0),
+          color: Colors.pink),
+      NeatCleanCalendarEvent('Event C',
+          startTime: DateTime(DateTime.now().year, DateTime.now().month,
+              DateTime.now().day + 2, 14, 30),
+          endTime: DateTime(DateTime.now().year, DateTime.now().month,
+              DateTime.now().day + 2, 17, 0),
+          color: Colors.pink),
+      NeatCleanCalendarEvent('Event C',
+          startTime: DateTime(DateTime.now().year, DateTime.now().month,
+              DateTime.now().day + 2, 14, 30),
+          endTime: DateTime(DateTime.now().year, DateTime.now().month,
+              DateTime.now().day + 2, 17, 0),
+          color: Colors.pink),
+      NeatCleanCalendarEvent('Event C',
+          startTime: DateTime(DateTime.now().year, DateTime.now().month,
+              DateTime.now().day + 2, 14, 30),
+          endTime: DateTime(DateTime.now().year, DateTime.now().month,
+              DateTime.now().day + 2, 17, 0),
+          color: Colors.pink),
+      NeatCleanCalendarEvent('Event C',
+          startTime: DateTime(DateTime.now().year, DateTime.now().month,
+              DateTime.now().day + 2, 14, 30),
+          endTime: DateTime(DateTime.now().year, DateTime.now().month,
+              DateTime.now().day + 2, 17, 0),
+          color: Colors.pink),
+    ],
   };
 
   @override
@@ -68,40 +120,26 @@ class _CalendarScreenState extends State<CalendarScreen> {
     // Force selection of today on first load, so that the list of today's events gets shown.
     _handleNewDate(DateTime(
         DateTime.now().year, DateTime.now().month, DateTime.now().day));
-    _selectedEvents = _events[_selectedDay] ?? [];
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          children: <Widget>[
-            Container(
-              child: Calendar(
-                startOnMonday: true,
-                weekDays: ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'],
-                events: _events,
-                onRangeSelected: (range) =>
-                    print('Range is ${range.from}, ${range.to}'),
-                onDateSelected: (date) => _handleNewDate(date),
-                isExpandable: true,
-                eventDoneColor: Colors.green,
-                selectedColor: Colors.pink,
-                todayColor: Colors.blue,
-                eventColor: Colors.grey,
-                locale: 'de_DE',
-                todayButtonText: 'Heute',
-                expandableDateFormat: 'EEEE, dd. MMMM yyyy',
-                dayOfWeekStyle: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.w800,
-                    fontSize: 11),
-              ),
-            ),
-            _buildEventList()
-          ],
+        child: Calendar(
+          startOnMonday: true,
+          weekDays: ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'],
+          events: _events,
+          isExpandable: true,
+          eventDoneColor: Colors.green,
+          selectedColor: Colors.pink,
+          todayColor: Colors.blue,
+          eventColor: Colors.grey,
+          locale: 'de_DE',
+          todayButtonText: 'Heute',
+          expandableDateFormat: 'EEEE, dd. MMMM yyyy',
+          dayOfWeekStyle: TextStyle(
+              color: Colors.black, fontWeight: FontWeight.w800, fontSize: 11),
         ),
       ),
     );
@@ -109,12 +147,13 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
   /// This function [_buildEventList] constructs the list of events of a selected day. This
   /// list is rendered below the week view or the month view.
-  Widget _buildEventList() {
+  Widget _eventListBuilder(
+      BuildContext context, List<NeatCleanCalendarEvent> eventList) {
     return Expanded(
       child: ListView.builder(
         padding: EdgeInsets.all(0.0),
         itemBuilder: (BuildContext context, int index) {
-          final NeatCleanCalendarEvent event = _selectedEvents[index];
+          final NeatCleanCalendarEvent event = eventList[index];
           final String start =
               DateFormat('HH:mm').format(event.startTime).toString();
           final String end =
@@ -136,8 +175,12 @@ class _CalendarScreenState extends State<CalendarScreen> {
             onTap: () {},
           );
         },
-        itemCount: _selectedEvents.length,
+        itemCount: eventList.length,
       ),
     );
+  }
+
+  void _handleNewDate(date) {
+    print('Date selected: $date');
   }
 }
