@@ -1,6 +1,11 @@
 # flutter_neat_and_clean_calendar
 
 Simple flutter calendar based on [flutter_clean_calendar](https://github.com/pmcarlos/flutter_clean_calendar) package.
+This package offers some extra functionality. It introduced a new **NeatCleanCalendarEvent** object, that gets used as the data component transfered the calendar widget as a parameter. So it is possible now to color the dots in the **Calendartiles** with a color corresponding to the event. 
+
+The event list below the calendar view is generated bei the package. Here the extra data of the **NetCleanCalendarEvent** objects again come into play. 
+
+The package is highly customizable.
 
 ![](/img/screen1.png)
 ![](/img/screen2.png)
@@ -11,71 +16,35 @@ Simple flutter calendar based on [flutter_clean_calendar](https://github.com/pmc
 Embed the 'Calendar' widget in a column. Below the calendar (as the second widget in the Column) place a 'ListView.builder' widget for rendereing the list of events.
 
 ```dart
-Column(
-  mainAxisSize: MainAxisSize.max,
-  children: <Widget>[
-    Container(
-      child: Calendar(
-        startOnMonday: true,
-        weekDays: ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'],
-        events: _events,
-        onRangeSelected: (range) =>
-            print('Range is ${range.from}, ${range.to}'),
-        onDateSelected: (date) => _handleNewDate(date),
-        isExpandable: true,
-        eventDoneColor: Colors.green,
-        selectedColor: Colors.pink,
-        todayColor: Colors.blue,
-        eventColor: Colors.grey,
-        locale: 'de_DE',
-        todayButtonText: 'Heute',
-        expandableDateFormat: 'EEEE, dd. MMMM yyyy',
-        dayOfWeekStyle: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.w800,
-            fontSize: 11),
+Widget build(BuildContext context) {
+    return Scaffold(
+      body: SafeArea(
+        child: Calendar(
+          startOnMonday: true,
+          weekDays: ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'],
+          events: _events,
+          isExpandable: true,
+          eventDoneColor: Colors.green,
+          selectedColor: Colors.pink,
+          todayColor: Colors.blue,
+          // dayBuilder: (BuildContext context, DateTime day) {
+          //   return new Text("!");
+          // },
+          eventListBuilder: (BuildContext context,
+              List<NeatCleanCalendarEvent> _selectesdEvents) {
+            return new Text("!");
+          },
+          eventColor: Colors.grey,
+          locale: 'de_DE',
+          todayButtonText: 'Heute',
+          expandableDateFormat: 'EEEE, dd. MMMM yyyy',
+          dayOfWeekStyle: TextStyle(
+              color: Colors.black, fontWeight: FontWeight.w800, fontSize: 11),
+        ),
       ),
-    ),
-    _buildEventList()
-  ],
-),
-
+    );
+  }
 ...
-
-/// This function [_buildEventList] constructs the list of events of a selected day. This
-/// list is rendered below the week view or the month view.
-Widget _buildEventList() {
-  return Expanded(
-    child: ListView.builder(
-      padding: EdgeInsets.all(0.0),
-      itemBuilder: (BuildContext context, int index) {
-        final NeatCleanCalendarEvent event = _selectedEvents[index];
-        final String start =
-            DateFormat('HH:mm').format(event.startTime).toString();
-        final String end =
-            DateFormat('HH:mm').format(event.endTime).toString();
-        return ListTile(
-          contentPadding:
-              EdgeInsets.only(left: 2.0, right: 8.0, top: 2.0, bottom: 2.0),
-          leading: Container(
-            width: 10.0,
-            color: event.color,
-          ),
-          title: Text(event.summary),
-          subtitle:
-              event.description.isNotEmpty ? Text(event.description) : null,
-          trailing: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [Text(start), Text(end)],
-          ),
-          onTap: () {},
-        );
-      },
-      itemCount: _selectedEvents.length,
-    ),
-  );
-}
-```
 
 For more details see the **example**.
 ## Properties
@@ -89,10 +58,13 @@ For more details see the **example**.
 ///     executed when the view changes to expanded or to condensed
 /// [onRangeSelected] contains a callback function of type [ValueChanged], that gets called on changes
 ///     of the range (switch to next or previous week or month)
+/// [onEventSelected] is of type [ValueChanged<NeatCleanCalendarEvent>] and it contains a callback function
+///     executed when an event of the event list is selected
 /// [isExpandable] is a [bool]. With this parameter you can control, if the view can expand from week view
 ///     to month view. Default is [false].
 /// [dayBuilder] can contain a [Widget]. If this property is not null (!= null), this widget will get used to
 ///     render the calenar tiles (so you can customize the view)
+/// [eventListBuilder] can optionally contain a [Widget] that gets used to render the event list
 /// [hideArrows] is a bool. When set to [true] the arrows to navigate to the next or previous week/month in the
 ///     top bar well get suppressed. Default is [false].
 /// [hideTodayIcon] is a bool. When set to [true] the dispaly of the Today-Icon (button to navigate to today) in the
@@ -122,8 +94,10 @@ final ValueChanged<DateTime> onDateSelected;
 final ValueChanged<DateTime> onMonthChanged;
 final ValueChanged<bool> onExpandStateChanged;
 final ValueChanged onRangeSelected;
+final ValueChanged<NeatCleanCalendarEvent> onEventSelected;
 final bool isExpandable;
 final DayBuilder dayBuilder;
+final EventListBuilder eventListBuilder;
 final bool hideArrows;
 final bool hideTodayIcon;
 final Map<DateTime, List<NeatCleanCalendarEvent>> events;
@@ -178,3 +152,60 @@ final Map<DateTime, List<NeatCleanCalendarEvent>> _events = {
   };
 
 ```
+
+## Examples
+
+### Basic wirget with customized colors
+
+Some colors were cutomized in this example:
+
+```dart
+Calendar(
+  eventDoneColor: Colors.green,
+  selectedColor: Colors.pink,
+  todayColor: Colors.blue,
+  eventColor: Colors.grey,
+)
+```
+
+![Screenshot](/img/usage1.png)
+
+### Expandable calendar view
+
+```dart
+Calendar(
+  isExpandable: true;
+)
+```
+
+![Screenshot](/img/usage2.png)
+![Screenshot](/img/usage3.png)
+
+### Custom day builder
+
+
+```dart
+Calendar(
+  // A builder function that renders each calendar tile how you'd like.
+  dayBuilder: (BuildContext context, DateTime day) {
+      return new Text("!");
+  },
+)
+```
+
+![Screenshot](/img/usage4.png)
+
+### Custom event list builder
+
+
+```dart
+Calendar(
+  // A builder function that renders the event list
+  eventListBuilder: (BuildContext context,
+      List<NeatCleanCalendarEvent> _selectesdEvents) {
+    return new Text("!");
+  },
+)
+```
+
+![Screenshot](/img/usage5.png)
