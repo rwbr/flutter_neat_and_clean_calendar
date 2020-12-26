@@ -44,7 +44,7 @@ Widget build(BuildContext context) {
       ),
     );
   }
-...
+```
 
 For more details see the **example**.
 ## Properties
