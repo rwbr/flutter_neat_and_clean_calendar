@@ -1,3 +1,4 @@
-## [0.0.1] - TODO: Add release date.
+## [0.1.0+1] - First public release
 
-* TODO: Describe initial release.
+* Moved the method to render the event list into the package
+* New parameters onEventSelected and eventListBuilder
