@@ -7,9 +7,9 @@ The event list below the calendar view is generated bei the package. Here the ex
 
 The package is highly customizable.
 
-![](/img/screen1.png)
-![](/img/screen2.png)
-![](/img/screen3.png)
+![Screenshot](https://github.com/rwbr/flutter_neat_and_clean_calendar/blob/main/img/screen1.png)
+![Screenshot](https://github.com/rwbr/flutter_neat_and_clean_calendar/blob/main/img/screen2.png)
+![Screenshot](https://github.com/rwbr/flutter_neat_and_clean_calendar/blob/main/img/screen3.png)
 
 ## Usage
 
@@ -168,7 +168,7 @@ Calendar(
 )
 ```
 
-![Screenshot](/img/usage1.png)
+![Screenshot](https://github.com/rwbr/flutter_neat_and_clean_calendar/blob/main/img/usage1.png)
 
 ### Expandable calendar view
 
@@ -178,8 +178,8 @@ Calendar(
 )
 ```
 
-![Screenshot](/img/usage2.png)
-![Screenshot](/img/usage3.png)
+![Screenshot](https://github.com/rwbr/flutter_neat_and_clean_calendar/blob/main/img/usage2.png)
+![Screenshot](https://github.com/rwbr/flutter_neat_and_clean_calendar/blob/main/img/usage3.png)
 
 ### Custom day builder
 
@@ -193,7 +193,7 @@ Calendar(
 )
 ```
 
-![Screenshot](/img/usage4.png)
+![Screenshot](https://github.com/rwbr/flutter_neat_and_clean_calendar/blob/main/img/usage4.png)
 
 ### Custom event list builder
 
@@ -208,4 +208,4 @@ Calendar(
 )
 ```
 
-![Screenshot](/img/usage5.png)
+![Screenshot](https://github.com/rwbr/flutter_neat_and_clean_calendar/blob/main/img/usage5.png)
