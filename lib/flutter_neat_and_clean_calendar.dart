@@ -4,9 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:date_utils/date_utils.dart';
 import './simple_gesture_detector.dart';
 import './calendar_tile.dart';
-import './clean_calendar_event.dart';
+import './neat_and_clean_calendar_event.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
+
+// Export NeatCleanCalendarEvent for using it in the application
+export './neat_and_clean_calendar_event.dart';
 
 typedef DayBuilder(BuildContext context, DateTime day);
 typedef EventListBuilder(
@@ -238,7 +241,7 @@ class _CalendarState extends State<Calendar> {
     widget.weekDays.forEach(
       (day) {
         dayWidgets.add(
-          CalendarTile(
+          NeatCleanCalendarTile(
             selectedColor: widget.selectedColor,
             todayColor: widget.todayColor,
             eventColor: widget.eventColor,
@@ -278,7 +281,7 @@ class _CalendarState extends State<Calendar> {
         if (this.widget.dayBuilder != null) {
           // Use the dayBuilder widget passed as parameter to render the date tile
           dayWidgets.add(
-            CalendarTile(
+            NeatCleanCalendarTile(
               selectedColor: widget.selectedColor,
               todayColor: widget.todayColor,
               eventColor: widget.eventColor,
@@ -291,7 +294,7 @@ class _CalendarState extends State<Calendar> {
           );
         } else {
           dayWidgets.add(
-            CalendarTile(
+            NeatCleanCalendarTile(
                 selectedColor: widget.selectedColor,
                 todayColor: widget.todayColor,
                 eventColor: widget.eventColor,

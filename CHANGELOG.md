@@ -1,3 +1,7 @@
+## [0.1.2+4] - Export of NeatCleanCalendarEvent class
+
+* NeatCleanCalendarEvent now is exported, so that the separate import is no longer necessary 
+
 ## [0.1.1+3] - Corrected README
 
 * README - style corrected

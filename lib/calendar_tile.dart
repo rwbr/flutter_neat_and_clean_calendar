@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:date_utils/date_utils.dart';
-import './clean_calendar_event.dart';
+import './neat_and_clean_calendar_event.dart';
 import "package:intl/intl.dart";
 
-/// [CalendarTile] is responsible for displaying one calendar event entry below
-/// the week view or the month view. The events are displayed in a list of [CalendarTile].
+/// [NeatCleanCalendarTile] is responsible for displaying one calendar event entry below
+/// the week view or the month view. The events are displayed in a list of [NeatCleanCalendarTile].
 ///
-/// Each [CalendarTile] has a set of properties:
+/// Each [NeatCleanCalendarTile] has a set of properties:
 ///
 /// [onDateSelected] is the callback function that gets invoked on tapping a date in the
 /// calendar view. It has the type [VoidCallback]
@@ -25,7 +25,7 @@ import "package:intl/intl.dart";
 /// [eventColor] can be used to color the dots in the calendar tile representing an event. The color, that
 ///     is set in the properties of the [CleanCalendarEvent]  has priority over this parameter
 /// [eventDoneColor] a [Color] object für displaying "done" events (events in the past)
-class CalendarTile extends StatelessWidget {
+class NeatCleanCalendarTile extends StatelessWidget {
   final VoidCallback onDateSelected;
   final DateTime date;
   final String dayOfWeek;
@@ -41,7 +41,7 @@ class CalendarTile extends StatelessWidget {
   final Color eventColor;
   final Color eventDoneColor;
 
-  CalendarTile({
+  NeatCleanCalendarTile({
     this.onDateSelected,
     this.date,
     this.child,
@@ -61,7 +61,7 @@ class CalendarTile extends StatelessWidget {
   /// This function [renderDateOrDayOfWeek] renders the week view or the month view. It is
   /// responsible for displaying a calendar tile. This can be a day (i.e. "Mon", "Tue" ...) in
   /// the header row or a date tile for each day of a week or a month. The property [isDayOfWeek]
-  /// of the [CalendarTile] decides, if the rendered item should be a day or a date tile.
+  /// of the [NeatCleanCalendarTile] decides, if the rendered item should be a day or a date tile.
   Widget renderDateOrDayOfWeek(BuildContext context) {
     // We decide, if this calendar tile should display a day name in the header row. If this is the
     // case, we return a widget, that contains a text widget with style property [dayOfWeekStyle]

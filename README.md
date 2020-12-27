@@ -15,6 +15,27 @@ The package is highly customizable.
 
 Embed the 'Calendar' widget in a column. Below the calendar (as the second widget in the Column) place a 'ListView.builder' widget for rendereing the list of events.
 
+### Set dependency
+
+```
+dependencies:
+  flutter_neat_and_clean_calendar: ^0.1.2+4
+```
+
+### Install
+
+```
+flutter pub get
+```
+
+### Import it
+
+```dart
+import 'package:flutter_neat_and_clean_calendar/flutter_neat_and_clean_calendar.dart';
+```
+
+### Use it
+
 ```dart
 Widget build(BuildContext context) {
     return Scaffold(
