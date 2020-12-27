@@ -386,22 +386,66 @@ class _CalendarState extends State<Calendar> {
                       DateFormat('HH:mm').format(event.startTime).toString();
                   final String end =
                       DateFormat('HH:mm').format(event.endTime).toString();
-                  return ListTile(
-                    contentPadding: EdgeInsets.only(
-                        left: 2.0, right: 8.0, top: 2.0, bottom: 2.0),
-                    leading: Container(
-                      width: 10.0,
-                      color: event.color,
+                  return Container(
+                    height: 60.0,
+                    child: InkWell(
+                      onTap: () {
+                        if (widget.onEventSelected != null) {
+                          widget.onEventSelected(event);
+                        }
+                      },
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Expanded(
+                            flex: 5,
+                            child: Padding(
+                              padding: const EdgeInsets.all(4.0),
+                              child: Container(
+                                color: event.color,
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            flex: 75,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(event.summary,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .subtitle2),
+                                  Text(event.description)
+                                ],
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            flex: 20,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(start,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyText1),
+                                  Text(end,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyText1),
+                                ],
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
                     ),
-                    title: Text(event.summary),
-                    subtitle: event.description.isNotEmpty
-                        ? Text(event.description)
-                        : null,
-                    trailing: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [Text(start), Text(end)],
-                    ),
-                    onTap: () {},
                   );
                 },
                 itemCount: _selectedEvents.length,

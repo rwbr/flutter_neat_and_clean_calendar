@@ -1,3 +1,8 @@
+
+## [0.1.3+5] - Layout of event list improved
+
+* The event list is now built of a Row of Expanded widgets instead of the ListTile
+
 ## [0.1.2+4] - Export of NeatCleanCalendarEvent class
 
 * NeatCleanCalendarEvent now is exported, so that the separate import is no longer necessary 
