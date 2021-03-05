@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:date_utils/date_utils.dart';
+import './date_utils.dart';
 import './neat_and_clean_calendar_event.dart';
 import "package:intl/intl.dart";
 

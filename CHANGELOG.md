@@ -1,4 +1,10 @@
 
+## [0.1.4+6] - 2021-03-05
+
+* Dependency on date_utils package resolved
+* The Utils class is now directly embedded in the package
+* This reduces the chance of possible dependency problems
+
 ## [0.1.3+5] - Layout of event list improved
 
 * The event list is now built of a Row of Expanded widgets instead of the ListTile

@@ -2,7 +2,7 @@ name: flutter_neat_and_clean_calendar
 description: Simple and clean flutter calendar with ability to slide up/down to
   show weekly/monthly calendar. Forked from
   [flutter_clean_calender](https://pub.dev/packages/flutter_clean_calendar)
-version: 0.1.3+5
+version: 0.1.4+6
 homepage: https://github.com/rwbr/flutter_neat_and_clean_calendar
 
 environment:
@@ -12,8 +12,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  date_utils: ^0.1.0+3
-  intl: ^0.16.1
+  intl: ^0.17.0
 
 dev_dependencies:
   flutter_test:

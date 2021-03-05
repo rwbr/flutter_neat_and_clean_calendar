@@ -1,7 +1,7 @@
 library flutter_neat_and_clean_calendar;
 
 import 'package:flutter/material.dart';
-import 'package:date_utils/date_utils.dart';
+import './date_utils.dart';
 import './simple_gesture_detector.dart';
 import './calendar_tile.dart';
 import './neat_and_clean_calendar_event.dart';
