@@ -133,7 +133,7 @@ class NeatCleanCalendarTile extends StatelessWidget {
                                 // If event is done (isDone == true) set the color of the dots to
                                 // the eventDoneColor (if given) otherwise use the primary color of
                                 // the theme
-                                // If the event is now donw yet, we use the given eventColor or the
+                                // If the event is not done yet, we use the given eventColor or the
                                 // color property of the NeatCleanCalendarEvent. If both aren't set, then
                                 // the accent color of the theme get used.
                                 color: (() {
