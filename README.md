@@ -21,7 +21,7 @@ Embed the 'Calendar' widget in a column. Below the calendar (as the second widge
 
 ```
 dependencies:
-  flutter_neat_and_clean_calendar: ^0.1.2+4
+  flutter_neat_and_clean_calendar: ^0.2.0+8
 ```
 
 ### Install
