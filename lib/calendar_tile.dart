@@ -15,7 +15,7 @@ import "package:intl/intl.dart";
 /// [isDayOfWeek] is a [bool], that gets used to deiced, if the tile shoulöd display a weekday or a date
 /// [isSelected] is a [bool], that contains the information, if the current tile ist the selected day
 /// [inMonth] is a [bool], that contains the information, if the current day belongs to the selected month
-/// [events] contains a [List<CleanCalendarEvents>] with the exenets to display
+/// [events] contains a [List<CleanCalendarEvents>] of the events to display
 /// [dayOfWeekStyle] this property alloes to set a text style for the week days in the header row
 /// [dateStyles] this property alloes to set a text style for the date tiles
 /// [child] can contain a [Widget] that can be displayed. If tihs property is [null], the
@@ -26,20 +26,20 @@ import "package:intl/intl.dart";
 ///     is set in the properties of the [CleanCalendarEvent]  has priority over this parameter
 /// [eventDoneColor] a [Color] object für displaying "done" events (events in the past)
 class NeatCleanCalendarTile extends StatelessWidget {
-  final VoidCallback onDateSelected;
-  final DateTime date;
-  final String dayOfWeek;
+  final VoidCallback? onDateSelected;
+  final DateTime? date;
+  final String? dayOfWeek;
   final bool isDayOfWeek;
   final bool isSelected;
   final bool inMonth;
-  final List<NeatCleanCalendarEvent> events;
-  final TextStyle dayOfWeekStyle;
-  final TextStyle dateStyles;
-  final Widget child;
-  final Color selectedColor;
-  final Color todayColor;
-  final Color eventColor;
-  final Color eventDoneColor;
+  final List<NeatCleanCalendarEvent>? events;
+  final TextStyle? dayOfWeekStyle;
+  final TextStyle? dateStyles;
+  final Widget? child;
+  final Color? selectedColor;
+  final Color? todayColor;
+  final Color? eventColor;
+  final Color? eventDoneColor;
 
   NeatCleanCalendarTile({
     this.onDateSelected,
@@ -69,8 +69,8 @@ class NeatCleanCalendarTile extends StatelessWidget {
       return new InkWell(
         child: new Container(
           alignment: Alignment.center,
-          child: new Text(
-            dayOfWeek,
+          child: Text(
+            dayOfWeek ?? '',
             style: dayOfWeekStyle,
           ),
         ),
@@ -86,11 +86,11 @@ class NeatCleanCalendarTile extends StatelessWidget {
           child: Container(
             // If this tile is the selected date, draw a colored circle on it. The circle is filled with
             // the color passed with the selectedColor parameter or red color.
-            decoration: isSelected
+            decoration: isSelected && date != null
                 ? BoxDecoration(
                     shape: BoxShape.circle,
                     color: selectedColor != null
-                        ? Utils.isSameDay(this.date, DateTime.now())
+                        ? Utils.isSameDay(this.date!, DateTime.now())
                             ? Colors.red
                             : selectedColor
                         : Theme.of(context).primaryColor,
@@ -102,13 +102,13 @@ class NeatCleanCalendarTile extends StatelessWidget {
               children: <Widget>[
                 // Date display
                 Text(
-                  DateFormat("d").format(date),
+                  date != null ? DateFormat("d").format(date!) : '',
                   style: TextStyle(
                       fontSize: 14.0,
                       fontWeight: FontWeight.w400,
-                      color: isSelected
+                      color: isSelected && this.date != null
                           ? Colors.white
-                          : Utils.isSameDay(this.date, DateTime.now())
+                          : Utils.isSameDay(this.date!, DateTime.now())
                               ? todayColor
                               : inMonth
                                   ? Colors.black
@@ -116,10 +116,10 @@ class NeatCleanCalendarTile extends StatelessWidget {
                                       .grey), // Grey color for previous or next months dates
                 ),
                 // Dots for the events
-                events != null && events.length > 0
+                events != null && events!.length > 0
                     ? Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: events.map((event) {
+                        children: events!.map((event) {
                           eventCount++;
                           // Show a maximum of 3 dots.
                           if (eventCount > 3) return Container();
@@ -141,8 +141,7 @@ class NeatCleanCalendarTile extends StatelessWidget {
                                     return eventDoneColor ??
                                         Theme.of(context).primaryColor;
                                   if (isSelected) return Colors.white;
-                                  return event.color ??
-                                      eventColor ??
+                                  return eventColor ??
                                       Theme.of(context).accentColor;
                                 }())),
                           );
@@ -161,12 +160,12 @@ class NeatCleanCalendarTile extends StatelessWidget {
     // If a child widget was passed as parameter, this widget gets used to
     // be rendered to display weekday or date
     if (child != null) {
-      return new InkWell(
+      return InkWell(
         child: child,
         onTap: onDateSelected,
       );
     }
-    return new Container(
+    return Container(
       child: renderDateOrDayOfWeek(context),
     );
   }

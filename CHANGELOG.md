@@ -1,4 +1,5 @@
-
+## [0.2.0+8] - 2021-04-12
+* Project converted to **null safety**
 ## [0.1.5+7] - 2021-04-11
 * There was a bug in the calculations for the first day of week. This bug was corrected in this release
 ## [0.1.4+6] - 2021-03-05
