@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_neat_and_clean_calendar/flutter_neat_and_clean_calendar.dart';
-import 'package:intl/intl.dart';
 
 void main() => runApp(MyApp());
 
@@ -122,41 +121,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
           dayOfWeekStyle: TextStyle(
               color: Colors.black, fontWeight: FontWeight.w800, fontSize: 11),
         ),
-      ),
-    );
-  }
-
-  /// This function [_buildEventList] constructs the list of events of a selected day. This
-  /// list is rendered below the week view or the month view.
-  Widget _eventListBuilder(
-      BuildContext context, List<NeatCleanCalendarEvent> eventList) {
-    return Expanded(
-      child: ListView.builder(
-        padding: EdgeInsets.all(0.0),
-        itemBuilder: (BuildContext context, int index) {
-          final NeatCleanCalendarEvent event = eventList[index];
-          final String start =
-              DateFormat('HH:mm').format(event.startTime).toString();
-          final String end =
-              DateFormat('HH:mm').format(event.endTime).toString();
-          return ListTile(
-            contentPadding:
-                EdgeInsets.only(left: 2.0, right: 8.0, top: 2.0, bottom: 2.0),
-            leading: Container(
-              width: 10.0,
-              color: event.color,
-            ),
-            title: Text(event.summary),
-            subtitle:
-                event.description.isNotEmpty ? Text(event.description) : null,
-            trailing: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [Text(start), Text(end)],
-            ),
-            onTap: () {},
-          );
-        },
-        itemCount: eventList.length,
       ),
     );
   }
