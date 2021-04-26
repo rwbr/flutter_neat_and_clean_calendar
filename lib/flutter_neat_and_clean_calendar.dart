@@ -620,11 +620,25 @@ class _CalendarState extends State<Calendar> {
   void handleSelectedDateAndUserCallback(DateTime day) {
     var firstDayOfCurrentWeek = _firstDayOfWeek(day);
     var lastDayOfCurrentWeek = _lastDayOfWeek(day);
+    // Check if the selected day falls into the next month. If this is the case,
+    // then we need to additionaly check, if a day in next year was selected.
     if (_selectedDate.month > day.month) {
-      previousMonth();
+      // Day in next year selected? Switch to next month.
+      if (_selectedDate.year < day.year) {
+        nextMonth();
+      } else {
+        previousMonth();
+      }
     }
+    // Check if the selected day falls into the last month. If this is the case,
+    // then we need to additionaly check, if a day in last year was selected.
     if (_selectedDate.month < day.month) {
-      nextMonth();
+      // Day in next last selected? Switch to next month.
+      if (_selectedDate.year > day.year) {
+        previousMonth();
+      } else {
+        nextMonth();
+      }
     }
     setState(() {
       _selectedDate = day;
@@ -678,7 +692,9 @@ class _CalendarState extends State<Calendar> {
       daysAfter = 7;
     }
 
-    var lastToDisplay = last.add(new Duration(days: daysAfter));
+    // Adding an extra day necessary. Otherwise the week with days in next month
+    // would always end on Saturdays.
+    var lastToDisplay = last.add(new Duration(days: daysAfter + 1));
     return Utils.daysInRange(firstToDisplay, lastToDisplay).toList();
   }
 }
