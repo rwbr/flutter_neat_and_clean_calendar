@@ -1,3 +1,5 @@
+## [0.2.1+9] - 2021-04-26
+* This release fixes a bug, that appeared, if the user selected a day in next month, when this date fell into next year or a day in previous month, when this date fell into previous year
 ## [0.2.0+8] - 2021-04-12
 * Project converted to **null safety**
 ## [0.1.5+7] - 2021-04-11

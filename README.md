@@ -1,5 +1,7 @@
 # flutter_neat_and_clean_calendar
 
+![Repo Card](https://github.com/rwbr/flutter_neat_and_clean_calendar/blob/main/img/github-repo-card.png)
+
 Simple flutter calendar based on [flutter_clean_calendar](https://github.com/pmcarlos/flutter_clean_calendar) package.
 This package offers some extra functionality. It introduced a new **NeatCleanCalendarEvent** object, that gets used as the data component transfered the calendar widget as a parameter. So it is possible now to color the dots in the **Calendartiles** with a color corresponding to the event. 
 
@@ -19,7 +21,7 @@ Embed the 'Calendar' widget in a column. Below the calendar (as the second widge
 
 ```
 dependencies:
-  flutter_neat_and_clean_calendar: ^0.1.2+4
+  flutter_neat_and_clean_calendar: ^0.2.0+8
 ```
 
 ### Install
