@@ -6,7 +6,7 @@ class NeatCleanCalendarEvent {
   String location;
   DateTime startTime;
   DateTime endTime;
-  Color color;
+  Color? color;
   bool isAllDay;
   bool isDone;
 
