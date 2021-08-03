@@ -375,7 +375,13 @@ class _CalendarState extends State<Calendar> {
   }
 
   Widget get eventList {
+    // get again.for update event list.
+    _selectedEvents = widget.events?[DateTime(
+      _selectedDate.year, _selectedDate.month, _selectedDate.day)] ??
+      [];
+      
     if (widget.eventListBuilder == null) {
+       
       return Expanded(
         child: _selectedEvents != null && _selectedEvents!.isNotEmpty
             ? ListView.builder(
@@ -453,6 +459,7 @@ class _CalendarState extends State<Calendar> {
             : Container(),
       );
     } else {
+       
       // eventLiostBuilder is not null
       return widget.eventListBuilder!(context, _selectedEvents!);
     }
