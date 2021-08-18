@@ -109,7 +109,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print(_events.length);
     return Scaffold(
       body: SafeArea(
         child: Calendar(
