@@ -28,14 +28,11 @@ jobs:
     - name: Get dependencies
       run: flutter pub get
 
-    - name: Change to example directory
-      run: cd example
-
     - name: Build for Android (apk)
-      run: flutter build apk
+      run: cd example; flutter build apk
     
     - name: Build for Android (appbundle)
-      run: flutter build appbundle
+      run: cd example; flutter build appbundle
 
     - name: Build for iOS
-      run: flutter build ios --release --no-codesign
+      run: cd example; flutter build ios --release --no-codesign
