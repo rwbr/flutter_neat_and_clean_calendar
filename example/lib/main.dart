@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_neat_and_clean_calendar/flutter_neat_and_clean_calendar.dart';
 
@@ -22,16 +24,16 @@ class CalendarScreen extends StatefulWidget {
 }
 
 class _CalendarScreenState extends State<CalendarScreen> {
+  List<NeatCleanCalendarEvent> _todaysEvents = [
+    NeatCleanCalendarEvent('Event A',
+        startTime: DateTime(DateTime.now().year, DateTime.now().month,
+            DateTime.now().day, 10, 0),
+        endTime: DateTime(DateTime.now().year, DateTime.now().month,
+            DateTime.now().day, 12, 0),
+        description: 'A special event',
+        color: Colors.blue[700]),
+  ];
   final Map<DateTime, List<NeatCleanCalendarEvent>> _events = {
-    DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day): [
-      NeatCleanCalendarEvent('Event A',
-          startTime: DateTime(DateTime.now().year, DateTime.now().month,
-              DateTime.now().day, 10, 0),
-          endTime: DateTime(DateTime.now().year, DateTime.now().month,
-              DateTime.now().day, 12, 0),
-          description: 'A special event',
-          color: Colors.blue),
-    ],
     DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 2):
         [
       NeatCleanCalendarEvent('Event B',
@@ -97,6 +99,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
   @override
   void initState() {
     super.initState();
+    _events.putIfAbsent(
+        DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day),
+        () => _todaysEvents);
     // Force selection of today on first load, so that the list of today's events gets shown.
     _handleNewDate(DateTime(
         DateTime.now().year, DateTime.now().month, DateTime.now().day));
@@ -104,6 +109,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print(_events.length);
     return Scaffold(
       body: SafeArea(
         child: Calendar(
@@ -117,10 +123,41 @@ class _CalendarScreenState extends State<CalendarScreen> {
           eventColor: Colors.grey,
           locale: 'de_DE',
           todayButtonText: 'Heute',
+          isExpanded: true,
           expandableDateFormat: 'EEEE, dd. MMMM yyyy',
           dayOfWeekStyle: TextStyle(
               color: Colors.black, fontWeight: FontWeight.w800, fontSize: 11),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // Add your onPressed code here!
+          Random random = Random();
+          // Pick a random number in the range [0.0, 1.0)
+          double randomDouble = random.nextDouble();
+          _todaysEvents.add(NeatCleanCalendarEvent('New Event',
+              startTime: DateTime(
+                  DateTime.now().year,
+                  DateTime.now().month,
+                  DateTime.now().day,
+                  DateTime.now().hour,
+                  DateTime.now().minute),
+              endTime: DateTime(
+                  DateTime.now().year,
+                  DateTime.now().month,
+                  DateTime.now().day,
+                  DateTime.now().hour,
+                  DateTime.now().minute + 15),
+              description: 'New event',
+              color:
+                  Color((randomDouble * 0xFFFFFF).toInt()).withOpacity(1.0)));
+          setState(() {
+            _events[DateTime(DateTime.now().year, DateTime.now().month,
+                DateTime.now().day)] = _todaysEvents;
+          });
+        },
+        child: const Icon(Icons.add),
+        backgroundColor: Colors.green,
       ),
     );
   }
