@@ -73,6 +73,7 @@ class Calendar extends StatefulWidget {
   final ValueChanged<bool>? onExpandStateChanged;
   final ValueChanged? onRangeSelected;
   final ValueChanged<NeatCleanCalendarEvent>? onEventSelected;
+  final bool? isJumpDateButtonEnabled;
   final bool isExpandable;
   final DayBuilder? dayBuilder;
   final EventListBuilder? eventListBuilder;
@@ -124,6 +125,7 @@ class Calendar extends StatefulWidget {
     this.bottomBarArrowColor,
     this.bottomBarColor,
     this.expandableDateFormat = 'EEEE MMMM dd, yyyy',
+    this.isJumpDateButtonEnabled,
   });
 
   @override
@@ -164,6 +166,7 @@ class _CalendarState extends State<Calendar> {
     var todayIcon;
     var leftArrow;
     var rightArrow;
+    var jumpDateIcon;
 
     if (!widget.hideArrows) {
       leftArrow = IconButton(
@@ -188,21 +191,61 @@ class _CalendarState extends State<Calendar> {
       todayIcon = Container();
     }
 
+    if (widget.isJumpDateButtonEnabled != null &&
+        widget.isJumpDateButtonEnabled == true) {
+      jumpDateIcon = InkWell(
+        child: Icon(Icons.date_range_outlined),
+        onTap: () {
+          showDatePicker(
+            context: context,
+            initialDate: DateTime.now(),
+            firstDate: DateTime(1900),
+            lastDate: DateTime(2100),
+          ).then((date) {
+            if (date != null) {
+              setState(() {
+                _selectedDate = date;
+                selectedMonthsDays = _daysInMonth(_selectedDate);
+                selectedWeekDays = Utils.daysInRange(
+                        _firstDayOfWeek(_selectedDate),
+                        _lastDayOfWeek(_selectedDate))
+                    .toList();
+                var monthFormat = DateFormat('MMMM yyyy', widget.locale)
+                    .format(_selectedDate);
+                displayMonth =
+                    '${monthFormat[0].toUpperCase()}${monthFormat.substring(1)}';
+                _selectedEvents = widget.events?[DateTime(_selectedDate.year,
+                        _selectedDate.month, _selectedDate.day)] ??
+                    [];
+              });
+              print('Date chosen: ${_selectedDate.toIso8601String()}');
+              onJumpToDateSelected(_selectedDate);
+            }
+          });
+        },
+      );
+    } else {
+      jumpDateIcon = Container();
+    }
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         leftArrow ?? Container(),
-        Column(
-          children: <Widget>[
-            todayIcon ?? Container(),
-            Text(
-              displayMonth,
-              style: TextStyle(
-                fontSize: 20.0,
+        Expanded(
+          child: Column(
+            children: <Widget>[
+              todayIcon ?? Container(),
+              Text(
+                displayMonth,
+                style: TextStyle(
+                  fontSize: 20.0,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
+        jumpDateIcon ?? Container(),
         rightArrow ?? Container(),
       ],
     );
@@ -482,25 +525,7 @@ class _CalendarState extends State<Calendar> {
   /// position of the screen. It re-caclulates the range of dates, so that the
   /// month view or week view changes to a range containing the current day.
   void resetToToday() {
-    _selectedDate = DateTime.now();
-    var firstDayOfCurrentWeek = _firstDayOfWeek(_selectedDate);
-    var lastDayOfCurrentWeek = _lastDayOfWeek(_selectedDate);
-
-    setState(() {
-      selectedWeekDays =
-          Utils.daysInRange(firstDayOfCurrentWeek, lastDayOfCurrentWeek)
-              .toList();
-      selectedMonthsDays = _daysInMonth(_selectedDate);
-      var monthFormat =
-          DateFormat('MMMM yyyy', widget.locale).format(_selectedDate);
-      displayMonth =
-          '${monthFormat[0].toUpperCase()}${monthFormat.substring(1)}';
-      _selectedEvents = widget.events?[DateTime(
-              _selectedDate.year, _selectedDate.month, _selectedDate.day)] ??
-          [];
-    });
-
-    _launchDateSelectionCallback(_selectedDate);
+    onJumpToDateSelected(DateTime.now());
   }
 
   void nextMonth() {
@@ -584,6 +609,28 @@ class _CalendarState extends State<Calendar> {
     if (widget.onRangeSelected != null) {
       widget.onRangeSelected!(_rangeSelected);
     }
+  }
+
+  void onJumpToDateSelected(DateTime selectedDate) {
+    _selectedDate = selectedDate;
+    var firstDayOfCurrentWeek = _firstDayOfWeek(_selectedDate);
+    var lastDayOfCurrentWeek = _lastDayOfWeek(_selectedDate);
+
+    setState(() {
+      selectedWeekDays =
+          Utils.daysInRange(firstDayOfCurrentWeek, lastDayOfCurrentWeek)
+              .toList();
+      selectedMonthsDays = _daysInMonth(_selectedDate);
+      var monthFormat =
+          DateFormat('MMMM yyyy', widget.locale).format(_selectedDate);
+      displayMonth =
+          '${monthFormat[0].toUpperCase()}${monthFormat.substring(1)}';
+      _selectedEvents = widget.events?[DateTime(
+              _selectedDate.year, _selectedDate.month, _selectedDate.day)] ??
+          [];
+    });
+
+    _launchDateSelectionCallback(_selectedDate);
   }
 
   void _onSwipeUp() {
