@@ -37,6 +37,8 @@ class Range {
 ///     of the range (switch to next or previous week or month)
 /// [onEventSelected] is of type [ValueChanged<NeatCleanCalendarEvent>] and it contains a callback function
 ///     executed when an event of the event list is selected
+/// [isJumpDateButtonEnabled] is a [bool] value. The value of this parameter
+///    determines whether the jump date button is enabled or not.
 /// [isExpandable] is a [bool]. With this parameter you can control, if the view can expand from week view
 ///     to month view. Default is [false].
 /// [dayBuilder] can contain a [Widget]. If this property is not null (!= null), this widget will get used to
