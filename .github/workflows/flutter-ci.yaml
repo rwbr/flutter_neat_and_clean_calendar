@@ -3,36 +3,22 @@ name: CI
 on: [push, pull_request]
 
 jobs:
-  build:
-    runs-on: macos-latest
-    
-    steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-java@v1
-      with:
-        java-version: '12.x'
-    - uses: subosito/flutter-action@v1
-      with:
-        flutter-version: '2.2.3'
-        channel: stable
-
-    - name: Doctor
-      run: flutter doctor -v
-
-    - name: Analyze
-      run: flutter analyze .
-
-#    - name: Run Tests
-#      run: flutter test
-
-    - name: Get dependencies
-      run: flutter pub get
-
-    - name: Build for Android (apk)
-      run: cd example; flutter build apk
-    
-    - name: Build for Android (appbundle)
-      run: cd example; flutter build appbundle
-
-    - name: Build for iOS
-      run: cd example; flutter build ios --release --no-codesign
+  # This workflow contains a single job called "build"
+    build:
+      name: flutter build
+      # The type of runner that the job will run on
+      runs-on: ubuntu-latest
+      env:
+        JAVA_VERSION: "11.0"
+        FLUTTER_VERSION: "2.0.0"
+      steps:
+        - uses: actions/checkout@v2
+        - uses: actions/setup-java@v1
+          with:
+            java-version: $
+        - uses: subosito/flutter-action@v1
+          with:
+            flutter-version: $
+        - run: flutter pub get
+        - run: flutter analyze
+        - run: flutter test
