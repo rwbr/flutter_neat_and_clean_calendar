@@ -453,7 +453,7 @@ class _CalendarState extends State<Calendar> {
             : Container(),
       );
     } else {
-      // eventLiostBuilder is not null
+      // eventListBuilder is not null
       return widget.eventListBuilder!(context, _selectedEvents!);
     }
   }

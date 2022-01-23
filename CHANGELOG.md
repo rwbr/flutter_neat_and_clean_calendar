@@ -1,3 +1,7 @@
+## [0.2.3+11] - 2021-08-17
+* Extended example to illustrate how to add events to the list and update the view
+* This is a reaction on issue #13
+
 ## [0.2.2+10] - 2021-05-06
 * Issue #12 was fixed in this release
 * Now it's possible to use the parameter `isExpanded`to decide, if the widget should be shown in expanded mode
