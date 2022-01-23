@@ -54,6 +54,8 @@ class Range {
 /// [todayColor] this is the color of the date of today
 /// [todayButtonText] is a [String]. With this property you can set the caption of the today icon (button to navigate to today).
 ///     If left empty, the calendar will use the string "Today".
+/// [allDayEventText] is a [String]. With this property you can set the caption of the all day event. If left empty, the
+///     calendar will use the string "All day".
 /// [eventColor] lets you optionally specify the color of the event (dot). If the [CleanCaendarEvents] property color is not set, the
 ///     calendar will use this parameter.
 /// [eventDoneColor] with this property you can define the color of "done" events, that is events in the past.
@@ -85,6 +87,7 @@ class Calendar extends StatefulWidget {
   final Color? selectedColor;
   final Color? todayColor;
   final String todayButtonText;
+  final String allDayEventText;
   final Color? eventColor;
   final Color? eventDoneColor;
   final DateTime? initialDate;
@@ -115,6 +118,7 @@ class Calendar extends StatefulWidget {
     this.selectedColor,
     this.todayColor,
     this.todayButtonText: 'Today',
+    this.allDayEventText: 'All Day',
     this.eventColor,
     this.eventDoneColor,
     this.initialDate,
@@ -420,9 +424,13 @@ class _CalendarState extends State<Calendar> {
   }
 
   Widget get eventList {
+    // If eventListBuilder is provided, use it to build the list of events to show.
+    // Otherwise use the default list of events.
     if (widget.eventListBuilder == null) {
       return Expanded(
         child: _selectedEvents != null && _selectedEvents!.isNotEmpty
+            // Create a list of events that are occurring on the currently selected day, if there are
+            // any. Otherwise, display an empty Container.
             ? ListView.builder(
                 padding: EdgeInsets.all(0.0),
                 itemBuilder: (BuildContext context, int index) {
@@ -468,24 +476,42 @@ class _CalendarState extends State<Calendar> {
                               ),
                             ),
                           ),
+                          // This Expanded widget gets used to display the start and end time of the
+                          // event.
                           Expanded(
-                            flex: 20,
+                            flex: 30,
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(start,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyText1),
-                                  Text(end,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyText1),
-                                ],
-                              ),
+                              // If the event is all day, then display the word "All day" with no time.
+                              child: event.isAllDay
+                                  ? Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(widget.allDayEventText,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyText1),
+                                      ],
+                                    )
+                                  : Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(start,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyText1),
+                                        Text(end,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyText1),
+                                      ],
+                                    ),
                             ),
                           )
                         ],
@@ -505,6 +531,20 @@ class _CalendarState extends State<Calendar> {
 
   @override
   Widget build(BuildContext context) {
+    // If _selectedEvents is not null, then we sort the events by isAllDay propeerty, so that
+    // all day events are displayed at the top of the list.
+    // Slightly inexxficient, to do this sort each time, the widget builds.
+    if (_selectedEvents?.isNotEmpty == true) {
+      _selectedEvents!.sort((a, b) {
+        if (a.isAllDay == b.isAllDay) {
+          return 0;
+        }
+        if (a.isAllDay) {
+          return -1;
+        }
+        return 1;
+      });
+    }
     return Container(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,

@@ -81,6 +81,8 @@ For more details see the **example**.
 ///     executed when the view changes to expanded or to condensed
 /// [onRangeSelected] contains a callback function of type [ValueChanged], that gets called on changes
 ///     of the range (switch to next or previous week or month)
+/// [isJumpDateButtonEnabled] is a [bool] value. The value of this parameter
+///    determines whether the jump date button is enabled or not.
 /// [onEventSelected] is of type [ValueChanged<NeatCleanCalendarEvent>] and it contains a callback function
 ///     executed when an event of the event list is selected
 /// [isExpandable] is a [bool]. With this parameter you can control, if the view can expand from week view
@@ -98,6 +100,8 @@ For more details see the **example**.
 /// [todayColor] this is the color of the date of today
 /// [todayButtonText] is a [String]. With this property you can set the caption of the today icon (button to navigate to today).
 ///     If left empty, the calendar will use the string "Today".
+/// [allDayEventText] is a [String]. With this property you can set the caption of the all day event. If left empty, the
+///     calendar will use the string "All day".
 /// [eventColor] lets you optionally specify the color of the event (dot). If the [CleanCaendarEvents] property color is not set, the
 ///     calendar will use this parameter.
 /// [eventDoneColor] with this property you can define the color of "done" events, that is events in the past.
@@ -118,6 +122,7 @@ final ValueChanged<DateTime> onMonthChanged;
 final ValueChanged<bool> onExpandStateChanged;
 final ValueChanged onRangeSelected;
 final ValueChanged<NeatCleanCalendarEvent> onEventSelected;
+final bool? isJumpDateButtonEnabled;
 final bool isExpandable;
 final DayBuilder dayBuilder;
 final EventListBuilder eventListBuilder;
@@ -127,6 +132,7 @@ final Map<DateTime, List<NeatCleanCalendarEvent>> events;
 final Color selectedColor;
 final Color todayColor;
 final String todayButtonText;
+final String allDayEventText;
 final Color eventColor;
 final Color eventDoneColor;
 final DateTime initialDate;
@@ -178,7 +184,7 @@ final Map<DateTime, List<NeatCleanCalendarEvent>> _events = {
 
 ## Examples
 
-### Basic wirget with customized colors
+### Basic widget with customized colors
 
 Some colors were cutomized in this example:
 
@@ -192,6 +198,31 @@ Calendar(
 ```
 
 ![Screenshot](https://github.com/rwbr/flutter_neat_and_clean_calendar/blob/main/img/usage1.png)
+
+### Display an icon button to open a date picker to jump to a certain date
+
+```dart
+Calendar(
+  isJumpDateButtonEnabled: true
+)
+```
+
+This shows a button in the upper tool bar. 
+
+![Jump-To-Date button](img/jump-date-button.png)
+
+Pressing this button opens a date picker, that allows the user to jump to a certain date.
+
+### Handling all-day events
+
+The class `NeatAndCleanCalendarEvent` has a boolean property called ìsAllDay`. This property allows you to 
+define events, that last all day with now start or end time. These events get sorted at the top of the 
+events list.
+
+![All day event at the top of the list](img/all-day-event.png)
+
+With the property `allDayEventText` you define the string displayed for that type of events. If you
+don't set this option the calendar will display `All day` for these events.
 
 ### Expandable calendar view
 

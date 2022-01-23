@@ -80,7 +80,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
               DateTime.now().day + 2, 14, 30),
           endTime: DateTime(DateTime.now().year, DateTime.now().month,
               DateTime.now().day + 2, 17, 0),
-          color: Colors.green),
+          color: Colors.green,
+          isAllDay: true),
       NeatCleanCalendarEvent('Event G',
           startTime: DateTime(DateTime.now().year, DateTime.now().month,
               DateTime.now().day + 2, 14, 30),
@@ -123,6 +124,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
           eventColor: Colors.grey,
           locale: 'de_DE',
           todayButtonText: 'Heute',
+          allDayEventText: 'Ganztägig',
           isExpanded: true,
           expandableDateFormat: 'EEEE, dd. MMMM yyyy',
           dayOfWeekStyle: TextStyle(

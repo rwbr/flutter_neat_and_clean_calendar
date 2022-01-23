@@ -8,6 +8,7 @@ class NeatCleanCalendarEvent {
   DateTime endTime;
   Color? color;
   bool isAllDay;
+  bool isMultiDay;
   bool isDone;
 
   NeatCleanCalendarEvent(this.summary,
@@ -17,5 +18,6 @@ class NeatCleanCalendarEvent {
       required this.endTime,
       this.color = Colors.blue,
       this.isAllDay = false,
+      this.isMultiDay = false,
       this.isDone = false});
 }
