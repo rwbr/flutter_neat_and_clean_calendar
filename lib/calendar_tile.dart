@@ -142,7 +142,7 @@ class NeatCleanCalendarTile extends StatelessWidget {
                                         Theme.of(context).primaryColor;
                                   if (isSelected) return Colors.white;
                                   return eventColor ??
-                                      Theme.of(context).accentColor;
+                                      Theme.of(context).colorScheme.secondary;
                                 }())),
                           );
                         }).toList())

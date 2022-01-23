@@ -15,6 +15,8 @@ typedef DayBuilder(BuildContext context, DateTime day);
 typedef EventListBuilder(
     BuildContext context, List<NeatCleanCalendarEvent> events);
 
+enum DatePickerType { hidden, year, date }
+
 class Range {
   final DateTime from;
   final DateTime to;
@@ -37,8 +39,8 @@ class Range {
 ///     of the range (switch to next or previous week or month)
 /// [onEventSelected] is of type [ValueChanged<NeatCleanCalendarEvent>] and it contains a callback function
 ///     executed when an event of the event list is selected
-/// [isJumpDateButtonEnabled] is a [bool] value. The value of this parameter
-///    determines whether the jump date button is enabled or not.
+/// [datePickerType] defines, if the date picker should get displayed and selects its type
+///    Choose between datePickerType.hidden, datePickerType.year, datePickerType.date
 /// [isExpandable] is a [bool]. With this parameter you can control, if the view can expand from week view
 ///     to month view. Default is [false].
 /// [dayBuilder] can contain a [Widget]. If this property is not null (!= null), this widget will get used to
@@ -77,10 +79,10 @@ class Calendar extends StatefulWidget {
   final ValueChanged<bool>? onExpandStateChanged;
   final ValueChanged? onRangeSelected;
   final ValueChanged<NeatCleanCalendarEvent>? onEventSelected;
-  final bool? isJumpDateButtonEnabled;
   final bool isExpandable;
   final DayBuilder? dayBuilder;
   final EventListBuilder? eventListBuilder;
+  final DatePickerType? datePickerType;
   final bool hideArrows;
   final bool hideTodayIcon;
   final Map<DateTime, List<NeatCleanCalendarEvent>>? events;
@@ -113,6 +115,7 @@ class Calendar extends StatefulWidget {
     this.events,
     this.dayBuilder,
     this.eventListBuilder,
+    this.datePickerType: DatePickerType.hidden,
     this.hideTodayIcon: false,
     this.hideArrows: false,
     this.selectedColor,
@@ -131,7 +134,6 @@ class Calendar extends StatefulWidget {
     this.bottomBarArrowColor,
     this.bottomBarColor,
     this.expandableDateFormat = 'EEEE MMMM dd, yyyy',
-    this.isJumpDateButtonEnabled,
   });
 
   @override
@@ -197,37 +199,71 @@ class _CalendarState extends State<Calendar> {
       todayIcon = Container();
     }
 
-    if (widget.isJumpDateButtonEnabled != null &&
-        widget.isJumpDateButtonEnabled == true) {
+    if (widget.datePickerType != null &&
+        widget.datePickerType != DatePickerType.hidden) {
       jumpDateIcon = InkWell(
         child: Icon(Icons.date_range_outlined),
         onTap: () {
-          showDatePicker(
-            context: context,
-            initialDate: DateTime.now(),
-            firstDate: DateTime(1900),
-            lastDate: DateTime(2100),
-          ).then((date) {
-            if (date != null) {
-              setState(() {
-                _selectedDate = date;
-                selectedMonthsDays = _daysInMonth(_selectedDate);
-                selectedWeekDays = Utils.daysInRange(
-                        _firstDayOfWeek(_selectedDate),
-                        _lastDayOfWeek(_selectedDate))
-                    .toList();
-                var monthFormat = DateFormat('MMMM yyyy', widget.locale)
-                    .format(_selectedDate);
-                displayMonth =
-                    '${monthFormat[0].toUpperCase()}${monthFormat.substring(1)}';
-                _selectedEvents = widget.events?[DateTime(_selectedDate.year,
-                        _selectedDate.month, _selectedDate.day)] ??
-                    [];
-              });
-              print('Date chosen: ${_selectedDate.toIso8601String()}');
-              onJumpToDateSelected(_selectedDate);
-            }
-          });
+          if (widget.datePickerType == DatePickerType.year) {
+            // show year picker
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: Text("Select Year"),
+                  content: Container(
+                    // Need to use container to add size constraint.
+                    width: 300,
+                    height: 300,
+                    child: YearPicker(
+                      firstDate: DateTime(DateTime.now().year - 100, 1),
+                      lastDate: DateTime(DateTime.now().year + 100, 1),
+                      initialDate: DateTime.now(),
+                      // save the selected date to _selectedDate DateTime variable.
+                      // It's used to set the previous selected date when
+                      // re-showing the dialog.
+                      selectedDate: _selectedDate,
+                      onChanged: (DateTime dateTime) {
+                        // close the dialog when year is selected.
+                        onJumpToDateSelected(dateTime);
+                        Navigator.pop(context);
+
+                        // Do something with the dateTime selected.
+                        // Remember that you need to use dateTime.year to get the year
+                      },
+                    ),
+                  ),
+                );
+              },
+            );
+          } else if (widget.datePickerType == DatePickerType.date) {
+            showDatePicker(
+              context: context,
+              initialDate: DateTime.now(),
+              firstDate: DateTime(1900),
+              lastDate: DateTime(2100),
+            ).then((date) {
+              if (date != null) {
+                setState(() {
+                  _selectedDate = date;
+                  selectedMonthsDays = _daysInMonth(_selectedDate);
+                  selectedWeekDays = Utils.daysInRange(
+                          _firstDayOfWeek(_selectedDate),
+                          _lastDayOfWeek(_selectedDate))
+                      .toList();
+                  var monthFormat = DateFormat('MMMM yyyy', widget.locale)
+                      .format(_selectedDate);
+                  displayMonth =
+                      '${monthFormat[0].toUpperCase()}${monthFormat.substring(1)}';
+                  _selectedEvents = widget.events?[DateTime(_selectedDate.year,
+                          _selectedDate.month, _selectedDate.day)] ??
+                      [];
+                });
+                print('Date chosen: ${_selectedDate.toIso8601String()}');
+                onJumpToDateSelected(_selectedDate);
+              }
+            });
+          }
         },
       );
     } else {

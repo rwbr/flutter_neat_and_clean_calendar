@@ -113,7 +113,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
     return Scaffold(
       body: SafeArea(
         child: Calendar(
-          isJumpDateButtonEnabled: true,
           startOnMonday: true,
           weekDays: ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'],
           events: _events,
@@ -127,6 +126,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
           allDayEventText: 'Ganztägig',
           isExpanded: true,
           expandableDateFormat: 'EEEE, dd. MMMM yyyy',
+          datePickerType: DatePickerType.date,
           dayOfWeekStyle: TextStyle(
               color: Colors.black, fontWeight: FontWeight.w800, fontSize: 11),
         ),
