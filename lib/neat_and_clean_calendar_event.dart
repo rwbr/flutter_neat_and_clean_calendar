@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
 
+enum MultiDaySegement {
+  first,
+  middle,
+  last,
+}
+
 class NeatCleanCalendarEvent {
   String summary;
   String description;
@@ -9,6 +15,7 @@ class NeatCleanCalendarEvent {
   Color? color;
   bool isAllDay;
   bool isMultiDay;
+  MultiDaySegement? multiDaySegement;
   bool isDone;
 
   NeatCleanCalendarEvent(this.summary,
@@ -19,5 +26,6 @@ class NeatCleanCalendarEvent {
       this.color = Colors.blue,
       this.isAllDay = false,
       this.isMultiDay = false,
-      this.isDone = false});
+      this.isDone = false,
+      multiDaySegement});
 }
