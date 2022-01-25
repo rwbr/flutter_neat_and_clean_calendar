@@ -58,6 +58,8 @@ class Range {
 ///     If left empty, the calendar will use the string "Today".
 /// [allDayEventText] is a [String]. With this property you can set the caption of the all day event. If left empty, the
 ///     calendar will use the string "All day".
+/// [multiDayEndText] is a [String]. With this property you can set the caption of the end of a multi day event. If left empty, the
+///    calendar will use the string "End".
 /// [eventColor] lets you optionally specify the color of the event (dot). If the [CleanCaendarEvents] property color is not set, the
 ///     calendar will use this parameter.
 /// [eventDoneColor] with this property you can define the color of "done" events, that is events in the past.
@@ -74,9 +76,7 @@ class Range {
 /// [bottomBarColor] sets the [Color] of the bottom bar
 /// [expandableDateFormat] defines the formatting of the date in the bottom bar
 
-// TODO:: Change format of events
 // The library internnaly will use a Map<DateTime, List<NeatCleanCalendarEvent>> for the events.
-// As a parameter for the library a list of [NeatCleanCalendarEvent] is expected.
 
 class Calendar extends StatefulWidget {
   final ValueChanged<DateTime>? onDateSelected;
@@ -98,6 +98,7 @@ class Calendar extends StatefulWidget {
   final Color? todayColor;
   final String todayButtonText;
   final String allDayEventText;
+  final String multiDayEndText;
   final Color? eventColor;
   final Color? eventDoneColor;
   final DateTime? initialDate;
@@ -131,6 +132,7 @@ class Calendar extends StatefulWidget {
     this.todayColor,
     this.todayButtonText: 'Today',
     this.allDayEventText: 'All Day',
+    this.multiDayEndText: 'End',
     this.eventColor,
     this.eventDoneColor,
     this.initialDate,
@@ -653,7 +655,7 @@ class _CalendarState extends State<Calendar> {
       // The event ends on the selcted day.
       // Just show the end time, no start time.
       print('MultiDayEvent: end - ${event.summary}');
-      start = 'End';
+      start = widget.multiDayEndText;
     } else {
       // The event spans multiple days.
       print('MultiDayEvent: middle - ${event.summary}');
