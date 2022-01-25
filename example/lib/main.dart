@@ -33,6 +33,37 @@ class _CalendarScreenState extends State<CalendarScreen> {
         description: 'A special event',
         color: Colors.blue[700]),
   ];
+
+  final List<NeatCleanCalendarEvent> _eventList = [
+    NeatCleanCalendarEvent('MultiDay Event A',
+        startTime: DateTime(DateTime.now().year, DateTime.now().month,
+            DateTime.now().day, 10, 0),
+        endTime: DateTime(DateTime.now().year, DateTime.now().month,
+            DateTime.now().day + 2, 12, 0),
+        color: Colors.orange,
+        isMultiDay: true),
+    // NeatCleanCalendarEvent('Allday Event B',
+    //     startTime: DateTime(DateTime.now().year, DateTime.now().month,
+    //         DateTime.now().day - 2, 14, 30),
+    //     endTime: DateTime(DateTime.now().year, DateTime.now().month,
+    //         DateTime.now().day + 2, 17, 0),
+    //     color: Colors.pink,
+    //     isAllDay: true),
+    // NeatCleanCalendarEvent('MultiDay Event C',
+    //     startTime: DateTime(DateTime.now().year, DateTime.now().month,
+    //         DateTime.now().day + 2, 10, 0),
+    //     endTime: DateTime(DateTime.now().year, DateTime.now().month,
+    //         DateTime.now().day + 3, 12, 0),
+    //     color: Colors.orange,
+    //     isMultiDay: true),
+    NeatCleanCalendarEvent('Normal Event D',
+        startTime: DateTime(DateTime.now().year, DateTime.now().month,
+            DateTime.now().day, 14, 30),
+        endTime: DateTime(DateTime.now().year, DateTime.now().month,
+            DateTime.now().day, 17, 0),
+        color: Colors.indigo),
+  ];
+
   final Map<DateTime, List<NeatCleanCalendarEvent>> _events = {
     DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 2):
         [
@@ -115,12 +146,13 @@ class _CalendarScreenState extends State<CalendarScreen> {
         child: Calendar(
           startOnMonday: true,
           weekDays: ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'],
-          events: _events,
+          // events: _events,
+          eventsList: _eventList,
           isExpandable: true,
           eventDoneColor: Colors.green,
           selectedColor: Colors.pink,
           todayColor: Colors.blue,
-          eventColor: Colors.grey,
+          eventColor: null,
           locale: 'de_DE',
           todayButtonText: 'Heute',
           allDayEventText: 'Ganztägig',
