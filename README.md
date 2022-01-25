@@ -40,33 +40,35 @@ import 'package:flutter_neat_and_clean_calendar/flutter_neat_and_clean_calendar.
 
 ```dart
 Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Calendar(
-          startOnMonday: true,
-          weekDays: ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'],
-          events: _events,
-          isExpandable: true,
-          eventDoneColor: Colors.green,
-          selectedColor: Colors.pink,
-          todayColor: Colors.blue,
-          // dayBuilder: (BuildContext context, DateTime day) {
-          //   return new Text("!");
-          // },
-          eventListBuilder: (BuildContext context,
-              List<NeatCleanCalendarEvent> _selectesdEvents) {
-            return new Text("!");
-          },
-          eventColor: Colors.grey,
-          locale: 'de_DE',
-          todayButtonText: 'Heute',
-          expandableDateFormat: 'EEEE, dd. MMMM yyyy',
-          dayOfWeekStyle: TextStyle(
-              color: Colors.black, fontWeight: FontWeight.w800, fontSize: 11),
-        ),
+  return Scaffold(
+    body: SafeArea(
+      child: Calendar(
+        startOnMonday: true,
+        weekDays: ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'],
+        eventsList: _eventList,
+        isExpandable: true,
+        eventDoneColor: Colors.green,
+        selectedColor: Colors.pink,
+        todayColor: Colors.blue,
+        eventColor: null,
+        locale: 'de_DE',
+        todayButtonText: 'Heute',
+        allDayEventText: 'Ganztägig',
+        multiDayEndText: 'Ende',
+        isExpanded: true,
+        expandableDateFormat: 'EEEE, dd. MMMM yyyy',
+        datePickerType: DatePickerType.date,
+        dayOfWeekStyle: TextStyle(
+            color: Colors.black, fontWeight: FontWeight.w800, fontSize: 11),
       ),
-    );
-  }
+    ),
+    floatingActionButton: FloatingActionButton(
+      onPressed: () {},
+      child: const Icon(Icons.add),
+      backgroundColor: Colors.green,
+    ),
+  );
+}
 ```
 
 For more details see the **example**.
@@ -83,6 +85,8 @@ For more details see the **example**.
 ///     of the range (switch to next or previous week or month)
 /// [onEventSelected] is of type [ValueChanged<NeatCleanCalendarEvent>] and it contains a callback function
 ///     executed when an event of the event list is selected
+/// [datePickerType] defines, if the date picker should get displayed and selects its type
+///    Choose between datePickerType.hidden, datePickerType.year, datePickerType.date
 /// [isExpandable] is a [bool]. With this parameter you can control, if the view can expand from week view
 ///     to month view. Default is [false].
 /// [dayBuilder] can contain a [Widget]. If this property is not null (!= null), this widget will get used to
@@ -98,6 +102,10 @@ For more details see the **example**.
 /// [todayColor] this is the color of the date of today
 /// [todayButtonText] is a [String]. With this property you can set the caption of the today icon (button to navigate to today).
 ///     If left empty, the calendar will use the string "Today".
+/// [allDayEventText] is a [String]. With this property you can set the caption of the all day event. If left empty, the
+///     calendar will use the string "All day".
+/// [multiDayEndText] is a [String]. With this property you can set the caption of the end of a multi day event. If left empty, the
+///    calendar will use the string "End".
 /// [eventColor] lets you optionally specify the color of the event (dot). If the [CleanCaendarEvents] property color is not set, the
 ///     calendar will use this parameter.
 /// [eventDoneColor] with this property you can define the color of "done" events, that is events in the past.
@@ -113,33 +121,39 @@ For more details see the **example**.
 /// [bottomBarArrowColor] can set the [Color] of the arrow to expand/compress the calendar in the bottom bar.
 /// [bottomBarColor] sets the [Color] of the bottom bar
 /// [expandableDateFormat] defines the formatting of the date in the bottom bar
-final ValueChanged<DateTime> onDateSelected;
-final ValueChanged<DateTime> onMonthChanged;
-final ValueChanged<bool> onExpandStateChanged;
-final ValueChanged onRangeSelected;
-final ValueChanged<NeatCleanCalendarEvent> onEventSelected;
+final ValueChanged<DateTime>? onDateSelected;
+final ValueChanged<DateTime>? onMonthChanged;
+final ValueChanged<bool>? onExpandStateChanged;
+final ValueChanged? onRangeSelected;
+final ValueChanged<NeatCleanCalendarEvent>? onEventSelected;
 final bool isExpandable;
-final DayBuilder dayBuilder;
-final EventListBuilder eventListBuilder;
+final DayBuilder? dayBuilder;
+final EventListBuilder? eventListBuilder;
+final DatePickerType? datePickerType;
 final bool hideArrows;
 final bool hideTodayIcon;
-final Map<DateTime, List<NeatCleanCalendarEvent>> events;
-final Color selectedColor;
-final Color todayColor;
+@Deprecated(
+    'Use `eventsList` instead. Will be removed in NeatAndCleanCalendar 0.4.0')
+final Map<DateTime, List<NeatCleanCalendarEvent>>? events;
+final List<NeatCleanCalendarEvent>? eventsList;
+final Color? selectedColor;
+final Color? todayColor;
 final String todayButtonText;
-final Color eventColor;
-final Color eventDoneColor;
-final DateTime initialDate;
+final String allDayEventText;
+final String multiDayEndText;
+final Color? eventColor;
+final Color? eventDoneColor;
+final DateTime? initialDate;
 final bool isExpanded;
 final List<String> weekDays;
-final String locale;
+final String? locale;
 final bool startOnMonday;
 final bool hideBottomBar;
-final TextStyle dayOfWeekStyle;
-final TextStyle bottomBarTextStyle;
-final Color bottomBarArrowColor;
-final Color bottomBarColor;
-final String expandableDateFormat;
+final TextStyle? dayOfWeekStyle;
+final TextStyle? bottomBarTextStyle;
+final Color? bottomBarArrowColor;
+final Color? bottomBarColor;
+final String? expandableDateFormat;
 ```
 
 ## Sample event data
@@ -147,38 +161,33 @@ final String expandableDateFormat;
 The syntax of the event map changed due to the introduction of the 'NeatCleanCalendarEvent' class.
 
 ```dart
-final Map<DateTime, List<NeatCleanCalendarEvent>> _events = {
-    DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day): [
-      NeatCleanCalendarEvent('Event A',
-          startTime: DateTime(DateTime.now().year, DateTime.now().month,
-              DateTime.now().day, 10, 0),
-          endTime: DateTime(DateTime.now().year, DateTime.now().month,
-              DateTime.now().day, 12, 0),
-          description: 'A special event',
-          color: Colors.blue[700]),
-    ],
-    DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 2):
-        [
-      NeatCleanCalendarEvent('Event B',
-          startTime: DateTime(DateTime.now().year, DateTime.now().month,
-              DateTime.now().day + 2, 10, 0),
-          endTime: DateTime(DateTime.now().year, DateTime.now().month,
-              DateTime.now().day + 2, 12, 0),
-          color: Colors.orange),
-      NeatCleanCalendarEvent('Event C',
-          startTime: DateTime(DateTime.now().year, DateTime.now().month,
-              DateTime.now().day + 2, 14, 30),
-          endTime: DateTime(DateTime.now().year, DateTime.now().month,
-              DateTime.now().day + 2, 17, 0),
-          color: Colors.pink),
-    ],
-  };
-
+final List<NeatCleanCalendarEvent> _eventList = [
+  NeatCleanCalendarEvent('MultiDay Event A',
+      startTime: DateTime(DateTime.now().year, DateTime.now().month,
+          DateTime.now().day, 10, 0),
+      endTime: DateTime(DateTime.now().year, DateTime.now().month,
+          DateTime.now().day + 2, 12, 0),
+      color: Colors.orange,
+      isMultiDay: true),
+  NeatCleanCalendarEvent('Allday Event B',
+      startTime: DateTime(DateTime.now().year, DateTime.now().month,
+          DateTime.now().day - 2, 14, 30),
+      endTime: DateTime(DateTime.now().year, DateTime.now().month,
+          DateTime.now().day + 2, 17, 0),
+      color: Colors.pink,
+      isAllDay: true),
+  NeatCleanCalendarEvent('Normal Event D',
+      startTime: DateTime(DateTime.now().year, DateTime.now().month,
+          DateTime.now().day, 14, 30),
+      endTime: DateTime(DateTime.now().year, DateTime.now().month,
+          DateTime.now().day, 17, 0),
+      color: Colors.indigo),
+];
 ```
 
 ## Examples
 
-### Basic wirget with customized colors
+### Basic widget with customized colors
 
 Some colors were cutomized in this example:
 
@@ -192,6 +201,31 @@ Calendar(
 ```
 
 ![Screenshot](https://github.com/rwbr/flutter_neat_and_clean_calendar/blob/main/img/usage1.png)
+
+### Display an icon button to open a date picker to jump to a certain date
+
+```dart
+Calendar(
+  isJumpDateButtonEnabled: true
+)
+```
+
+This shows a button in the upper tool bar. 
+
+![Jump-To-Date button](img/jump-date-button.png)
+
+Pressing this button opens a date picker, that allows the user to jump to a certain date.
+
+### Handling all-day events
+
+The class `NeatAndCleanCalendarEvent` has a boolean property called ìsAllDay`. This property allows you to 
+define events, that last all day with now start or end time. These events get sorted at the top of the 
+events list.
+
+![All day event at the top of the list](img/all-day-event.png)
+
+With the property `allDayEventText` you define the string displayed for that type of events. If you
+don't set this option the calendar will display `All day` for these events.
 
 ### Expandable calendar view
 

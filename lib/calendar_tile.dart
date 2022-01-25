@@ -137,12 +137,12 @@ class NeatCleanCalendarTile extends StatelessWidget {
                                 // color property of the NeatCleanCalendarEvent. If both aren't set, then
                                 // the accent color of the theme get used.
                                 color: (() {
-                                  if (event.isDone)
-                                    return eventDoneColor ??
-                                        Theme.of(context).primaryColor;
                                   if (isSelected) return Colors.white;
+                                  // If eventColor property was not set, the color defined for the event
+                                  // gets used.
                                   return eventColor ??
-                                      Theme.of(context).accentColor;
+                                      event.color ??
+                                      Theme.of(context).colorScheme.secondary;
                                 }())),
                           );
                         }).toList())
