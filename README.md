@@ -13,6 +13,16 @@ The package is highly customizable.
 ![Screenshot](https://github.com/rwbr/flutter_neat_and_clean_calendar/blob/main/img/screen2.png)
 ![Screenshot](https://github.com/rwbr/flutter_neat_and_clean_calendar/blob/main/img/screen3.png)
 
+The calendar view shows a list of events for the selected date. This list view supports **three different types of events:**
+
+* Single day event (starts and ends at certain time on a single day)
+* All-day events (Span over a full day with no specific start and end time, property `isAllDay`)
+* Multi-day events (Start at a specific time on one day and end at a specific time on another day, property `isMultiDay`)
+
+![Event types](https://github.com/rwbr/flutter_neat_and_clean_calendar/blob/main/img/different-events.png)
+
+The property `isAllDay` has a higher priority than 'isMultiDay'. This means, that when you set `isAllDay` to `true` for an event, it will show up in the events list als all-day event without start and end times, no matter if `isMultiDay` was also set to `true`.
+
 ## Usage
 
 Embed the 'Calendar' widget in a column. Below the calendar (as the second widget in the Column) place a 'ListView.builder' widget for rendereing the list of events.
@@ -21,7 +31,7 @@ Embed the 'Calendar' widget in a column. Below the calendar (as the second widge
 
 ```
 dependencies:
-  flutter_neat_and_clean_calendar: ^0.2.0+8
+  flutter_neat_and_clean_calendar: ^0.3.0+12
 ```
 
 ### Install
@@ -184,6 +194,8 @@ final List<NeatCleanCalendarEvent> _eventList = [
       color: Colors.indigo),
 ];
 ```
+
+**CAUTION**: from v0.3.0 on the preferred way to set the calendar events is to provide a list (property `eventsList`). You can still use a map (property `events`) to do this, but this functionality is **DEPRECATED** and will get **removed from v0.4.0 on**.
 
 ## Examples
 
