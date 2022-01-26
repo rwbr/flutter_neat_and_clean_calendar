@@ -168,7 +168,16 @@ class _CalendarState extends State<Calendar> {
     isExpanded = widget.isExpanded;
 
     eventsMap = widget.events ?? {};
-    if (widget.eventsList != null && widget.eventsList!.isNotEmpty) {
+    // If the user provided a list of events, then convert it to a map, but only if there
+    // was no map of events provided. To provide the events in form of a map is the way,
+    // the library worked before the v0.3.x release. In v0.3.x the possibility to provide
+    // the eventsList property was introduced. This simplifies the handaling. In v0.4.0 the
+    // property events (the map) will get removed.
+    // Here the library checks, if a map was provided. You can not provide a list and a map
+    // at the same time. In that case the map will be used, while the list is omitted.
+    if (widget.eventsList != null &&
+        widget.eventsList!.isNotEmpty &&
+        eventsMap!.isEmpty) {
       widget.eventsList!.forEach((event) {
         final int range = event.endTime.difference(event.startTime).inDays;
         // Event starts and ends on the same day.
