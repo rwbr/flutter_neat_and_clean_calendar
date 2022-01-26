@@ -1,3 +1,15 @@
+## [0.3.0+12] - 2021-08-17
+CAUTION: from v0.3.0 on the preferred way to set the calendar events is to provide a list. You can still
+use a map to do this, but this functionality is DEPRECATED and will get removed from v0.4.0 on.
+* New property multiDayEndText can be used to mark the end of a multi-day event
+* New parameter eventsList simplifies the process of defining the events to be shown. The list is just an unordered collection of NeatAndCleanCalendarEvents. On init the library analyzes the list and builds the eventsMap from its content. While doing this, the library now correctly shows all-day and multi-day events.
+* For multi-day events it is necessary for the UI to know, if the event is the beginning, meddle part or end of the event.
+* New API option: datePickerType select between hidden, year picker and date picker
+* Now the calendar handles all-day-events differently.
+* all-day-events have the property isAllDay set to true
+* then these events get displayed at the top of the events list instead of start and end time a string will be shown
+* this string can be defines with the allDayEventText property
+* if this property is left empty, the calendar will show "All day"
 ## [0.2.3+11] - 2021-08-17
 * Extended example to illustrate how to add events to the list and update the view
 * This is a reaction on issue #13
