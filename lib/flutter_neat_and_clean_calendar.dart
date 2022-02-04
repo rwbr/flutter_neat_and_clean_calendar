@@ -862,6 +862,9 @@ class _CalendarState extends State<Calendar> {
   void handleSelectedDateAndUserCallback(DateTime day) {
     var firstDayOfCurrentWeek = _firstDayOfWeek(day);
     var lastDayOfCurrentWeek = _lastDayOfWeek(day);
+    // Flag to decide if we should trigger "onDateSelected" callback
+    // This avoids doule executing the callback when selecting a date in the next month
+    bool isCallback = true;
     // Check if the selected day falls into the next month. If this is the case,
     // then we need to additionaly check, if a day in next year was selected.
     if (_selectedDate.month > day.month) {
@@ -871,6 +874,9 @@ class _CalendarState extends State<Calendar> {
       } else {
         previousMonth();
       }
+      // Callback already fired in nextMonth() or previoisMonth(). Dont
+      // execute it again.
+      isCallback = false;
     }
     // Check if the selected day falls into the last month. If this is the case,
     // then we need to additionaly check, if a day in last year was selected.
@@ -881,6 +887,9 @@ class _CalendarState extends State<Calendar> {
       } else {
         nextMonth();
       }
+      // Callback already fired in nextMonth() or previoisMonth(). Dont
+      // execute it again.
+      isCallback = false;
     }
     setState(() {
       _selectedDate = day;
@@ -890,7 +899,10 @@ class _CalendarState extends State<Calendar> {
       selectedMonthsDays = _daysInMonth(day);
       _selectedEvents = eventsMap?[_selectedDate] ?? [];
     });
-    _launchDateSelectionCallback(day);
+    // Check, if the callback was already executed before.
+    if (isCallback) {
+      _launchDateSelectionCallback(_selectedDate);
+    }
   }
 
   void _launchDateSelectionCallback(DateTime day) {
