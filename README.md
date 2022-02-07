@@ -131,6 +131,7 @@ For more details see the **example**.
 /// [bottomBarArrowColor] can set the [Color] of the arrow to expand/compress the calendar in the bottom bar.
 /// [bottomBarColor] sets the [Color] of the bottom bar
 /// [expandableDateFormat] defines the formatting of the date in the bottom bar
+/// [displayMonthTextStyle] is a [TextStyle] for styling the month name in the top bar.
 final ValueChanged<DateTime>? onDateSelected;
 final ValueChanged<DateTime>? onMonthChanged;
 final ValueChanged<bool>? onExpandStateChanged;
@@ -164,6 +165,7 @@ final TextStyle? bottomBarTextStyle;
 final Color? bottomBarArrowColor;
 final Color? bottomBarColor;
 final String? expandableDateFormat;
+final TextStyle? displayMonthTextStyle;
 ```
 
 ## Sample event data

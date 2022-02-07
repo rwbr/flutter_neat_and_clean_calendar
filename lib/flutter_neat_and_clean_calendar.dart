@@ -75,6 +75,7 @@ class Range {
 /// [bottomBarArrowColor] can set the [Color] of the arrow to expand/compress the calendar in the bottom bar.
 /// [bottomBarColor] sets the [Color] of the bottom bar
 /// [expandableDateFormat] defines the formatting of the date in the bottom bar
+/// [displayMonthTextStyle] is a [TextStyle] for styling the month name in the top bar.
 
 // The library internnaly will use a Map<DateTime, List<NeatCleanCalendarEvent>> for the events.
 
