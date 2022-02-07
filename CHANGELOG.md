@@ -1,4 +1,6 @@
-## [0.3.0+12] - 2021-08-17
+## [0.3.1+14] - 2022-02-07
+* Introduction of a new Parameter displayMonthTextStyle to manipulate the text style of the month name in the top bar
+## [0.3.0+13] - 2022-01-16
 CAUTION: from v0.3.0 on the preferred way to set the calendar events is to provide a list. You can still
 use a map to do this, but this functionality is DEPRECATED and will get removed from v0.4.0 on.
 * New property multiDayEndText can be used to mark the end of a multi-day event
