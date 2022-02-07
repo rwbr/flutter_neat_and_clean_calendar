@@ -112,6 +112,7 @@ class Calendar extends StatefulWidget {
   final Color? bottomBarArrowColor;
   final Color? bottomBarColor;
   final String? expandableDateFormat;
+  final TextStyle? displayMonthTextStyle;
 
   Calendar({
     this.onMonthChanged,
@@ -145,6 +146,7 @@ class Calendar extends StatefulWidget {
     this.bottomBarArrowColor,
     this.bottomBarColor,
     this.expandableDateFormat = 'EEEE MMMM dd, yyyy',
+    this.displayMonthTextStyle,
   });
 
   @override
@@ -369,9 +371,10 @@ class _CalendarState extends State<Calendar> {
               todayIcon ?? Container(),
               Text(
                 displayMonth,
-                style: TextStyle(
-                  fontSize: 20.0,
-                ),
+                style: widget.displayMonthTextStyle ??
+                    TextStyle(
+                      fontSize: 20.0,
+                    ),
               ),
             ],
           ),
