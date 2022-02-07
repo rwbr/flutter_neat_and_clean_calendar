@@ -370,7 +370,7 @@ class _CalendarState extends State<Calendar> {
             children: <Widget>[
               todayIcon ?? Container(),
               Text(
-                displayMonth,
+                displayMonth.toUpperCase(),
                 style: widget.displayMonthTextStyle ??
                     TextStyle(
                       fontSize: 20.0,
