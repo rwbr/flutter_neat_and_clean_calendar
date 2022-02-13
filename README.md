@@ -132,6 +132,8 @@ For more details see the **example**.
 /// [bottomBarColor] sets the [Color] of the bottom bar
 /// [expandableDateFormat] defines the formatting of the date in the bottom bar
 /// [displayMonthTextStyle] is a [TextStyle] for styling the month name in the top bar.
+/// [datePickerConfig] is a [DatePickerConfig] object. It contains the configuration of the date picker, if enabled.
+
 final ValueChanged<DateTime>? onDateSelected;
 final ValueChanged<DateTime>? onMonthChanged;
 final ValueChanged<bool>? onExpandStateChanged;
@@ -166,6 +168,7 @@ final Color? bottomBarArrowColor;
 final Color? bottomBarColor;
 final String? expandableDateFormat;
 final TextStyle? displayMonthTextStyle;
+final DatePickerConfig? datePickerConfig;
 ```
 
 ## Sample event data
