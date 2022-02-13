@@ -1,6 +1,7 @@
 library flutter_neat_and_clean_calendar;
 
 import 'package:flutter/material.dart';
+import 'package:flutter_neat_and_clean_calendar/date_picker_config.dart';
 import './date_utils.dart';
 import './simple_gesture_detector.dart';
 import './calendar_tile.dart';
@@ -114,6 +115,9 @@ class Calendar extends StatefulWidget {
   final String? expandableDateFormat;
   final TextStyle? displayMonthTextStyle;
 
+  /// Configures the date picker if enabled
+  final DatePickerConfig? datePickerConfig;
+
   Calendar({
     this.onMonthChanged,
     this.onDateSelected,
@@ -147,6 +151,7 @@ class Calendar extends StatefulWidget {
     this.bottomBarColor,
     this.expandableDateFormat = 'EEEE MMMM dd, yyyy',
     this.displayMonthTextStyle,
+    this.datePickerConfig,
   });
 
   @override
@@ -307,9 +312,12 @@ class _CalendarState extends State<Calendar> {
                     width: 300,
                     height: 300,
                     child: YearPicker(
-                      firstDate: DateTime(DateTime.now().year - 100, 1),
-                      lastDate: DateTime(DateTime.now().year + 100, 1),
-                      initialDate: DateTime.now(),
+                      firstDate: widget.datePickerConfig?.firstDate ??
+                          DateTime(DateTime.now().year - 100, 1),
+                      lastDate: widget.datePickerConfig?.lastDate ??
+                          DateTime(DateTime.now().year + 100, 1),
+                      initialDate: widget.datePickerConfig?.initialDate ??
+                          DateTime.now(),
                       // save the selected date to _selectedDate DateTime variable.
                       // It's used to set the previous selected date when
                       // re-showing the dialog.
