@@ -16,10 +16,11 @@ import "package:intl/intl.dart";
 /// [isSelected] is a [bool], that contains the information, if the current tile ist the selected day
 /// [inMonth] is a [bool], that contains the information, if the current day belongs to the selected month
 /// [events] contains a [List<CleanCalendarEvents>] of the events to display
-/// [dayOfWeekStyle] this property alloes to set a text style for the week days in the header row
+/// [dayOfWeekStyle] this property allows to set a text style for the week days in the header row
 /// [dateStyles] this property alloes to set a text style for the date tiles
 /// [child] can contain a [Widget] that can be displayed. If tihs property is [null], the
 ///     method [renderDateOrDayOfWeek] gets called, so the [child] property has priority.
+/// [defaultDayColor] is the color applied to days in the current month, that are not selected.
 /// [selectedColor] is a [Color] used for displaying the selected tile
 /// [todayColor] is a [Color] object used to display the tile for today
 /// [eventColor] can be used to color the dots in the calendar tile representing an event. The color, that

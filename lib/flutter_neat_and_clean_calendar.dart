@@ -52,8 +52,9 @@ class Range {
 /// [hideTodayIcon] is a bool. When set to [true] the dispaly of the Today-Icon (button to navigate to today) in the
 ///     top bar well get suppressed. Default is [false].
 /// [hideBottomBar] at the moment has no function. Default is [false].
-/// [events] are of type [Map<DateTime, List<NeatCleanCalendarEvent>>]. This data structure containes the events to display
-/// [selctedColor] this is the color, applied to the circle on the selcted day
+/// [events] are of type [Map<DateTime, List<NeatCleanCalendarEvent>>]. This data structure contains the events to display
+/// [defaultDayColor] is the color applied to days in the current month, that are not selected.
+/// [selectedColor] this is the color, applied to the circle on the selected day
 /// [todayColor] this is the color of the date of today
 /// [todayButtonText] is a [String]. With this property you can set the caption of the today icon (button to navigate to today).
 ///     If left empty, the calendar will use the string "Today".
