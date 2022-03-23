@@ -36,6 +36,7 @@ class NeatCleanCalendarTile extends StatelessWidget {
   final TextStyle? dayOfWeekStyle;
   final TextStyle? dateStyles;
   final Widget? child;
+  final Color? defaultDayColor;
   final Color? selectedColor;
   final Color? todayColor;
   final Color? eventColor;
@@ -52,6 +53,7 @@ class NeatCleanCalendarTile extends StatelessWidget {
     this.isSelected: false,
     this.inMonth: true,
     this.events,
+    this.defaultDayColor,
     this.selectedColor,
     this.todayColor,
     this.eventColor,
@@ -111,7 +113,7 @@ class NeatCleanCalendarTile extends StatelessWidget {
                           : Utils.isSameDay(this.date!, DateTime.now())
                               ? todayColor
                               : inMonth
-                                  ? Colors.black
+                                  ? defaultDayColor
                                   : Colors
                                       .grey), // Grey color for previous or next months dates
                 ),

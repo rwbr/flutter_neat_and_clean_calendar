@@ -97,6 +97,7 @@ class Calendar extends StatefulWidget {
       'Use `eventsList` instead. Will be removed in NeatAndCleanCalendar 0.4.0')
   final Map<DateTime, List<NeatCleanCalendarEvent>>? events;
   final List<NeatCleanCalendarEvent>? eventsList;
+  final Color? defaultDayColor;
   final Color? selectedColor;
   final Color? todayColor;
   final String todayButtonText;
@@ -135,6 +136,7 @@ class Calendar extends StatefulWidget {
     this.datePickerType: DatePickerType.hidden,
     this.hideTodayIcon: false,
     this.hideArrows: false,
+    this.defaultDayColor,
     this.selectedColor,
     this.todayColor,
     this.todayButtonText: 'Today',
@@ -429,6 +431,7 @@ class _CalendarState extends State<Calendar> {
       (day) {
         dayWidgets.add(
           NeatCleanCalendarTile(
+            defaultDayColor: widget.defaultDayColor,
             selectedColor: widget.selectedColor,
             todayColor: widget.todayColor,
             eventColor: widget.eventColor,
@@ -469,6 +472,7 @@ class _CalendarState extends State<Calendar> {
           // Use the dayBuilder widget passed as parameter to render the date tile
           dayWidgets.add(
             NeatCleanCalendarTile(
+              defaultDayColor: widget.defaultDayColor,
               selectedColor: widget.selectedColor,
               todayColor: widget.todayColor,
               eventColor: widget.eventColor,
@@ -482,6 +486,7 @@ class _CalendarState extends State<Calendar> {
         } else {
           dayWidgets.add(
             NeatCleanCalendarTile(
+                defaultDayColor: widget.defaultDayColor,
                 selectedColor: widget.selectedColor,
                 todayColor: widget.todayColor,
                 eventColor: widget.eventColor,
