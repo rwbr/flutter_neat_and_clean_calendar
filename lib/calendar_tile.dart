@@ -114,7 +114,7 @@ class NeatCleanCalendarTile extends StatelessWidget {
                           : Utils.isSameDay(this.date!, DateTime.now())
                               ? todayColor
                               : inMonth
-                                  ? defaultDayColor
+                                  ? defaultDayColor != null ? defaultDayColor : Colors.black
                                   : Colors
                                       .grey), // Grey color for previous or next months dates
                 ),
