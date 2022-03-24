@@ -960,8 +960,8 @@ class _CalendarState extends State<Calendar> {
       daysAfter = 7;
     }
 
-    // Adding an extra day necessary. Otherwise the week with days in next month
-    // would always end on Saturdays.
+    // Adding an extra day necessary (if week starts on Monday).
+    // Otherwise the week with days in next month would always end on Saturdays.
     var lastToDisplay = last.add(
         new Duration(days: daysAfter + (widget.startOnMonday ? 1 : 0)));
     return Utils.daysInRange(firstToDisplay, lastToDisplay).toList();
