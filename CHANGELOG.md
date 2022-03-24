@@ -1,3 +1,7 @@
+## [0.3.3+16] - 2022-03-23
+* Issue #32 closed
+* Option startOnMonday wasn't working correctly for the month view
+
 ## [0.3.2+15] - 2022-02-13
 * New additionaly parameter to set the initial date of the DatePicker, if enabled
 
