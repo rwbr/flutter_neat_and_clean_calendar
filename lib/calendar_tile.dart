@@ -21,7 +21,7 @@ import "package:intl/intl.dart";
 /// [child] can contain a [Widget] that can be displayed. If tihs property is [null], the
 ///     method [renderDateOrDayOfWeek] gets called, so the [child] property has priority.
 /// [defaultDayColor] is the color applied to days in the current month, that are not selected.
-/// [defaultNonMonthDayColor] is the color applied to days outside the current month.
+/// [defaultOutOfMonthDayColor] is the color applied to days outside the current month.
 /// [selectedColor] is a [Color] used for displaying the selected tile
 /// [todayColor] is a [Color] object used to display the tile for today
 /// [eventColor] can be used to color the dots in the calendar tile representing an event. The color, that
@@ -39,7 +39,7 @@ class NeatCleanCalendarTile extends StatelessWidget {
   final TextStyle? dateStyles;
   final Widget? child;
   final Color? defaultDayColor;
-  final Color? defaultNonMonthDayColor;
+  final Color? defaultOutOfMonthDayColor;
   final Color? selectedColor;
   final Color? todayColor;
   final Color? eventColor;
@@ -57,7 +57,7 @@ class NeatCleanCalendarTile extends StatelessWidget {
     this.inMonth: true,
     this.events,
     this.defaultDayColor,
-    this.defaultNonMonthDayColor,
+    this.defaultOutOfMonthDayColor,
     this.selectedColor,
     this.todayColor,
     this.eventColor,
@@ -117,10 +117,13 @@ class NeatCleanCalendarTile extends StatelessWidget {
                           : Utils.isSameDay(this.date!, DateTime.now())
                               ? todayColor
                               : inMonth
-                                  ? defaultDayColor != null ? defaultDayColor : Colors.black
-                                  : (defaultNonMonthDayColor != null ?
-                                     defaultNonMonthDayColor : Colors.grey)),
-                                    // Grey color for previous or next months dates
+                                  ? defaultDayColor != null
+                                      ? defaultDayColor
+                                      : Colors.black
+                                  : (defaultOutOfMonthDayColor != null
+                                      ? defaultOutOfMonthDayColor
+                                      : Colors.grey)),
+                  // Grey color for previous or next months dates
                 ),
                 // Dots for the events
                 events != null && events!.length > 0
