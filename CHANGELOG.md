@@ -1,3 +1,7 @@
+## [0.3.4+17] - 2022-03-23
+* Issue #34 closed
+* Properties for default day text colors
+
 ## [0.3.3+16] - 2022-03-23
 * Issue #32 closed
 * Option startOnMonday wasn't working correctly for the month view

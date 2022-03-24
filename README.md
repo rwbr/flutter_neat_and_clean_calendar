@@ -108,6 +108,8 @@ For more details see the **example**.
 ///     top bar well get suppressed. Default is [false].
 /// [hideBottomBar] at the moment has no function. Default is [false].
 /// [events] are of type [Map<DateTime, List<NeatCleanCalendarEvent>>]. This data structure containes the events to display
+/// [defaultDayColor] is the color applied to days in the current month, that are not selected.
+/// [defaultOutOfMonthDayColor] is the color applied to days outside the current month.
 /// [selctedColor] this is the color, applied to the circle on the selcted day
 /// [todayColor] this is the color of the date of today
 /// [todayButtonText] is a [String]. With this property you can set the caption of the today icon (button to navigate to today).
@@ -149,6 +151,8 @@ final bool hideTodayIcon;
     'Use `eventsList` instead. Will be removed in NeatAndCleanCalendar 0.4.0')
 final Map<DateTime, List<NeatCleanCalendarEvent>>? events;
 final List<NeatCleanCalendarEvent>? eventsList;
+final Color? defaultDayColor;
+final Color? defaultOutOfMonthDayColor;
 final Color? selectedColor;
 final Color? todayColor;
 final String todayButtonText;
