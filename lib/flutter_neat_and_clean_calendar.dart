@@ -52,8 +52,10 @@ class Range {
 /// [hideTodayIcon] is a bool. When set to [true] the dispaly of the Today-Icon (button to navigate to today) in the
 ///     top bar well get suppressed. Default is [false].
 /// [hideBottomBar] at the moment has no function. Default is [false].
-/// [events] are of type [Map<DateTime, List<NeatCleanCalendarEvent>>]. This data structure containes the events to display
-/// [selctedColor] this is the color, applied to the circle on the selcted day
+/// [events] are of type [Map<DateTime, List<NeatCleanCalendarEvent>>]. This data structure contains the events to display
+/// [defaultDayColor] is the color applied to days in the current month, that are not selected.
+/// [defaultOutOfMonthDayColor] is the color applied to days outside the current month.
+/// [selectedColor] this is the color, applied to the circle on the selected day
 /// [todayColor] this is the color of the date of today
 /// [todayButtonText] is a [String]. With this property you can set the caption of the today icon (button to navigate to today).
 ///     If left empty, the calendar will use the string "Today".
@@ -97,6 +99,8 @@ class Calendar extends StatefulWidget {
       'Use `eventsList` instead. Will be removed in NeatAndCleanCalendar 0.4.0')
   final Map<DateTime, List<NeatCleanCalendarEvent>>? events;
   final List<NeatCleanCalendarEvent>? eventsList;
+  final Color? defaultDayColor;
+  final Color? defaultOutOfMonthDayColor;
   final Color? selectedColor;
   final Color? todayColor;
   final String todayButtonText;
@@ -135,6 +139,8 @@ class Calendar extends StatefulWidget {
     this.datePickerType: DatePickerType.hidden,
     this.hideTodayIcon: false,
     this.hideArrows: false,
+    this.defaultDayColor,
+    this.defaultOutOfMonthDayColor,
     this.selectedColor,
     this.todayColor,
     this.todayButtonText: 'Today',
@@ -429,6 +435,8 @@ class _CalendarState extends State<Calendar> {
       (day) {
         dayWidgets.add(
           NeatCleanCalendarTile(
+            defaultDayColor: widget.defaultDayColor,
+            defaultOutOfMonthDayColor: widget.defaultOutOfMonthDayColor,
             selectedColor: widget.selectedColor,
             todayColor: widget.todayColor,
             eventColor: widget.eventColor,
@@ -469,6 +477,8 @@ class _CalendarState extends State<Calendar> {
           // Use the dayBuilder widget passed as parameter to render the date tile
           dayWidgets.add(
             NeatCleanCalendarTile(
+              defaultDayColor: widget.defaultDayColor,
+              defaultOutOfMonthDayColor: widget.defaultOutOfMonthDayColor,
               selectedColor: widget.selectedColor,
               todayColor: widget.todayColor,
               eventColor: widget.eventColor,
@@ -482,6 +492,8 @@ class _CalendarState extends State<Calendar> {
         } else {
           dayWidgets.add(
             NeatCleanCalendarTile(
+                defaultDayColor: widget.defaultDayColor,
+                defaultOutOfMonthDayColor: widget.defaultOutOfMonthDayColor,
                 selectedColor: widget.selectedColor,
                 todayColor: widget.todayColor,
                 eventColor: widget.eventColor,
