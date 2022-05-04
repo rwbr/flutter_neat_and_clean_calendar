@@ -55,6 +55,12 @@ class _CalendarScreenState extends State<CalendarScreen> {
         endTime: DateTime(DateTime.now().year, DateTime.now().month,
             DateTime.now().day, 17, 0),
         color: Colors.indigo),
+    NeatCleanCalendarEvent('Normal Event E',
+        startTime: DateTime(DateTime.now().year, DateTime.now().month,
+            DateTime.now().day, 7, 45),
+        endTime: DateTime(DateTime.now().year, DateTime.now().month,
+            DateTime.now().day, 9, 0),
+        color: Colors.indigo),
   ];
 
   @override
@@ -76,6 +82,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
           isExpandable: true,
           eventDoneColor: Colors.green,
           selectedColor: Colors.pink,
+          selectedTodayColor: Colors.green,
           todayColor: Colors.blue,
           eventColor: null,
           locale: 'de_DE',

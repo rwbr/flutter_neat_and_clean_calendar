@@ -56,6 +56,7 @@ class Range {
 /// [defaultDayColor] is the color applied to days in the current month, that are not selected.
 /// [defaultOutOfMonthDayColor] is the color applied to days outside the current month.
 /// [selectedColor] this is the color, applied to the circle on the selected day
+/// [selectedTodayColor] is the color, applied to the circle on the selected day, if it is today
 /// [todayColor] this is the color of the date of today
 /// [todayButtonText] is a [String]. With this property you can set the caption of the today icon (button to navigate to today).
 ///     If left empty, the calendar will use the string "Today".
@@ -102,6 +103,7 @@ class Calendar extends StatefulWidget {
   final Color? defaultDayColor;
   final Color? defaultOutOfMonthDayColor;
   final Color? selectedColor;
+  final Color? selectedTodayColor;
   final Color? todayColor;
   final String todayButtonText;
   final String allDayEventText;
@@ -142,6 +144,7 @@ class Calendar extends StatefulWidget {
     this.defaultDayColor,
     this.defaultOutOfMonthDayColor,
     this.selectedColor,
+    this.selectedTodayColor,
     this.todayColor,
     this.todayButtonText: 'Today',
     this.allDayEventText: 'All Day',
@@ -438,6 +441,7 @@ class _CalendarState extends State<Calendar> {
             defaultDayColor: widget.defaultDayColor,
             defaultOutOfMonthDayColor: widget.defaultOutOfMonthDayColor,
             selectedColor: widget.selectedColor,
+            selectedTodayColor: widget.selectedTodayColor,
             todayColor: widget.todayColor,
             eventColor: widget.eventColor,
             eventDoneColor: widget.eventDoneColor,
@@ -480,6 +484,7 @@ class _CalendarState extends State<Calendar> {
               defaultDayColor: widget.defaultDayColor,
               defaultOutOfMonthDayColor: widget.defaultOutOfMonthDayColor,
               selectedColor: widget.selectedColor,
+              selectedTodayColor: widget.selectedTodayColor,
               todayColor: widget.todayColor,
               eventColor: widget.eventColor,
               eventDoneColor: widget.eventDoneColor,
@@ -495,6 +500,7 @@ class _CalendarState extends State<Calendar> {
                 defaultDayColor: widget.defaultDayColor,
                 defaultOutOfMonthDayColor: widget.defaultOutOfMonthDayColor,
                 selectedColor: widget.selectedColor,
+                selectedTodayColor: widget.selectedTodayColor,
                 todayColor: widget.todayColor,
                 eventColor: widget.eventColor,
                 eventDoneColor: widget.eventDoneColor,
@@ -974,8 +980,8 @@ class _CalendarState extends State<Calendar> {
 
     // Adding an extra day necessary (if week starts on Monday).
     // Otherwise the week with days in next month would always end on Saturdays.
-    var lastToDisplay = last.add(
-        new Duration(days: daysAfter + (widget.startOnMonday ? 1 : 0)));
+    var lastToDisplay = last
+        .add(new Duration(days: daysAfter + (widget.startOnMonday ? 1 : 0)));
     return Utils.daysInRange(firstToDisplay, lastToDisplay).toList();
   }
 }

@@ -41,6 +41,7 @@ class NeatCleanCalendarTile extends StatelessWidget {
   final Color? defaultDayColor;
   final Color? defaultOutOfMonthDayColor;
   final Color? selectedColor;
+  final Color? selectedTodayColor;
   final Color? todayColor;
   final Color? eventColor;
   final Color? eventDoneColor;
@@ -59,6 +60,7 @@ class NeatCleanCalendarTile extends StatelessWidget {
     this.defaultDayColor,
     this.defaultOutOfMonthDayColor,
     this.selectedColor,
+    this.selectedTodayColor,
     this.todayColor,
     this.eventColor,
     this.eventDoneColor,
@@ -97,7 +99,9 @@ class NeatCleanCalendarTile extends StatelessWidget {
                     shape: BoxShape.circle,
                     color: selectedColor != null
                         ? Utils.isSameDay(this.date!, DateTime.now())
-                            ? Colors.red
+                            ? selectedTodayColor != null
+                                ? selectedTodayColor
+                                : Colors.red
                             : selectedColor
                         : Theme.of(context).primaryColor,
                   )

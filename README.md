@@ -59,6 +59,7 @@ Widget build(BuildContext context) {
         isExpandable: true,
         eventDoneColor: Colors.green,
         selectedColor: Colors.pink,
+        selectedTodayColor: Colors.red,
         todayColor: Colors.blue,
         eventColor: null,
         locale: 'de_DE',
@@ -154,6 +155,7 @@ final List<NeatCleanCalendarEvent>? eventsList;
 final Color? defaultDayColor;
 final Color? defaultOutOfMonthDayColor;
 final Color? selectedColor;
+final Color? selectedTodayColor;
 final Color? todayColor;
 final String todayButtonText;
 final String allDayEventText;
