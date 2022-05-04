@@ -1,3 +1,6 @@
+## [0.3.5+18] - 2022-05-04
+* Option to change color of selected day when same date as today
+
 ## [0.3.4+17] - 2022-03-23
 * Issue #34 closed
 * Properties for default day text colors
