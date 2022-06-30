@@ -1,3 +1,6 @@
+## [0.3.7+21] - 2022-06-30
+* Example updated for macOS build
+
 ## [0.3.7+20] - 2022-06-30
 * Support for macOS widgets
 
