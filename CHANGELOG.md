@@ -1,3 +1,6 @@
+## [0.3.6+19] - 2022-06-30
+* Support for macOS widgets
+
 ## [0.3.5+18] - 2022-05-04
 * Option to change color of selected day when same date as today
 

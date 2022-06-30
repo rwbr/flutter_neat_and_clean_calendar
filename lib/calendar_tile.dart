@@ -74,7 +74,7 @@ class NeatCleanCalendarTile extends StatelessWidget {
     // We decide, if this calendar tile should display a day name in the header row. If this is the
     // case, we return a widget, that contains a text widget with style property [dayOfWeekStyle]
     if (isDayOfWeek) {
-      return new InkWell(
+      return new GestureDetector(
         child: new Container(
           alignment: Alignment.center,
           child: Text(
@@ -87,7 +87,7 @@ class NeatCleanCalendarTile extends StatelessWidget {
       // Here the date tiles get rendered. Initially eventCount is set to 0.
       // Every date tile can show up to three dots representing an event.
       int eventCount = 0;
-      return InkWell(
+      return GestureDetector(
         onTap: onDateSelected, // react on tapping
         child: Padding(
           padding: const EdgeInsets.all(1.0),
@@ -174,7 +174,7 @@ class NeatCleanCalendarTile extends StatelessWidget {
     // If a child widget was passed as parameter, this widget gets used to
     // be rendered to display weekday or date
     if (child != null) {
-      return InkWell(
+      return GestureDetector(
         child: child,
         onTap: onDateSelected,
       );

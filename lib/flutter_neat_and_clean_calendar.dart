@@ -2,6 +2,7 @@ library flutter_neat_and_clean_calendar;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_neat_and_clean_calendar/date_picker_config.dart';
+import 'package:flutter_neat_and_clean_calendar/platform_widgets.dart';
 import './date_utils.dart';
 import './simple_gesture_detector.dart';
 import './calendar_tile.dart';
@@ -284,11 +285,11 @@ class _CalendarState extends State<Calendar> {
     var jumpDateIcon;
 
     if (!widget.hideArrows) {
-      leftArrow = IconButton(
+      leftArrow = PlatformIconButton(
         onPressed: isExpanded ? previousMonth : previousWeek,
         icon: Icon(Icons.chevron_left),
       );
-      rightArrow = IconButton(
+      rightArrow = PlatformIconButton(
         onPressed: isExpanded ? nextMonth : nextWeek,
         icon: Icon(Icons.chevron_right),
       );
@@ -298,7 +299,7 @@ class _CalendarState extends State<Calendar> {
     }
 
     if (!widget.hideTodayIcon) {
-      todayIcon = InkWell(
+      todayIcon = GestureDetector(
         child: Text(widget.todayButtonText),
         onTap: resetToToday,
       );
@@ -308,7 +309,7 @@ class _CalendarState extends State<Calendar> {
 
     if (widget.datePickerType != null &&
         widget.datePickerType != DatePickerType.hidden) {
-      jumpDateIcon = InkWell(
+      jumpDateIcon = GestureDetector(
         child: Icon(Icons.date_range_outlined),
         onTap: () {
           if (widget.datePickerType == DatePickerType.year) {
@@ -556,7 +557,7 @@ class _CalendarState extends State<Calendar> {
                     .format(_selectedDate),
                 style: widget.bottomBarTextStyle ?? TextStyle(fontSize: 13),
               ),
-              IconButton(
+              PlatformIconButton(
                 onPressed: toggleExpanded,
                 iconSize: 25.0,
                 padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
@@ -597,7 +598,7 @@ class _CalendarState extends State<Calendar> {
                       DateFormat('HH:mm').format(event.endTime).toString();
                   return Container(
                     height: 60.0,
-                    child: InkWell(
+                    child: GestureDetector(
                       onTap: () {
                         if (widget.onEventSelected != null) {
                           widget.onEventSelected!(event);
