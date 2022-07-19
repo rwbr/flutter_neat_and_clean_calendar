@@ -624,6 +624,7 @@ class _CalendarState extends State<Calendar> {
                               ),
                             ),
                           ),
+                          SizedBox(height: 5.0,),
                           Expanded(
                             flex: 75,
                             child: Padding(
