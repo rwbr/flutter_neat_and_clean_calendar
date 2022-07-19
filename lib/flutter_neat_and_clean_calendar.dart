@@ -636,7 +636,7 @@ class _CalendarState extends State<Calendar> {
                                       style: Theme.of(context)
                                           .textTheme
                                           .subtitle2),
-                                  Text(event.description)
+                                  Text(event.description, overflow: TextOverflow.ellipsis,)
                                 ],
                               ),
                             ),
