@@ -1,3 +1,6 @@
+## [0.3.8+22] - 2022-08-14
+* Adjusting for bigger screens
+
 ## [0.3.7+21] - 2022-06-30
 * Example updated for macOS build
 
