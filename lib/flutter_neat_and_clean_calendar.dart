@@ -605,7 +605,7 @@ class _CalendarState extends State<Calendar> {
                   final String end =
                       DateFormat('HH:mm').format(event.endTime).toString();
                   return Container(
-                    height: 60.0,
+                    height: MediaQuery.of(context).size.height * 0.075,
                     child: GestureDetector(
                       onTap: () {
                         if (widget.onEventSelected != null) {
@@ -624,6 +624,7 @@ class _CalendarState extends State<Calendar> {
                               ),
                             ),
                           ),
+                          SizedBox(height: 5.0,),
                           Expanded(
                             flex: 75,
                             child: Padding(
@@ -636,7 +637,8 @@ class _CalendarState extends State<Calendar> {
                                       style: Theme.of(context)
                                           .textTheme
                                           .subtitle2),
-                                  Text(event.description)
+                                  SizedBox(height: 10.0,),        
+                                  Text(event.description, overflow: TextOverflow.ellipsis,)
                                 ],
                               ),
                             ),
