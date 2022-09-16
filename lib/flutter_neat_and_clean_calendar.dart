@@ -124,6 +124,7 @@ class Calendar extends StatefulWidget {
   final String? expandableDateFormat;
   final TextStyle? displayMonthTextStyle;
   final DatePickerConfig? datePickerConfig;
+  final double? eventTileHeight;
 
   /// Configures the date picker if enabled
 
@@ -164,6 +165,7 @@ class Calendar extends StatefulWidget {
     this.expandableDateFormat = 'EEEE MMMM dd, yyyy',
     this.displayMonthTextStyle,
     this.datePickerConfig,
+    this.eventTileHeight,
   });
 
   @override
@@ -605,7 +607,8 @@ class _CalendarState extends State<Calendar> {
                   final String end =
                       DateFormat('HH:mm').format(event.endTime).toString();
                   return Container(
-                    height: MediaQuery.of(context).size.height * 0.075,
+                    height: widget.eventTileHeight ??
+                        MediaQuery.of(context).size.height * 0.075,
                     child: GestureDetector(
                       onTap: () {
                         if (widget.onEventSelected != null) {
@@ -624,7 +627,9 @@ class _CalendarState extends State<Calendar> {
                               ),
                             ),
                           ),
-                          SizedBox(height: 5.0,),
+                          SizedBox(
+                            height: 5.0,
+                          ),
                           Expanded(
                             flex: 75,
                             child: Padding(
@@ -637,8 +642,13 @@ class _CalendarState extends State<Calendar> {
                                       style: Theme.of(context)
                                           .textTheme
                                           .subtitle2),
-                                  SizedBox(height: 10.0,),        
-                                  Text(event.description, overflow: TextOverflow.ellipsis,)
+                                  SizedBox(
+                                    height: 10.0,
+                                  ),
+                                  Text(
+                                    event.description,
+                                    overflow: TextOverflow.ellipsis,
+                                  )
                                 ],
                               ),
                             ),
