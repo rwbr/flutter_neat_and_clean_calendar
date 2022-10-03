@@ -1,3 +1,6 @@
+## [0.3.9+23] - 2022-10-01
+* PR #42: extend event class & add event tile height
+
 ## [0.3.8+22] - 2022-08-14
 * Adjusting for bigger screens
 
