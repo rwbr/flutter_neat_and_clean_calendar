@@ -610,6 +610,7 @@ class _CalendarState extends State<Calendar> {
                     height: widget.eventTileHeight ??
                         MediaQuery.of(context).size.height * 0.075,
                     child: GestureDetector(
+                      behavior: HitTestBehavior.opaque,
                       onTap: () {
                         if (widget.onEventSelected != null) {
                           widget.onEventSelected!(event);
