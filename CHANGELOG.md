@@ -1,3 +1,6 @@
+## [0.3.11+25] - 2022-12-26
+* Issue #41: fixes Selecting new date calls onMonthChanged
+
 ## [0.3.10+24] - 2022-12-26
 * PR #47: fixes a bug, where onEventSelected event was only triggered, when the user tapped on the text widgets
 
