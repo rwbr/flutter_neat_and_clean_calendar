@@ -1,3 +1,6 @@
+## [0.3.10+24] - 2022-12-26
+* PR #47: fixes a bug, where onEventSelected event was only triggered, when the user tapped on the text widgets
+
 ## [0.3.9+23] - 2022-10-01
 * PR #42: extend event class & add event tile height
 
