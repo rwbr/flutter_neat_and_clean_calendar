@@ -1,3 +1,6 @@
+## [0.3.11+26] - 2022-12-27
+* Issue #37: Addition to handle issues with timezones and conversion to local time
+
 ## [0.3.11+25] - 2022-12-26
 * Issue #41: fixes Selecting new date calls onMonthChanged
 
