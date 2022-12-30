@@ -1,3 +1,6 @@
+## [0.3.12+27] - 2022-12-3ß
+* PR #50: Upgrade of the version of the intl package dependenxy
+
 ## [0.3.11+26] - 2022-12-27
 * Issue #37: Addition to handle issues with timezones and conversion to local time
 
