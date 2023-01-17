@@ -11,6 +11,7 @@ class NeatCleanCalendarEvent {
   String description;
   String location;
   DateTime startTime;
+  VoidCallback? longPressCallback;
   DateTime endTime;
   Color? color;
   bool isAllDay;
@@ -19,15 +20,18 @@ class NeatCleanCalendarEvent {
   bool isDone;
   Map<String, dynamic>? metadata;
 
-  NeatCleanCalendarEvent(this.summary,
-      {this.description = '',
-      this.location = '',
-      required this.startTime,
-      required this.endTime,
-      this.color = Colors.blue,
-      this.isAllDay = false,
-      this.isMultiDay = false,
-      this.isDone = false,
-      multiDaySegement,
-      this.metadata});
+  NeatCleanCalendarEvent(
+    this.summary, {
+    this.description = '',
+    this.location = '',
+    required this.startTime,
+    required this.endTime,
+    this.longPressCallback,
+    this.color = Colors.blue,
+    this.isAllDay = false,
+    this.isMultiDay = false,
+    this.isDone = false,
+    multiDaySegement,
+    this.metadata,
+  });
 }
