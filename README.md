@@ -96,6 +96,8 @@ For more details see the **example**.
 ///     of the range (switch to next or previous week or month)
 /// [onEventSelected] is of type [ValueChanged<NeatCleanCalendarEvent>] and it contains a callback function
 ///     executed when an event of the event list is selected
+/// [onEventLongPressed] is of type [ValueChanged<NeatCleanCalendarEvent>] and it contains a callback function
+///     executed when an event of the event list is long pressed
 /// [datePickerType] defines, if the date picker should get displayed and selects its type
 ///    Choose between datePickerType.hidden, datePickerType.year, datePickerType.date
 /// [isExpandable] is a [bool]. With this parameter you can control, if the view can expand from week view
@@ -142,6 +144,7 @@ final ValueChanged<DateTime>? onMonthChanged;
 final ValueChanged<bool>? onExpandStateChanged;
 final ValueChanged? onRangeSelected;
 final ValueChanged<NeatCleanCalendarEvent>? onEventSelected;
+final ValueChanged<NeatCleanCalendarEvent>? onEventLongPressed;
 final bool isExpandable;
 final DayBuilder? dayBuilder;
 final EventListBuilder? eventListBuilder;

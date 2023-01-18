@@ -23,9 +23,7 @@ class CalendarScreen extends StatefulWidget {
 
 class _CalendarScreenState extends State<CalendarScreen> {
   List<NeatCleanCalendarEvent> _todaysEvents = [
-    NeatCleanCalendarEvent('Event A', longPressCallback: () {
-      print('Longpress callback fired');
-    },
+    NeatCleanCalendarEvent('Event A',
         startTime: DateTime(DateTime.now().year, DateTime.now().month,
             DateTime.now().day, 10, 0),
         endTime: DateTime(DateTime.now().year, DateTime.now().month,
@@ -43,10 +41,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
             DateTime.now().day + 2, 12, 0),
         color: Colors.orange,
         isMultiDay: true),
-    NeatCleanCalendarEvent('Tapping event', description: 'test desc',
-        longPressCallback: () {
-      print('Longpress callback fired');
-    },
+    NeatCleanCalendarEvent('Event A',
+        description: 'test desc',
         startTime: DateTime(DateTime.now().year, DateTime.now().month,
             DateTime.now().day - 2, 14, 30),
         endTime: DateTime(DateTime.now().year, DateTime.now().month,
@@ -97,6 +93,12 @@ class _CalendarScreenState extends State<CalendarScreen> {
           multiDayEndText: 'Ende',
           isExpanded: true,
           expandableDateFormat: 'EEEE, dd. MMMM yyyy',
+          onEventSelected: (value) {
+            print('Event selected $value');
+          },
+          onEventLongPressed: (value) {
+            print('Event long pressed $value');
+          },
           datePickerType: DatePickerType.date,
           dayOfWeekStyle: TextStyle(
               color: Colors.black, fontWeight: FontWeight.w800, fontSize: 11),
