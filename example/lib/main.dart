@@ -50,7 +50,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
         color: Colors.pink,
         isAllDay: true),
     NeatCleanCalendarEvent('Normal Event D',
-        description: 'test desc',  
+        description: 'test desc',
         startTime: DateTime(DateTime.now().year, DateTime.now().month,
             DateTime.now().day, 14, 30),
         endTime: DateTime(DateTime.now().year, DateTime.now().month,
@@ -94,10 +94,10 @@ class _CalendarScreenState extends State<CalendarScreen> {
           isExpanded: true,
           expandableDateFormat: 'EEEE, dd. MMMM yyyy',
           onEventSelected: (value) {
-            print('Event selected $value');
+            print('Event selected ${value.summary}');
           },
           onEventLongPressed: (value) {
-            print('Event long pressed $value');
+            print('Event long pressed ${value.summary}');
           },
           datePickerType: DatePickerType.date,
           dayOfWeekStyle: TextStyle(
