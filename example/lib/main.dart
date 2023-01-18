@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_neat_and_clean_calendar/flutter_neat_and_clean_calendar.dart';
 
@@ -25,8 +23,9 @@ class CalendarScreen extends StatefulWidget {
 
 class _CalendarScreenState extends State<CalendarScreen> {
   List<NeatCleanCalendarEvent> _todaysEvents = [
-    NeatCleanCalendarEvent('Event A',
-        longPressCallback: () {},
+    NeatCleanCalendarEvent('Event A', longPressCallback: () {
+      print('Longpress callback fired');
+    },
         startTime: DateTime(DateTime.now().year, DateTime.now().month,
             DateTime.now().day, 10, 0),
         endTime: DateTime(DateTime.now().year, DateTime.now().month,
@@ -46,13 +45,13 @@ class _CalendarScreenState extends State<CalendarScreen> {
         isMultiDay: true),
     NeatCleanCalendarEvent('Tapping event', description: 'test desc',
         longPressCallback: () {
-      log('tapping here');
+      print('Longpress callback fired');
     },
         startTime: DateTime(DateTime.now().year, DateTime.now().month,
             DateTime.now().day - 2, 14, 30),
         endTime: DateTime(DateTime.now().year, DateTime.now().month,
             DateTime.now().day + 2, 17, 0),
-        color: Colors.yellow,
+        color: Colors.pink,
         isAllDay: true),
     NeatCleanCalendarEvent('Normal Event D',
         description: 'test desc',
