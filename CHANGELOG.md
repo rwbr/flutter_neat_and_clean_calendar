@@ -1,3 +1,5 @@
+## [0.3.13+28] - 2023-01-18
+* PR #51: New parameter for a callback handling long pressing events
 ## [0.3.12+27] - 2022-12-3ß
 * PR #50: Upgrade of the version of the intl package dependenxy
 
