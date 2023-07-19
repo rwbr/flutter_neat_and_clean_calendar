@@ -1,3 +1,5 @@
+// ignore_for_file: unused_field
+
 import 'package:flutter/material.dart';
 import 'package:flutter_neat_and_clean_calendar/flutter_neat_and_clean_calendar.dart';
 
@@ -22,47 +24,64 @@ class CalendarScreen extends StatefulWidget {
 }
 
 class _CalendarScreenState extends State<CalendarScreen> {
+  bool showEvents = true;
+
   List<NeatCleanCalendarEvent> _todaysEvents = [
-    NeatCleanCalendarEvent('Event A',
-        startTime: DateTime(DateTime.now().year, DateTime.now().month,
-            DateTime.now().day, 10, 0),
-        endTime: DateTime(DateTime.now().year, DateTime.now().month,
-            DateTime.now().day, 12, 0),
-        description: 'A special event',
-        color: Colors.blue[700]),
+    NeatCleanCalendarEvent(
+      'Event A',
+      startTime: DateTime(
+          DateTime.now().year, DateTime.now().month, DateTime.now().day, 10, 0),
+      endTime: DateTime(
+          DateTime.now().year, DateTime.now().month, DateTime.now().day, 12, 0),
+      description: 'A special event',
+      color: Colors.blue[700],
+      icon: '', // assets/background.jpg
+    ),
   ];
 
   final List<NeatCleanCalendarEvent> _eventList = [
-    NeatCleanCalendarEvent('MultiDay Event A',
-        description: 'test desc',
-        startTime: DateTime(DateTime.now().year, DateTime.now().month,
-            DateTime.now().day, 10, 0),
-        endTime: DateTime(DateTime.now().year, DateTime.now().month,
-            DateTime.now().day + 2, 12, 0),
-        color: Colors.orange,
-        isMultiDay: true),
-    NeatCleanCalendarEvent('Allday Event B',
-        description: 'test desc',
-        startTime: DateTime(DateTime.now().year, DateTime.now().month,
-            DateTime.now().day - 2, 14, 30),
-        endTime: DateTime(DateTime.now().year, DateTime.now().month,
-            DateTime.now().day + 2, 17, 0),
-        color: Colors.pink,
-        isAllDay: true),
-    NeatCleanCalendarEvent('Normal Event D',
-        description: 'test desc',
-        startTime: DateTime(DateTime.now().year, DateTime.now().month,
-            DateTime.now().day, 14, 30),
-        endTime: DateTime(DateTime.now().year, DateTime.now().month,
-            DateTime.now().day, 17, 0),
-        color: Colors.indigo),
-    NeatCleanCalendarEvent('Normal Event E',
-        description: 'test desc',
-        startTime: DateTime(DateTime.now().year, DateTime.now().month,
-            DateTime.now().day, 7, 45),
-        endTime: DateTime(DateTime.now().year, DateTime.now().month,
-            DateTime.now().day, 9, 0),
-        color: Colors.indigo),
+    NeatCleanCalendarEvent(
+      'MultiDay Event A',
+      description: 'test desc',
+      startTime: DateTime(
+          DateTime.now().year, DateTime.now().month, DateTime.now().day, 10, 0),
+      endTime: DateTime(DateTime.now().year, DateTime.now().month,
+          DateTime.now().day + 2, 12, 0),
+      color: Colors.orange,
+      isMultiDay: true,
+      icon: 'assets/background2.jpg',
+    ),
+    NeatCleanCalendarEvent(
+      'Allday Event B',
+      description: 'test desc',
+      startTime: DateTime(DateTime.now().year, DateTime.now().month,
+          DateTime.now().day - 2, 14, 30),
+      endTime: DateTime(DateTime.now().year, DateTime.now().month,
+          DateTime.now().day + 2, 17, 0),
+      color: Colors.pink,
+      isAllDay: true,
+      icon: 'assets/event1.jpg',
+    ),
+    NeatCleanCalendarEvent(
+      'Normal Event D',
+      description: 'test desc',
+      startTime: DateTime(DateTime.now().year, DateTime.now().month,
+          DateTime.now().day, 14, 30),
+      endTime: DateTime(
+          DateTime.now().year, DateTime.now().month, DateTime.now().day, 17, 0),
+      color: Colors.indigo,
+      icon: 'assets/events.jpg',
+    ),
+    NeatCleanCalendarEvent(
+      'Normal Event E',
+      description: 'test desc',
+      startTime: DateTime(
+          DateTime.now().year, DateTime.now().month, DateTime.now().day, 7, 45),
+      endTime: DateTime(
+          DateTime.now().year, DateTime.now().month, DateTime.now().day, 9, 0),
+      color: Colors.indigo,
+      icon: 'assets/profile.jpg',
+    ),
   ];
 
   @override
@@ -108,11 +127,16 @@ class _CalendarScreenState extends State<CalendarScreen> {
           datePickerType: DatePickerType.date,
           dayOfWeekStyle: TextStyle(
               color: Colors.black, fontWeight: FontWeight.w800, fontSize: 11),
+          showEvents: showEvents,
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: const Icon(Icons.add),
+        onPressed: () {
+          setState(() {
+            showEvents = !showEvents;
+          });
+        },
+        child: Icon(showEvents ? Icons.visibility_off : Icons.visibility),
         backgroundColor: Colors.green,
       ),
     );
