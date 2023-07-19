@@ -1,3 +1,8 @@
+
+## [0.3.14+29] - 2023-07-19
+* PR #52: New parameter for setting the icon of a NeatCleanCalendarEvent
+* Updated dependency of macos_ui, now building with Flutter 3.10.6
+
 ## [0.3.13+28] - 2023-01-18
 * PR #51: New parameter for a callback handling long pressing events
 ## [0.3.12+27] - 2022-12-3ß
