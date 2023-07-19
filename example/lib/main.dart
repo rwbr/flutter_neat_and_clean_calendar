@@ -99,6 +99,12 @@ class _CalendarScreenState extends State<CalendarScreen> {
           onEventLongPressed: (value) {
             print('Event long pressed ${value.summary}');
           },
+          onMonthChanged: (value) {
+            print('Month changed $value');
+          },
+          onRangeSelected: (value) {
+            print('Range selected ${value.from} - ${value.to}');
+          },
           datePickerType: DatePickerType.date,
           dayOfWeekStyle: TextStyle(
               color: Colors.black, fontWeight: FontWeight.w800, fontSize: 11),
