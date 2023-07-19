@@ -1,3 +1,6 @@
+## [0.3.14+290.3.14-dev.1] - 2023-07-19
+* Publishing as Pre-Release becaus of the depencency of
+  a package with beta status
 
 ## [0.3.14+29] - 2023-07-19
 * PR #52: New parameter for setting the icon of a NeatCleanCalendarEvent
