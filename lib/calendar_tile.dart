@@ -107,10 +107,10 @@ class NeatCleanCalendarTile extends StatelessWidget {
                             : selectedColor
                         : Theme.of(context).primaryColor,
                     image: events != null && events!.isNotEmpty
-                        ? icon != ''
+                        ? icon != '' && icon != null
                             ? DecorationImage(
                                 fit: BoxFit.cover,
-                                image: providerImage(icon),
+                                image: providerImage(icon!),
                               )
                             : null
                         : null,
@@ -120,10 +120,10 @@ class NeatCleanCalendarTile extends StatelessWidget {
                     : events!.isNotEmpty
                         ? BoxDecoration(
                             shape: BoxShape.circle,
-                            image: icon != ''
+                            image: icon != '' && icon != null
                                 ? DecorationImage(
                                     fit: BoxFit.cover,
-                                    image: providerImage(icon),
+                                    image: providerImage(icon!),
                                   )
                                 : null,
                           )
@@ -198,14 +198,13 @@ class NeatCleanCalendarTile extends StatelessWidget {
     }
   }
 
-  String get icon => events!
+  String? get icon => events!
       .firstWhere(
         (element) => Utils.isSameDay(this.date!, element.startTime),
         orElse: () => NeatCleanCalendarEvent(
           '',
           startTime: this.date!,
           endTime: this.date!,
-          icon: '',
         ),
       )
       .icon;

@@ -18,7 +18,8 @@ class NeatCleanCalendarEvent {
   MultiDaySegement? multiDaySegement;
   bool isDone;
   Map<String, dynamic>? metadata;
-  String icon;
+  String? icon;
+  bool? wide = false;
 
   NeatCleanCalendarEvent(
     this.summary, {
@@ -32,6 +33,7 @@ class NeatCleanCalendarEvent {
     this.isDone = false,
     multiDaySegement,
     this.metadata,
-    required this.icon,
+    this.icon,
+    this.wide,
   });
 }

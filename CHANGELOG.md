@@ -1,4 +1,8 @@
-## [0.3.14+290.3.14-dev.1] - 2023-07-19
+## [0.3.14-dev.2] - 2023-07-20
+* new property 'wide' for controlling the width of the image
+* property 'icon' now optional
+
+## [0.3.14-dev.1] - 2023-07-19
 * Publishing as Pre-Release becaus of the depencency of
   a package with beta status
 

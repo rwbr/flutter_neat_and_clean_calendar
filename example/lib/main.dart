@@ -35,7 +35,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
           DateTime.now().year, DateTime.now().month, DateTime.now().day, 12, 0),
       description: 'A special event',
       color: Colors.blue[700],
-      icon: '', // assets/background.jpg
     ),
   ];
 
@@ -49,7 +48,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
           DateTime.now().day + 2, 12, 0),
       color: Colors.orange,
       isMultiDay: true,
-      icon: 'assets/background2.jpg',
     ),
     NeatCleanCalendarEvent(
       'Allday Event B',
@@ -61,6 +59,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
       color: Colors.pink,
       isAllDay: true,
       icon: 'assets/event1.jpg',
+        wideSpace: false
     ),
     NeatCleanCalendarEvent(
       'Normal Event D',
@@ -70,6 +69,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
       endTime: DateTime(
           DateTime.now().year, DateTime.now().month, DateTime.now().day, 17, 0),
       color: Colors.indigo,
+      wideSpace: true,
       icon: 'assets/events.jpg',
     ),
     NeatCleanCalendarEvent(
@@ -80,6 +80,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
       endTime: DateTime(
           DateTime.now().year, DateTime.now().month, DateTime.now().day, 9, 0),
       color: Colors.indigo,
+      wideSpace: true,
       icon: 'assets/profile.jpg',
     ),
   ];

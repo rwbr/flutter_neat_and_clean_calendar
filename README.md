@@ -23,6 +23,10 @@ The calendar view shows a list of events for the selected date. This list view s
 
 The property `isAllDay` has a higher priority than 'isMultiDay'. This means, that when you set `isAllDay` to `true` for an event, it will show up in the events list als all-day event without start and end times, no matter if `isMultiDay` was also set to `true`.
 
+You can include images in calendar events. The property `icon` takes a String of the image name. This parameter is optional. 
+
+To control the width of the image you can use the property `wide`, which is a bool. 
+
 ## Usage
 
 Embed the 'Calendar' widget in a column. Below the calendar (as the second widget in the Column) place a 'ListView.builder' widget for rendereing the list of events.

@@ -639,17 +639,19 @@ class _CalendarState extends State<Calendar> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
                           Expanded(
-                            flex: 25,
+                            flex: event.wide != null && event.wide! == true
+                                ? 25
+                                : 5,
                             child: Padding(
                               padding: const EdgeInsets.all(4.0),
                               child: Container(
                                 decoration: BoxDecoration(
                                   color: event.color,
                                   borderRadius: BorderRadius.circular(10),
-                                  image: event.icon != ''
+                                  image: event.icon != '' && event.icon != null
                                       ? DecorationImage(
                                           fit: BoxFit.cover,
-                                          image: providerImage(event.icon),
+                                          image: providerImage(event.icon!),
                                         )
                                       : null,
                                 ),
