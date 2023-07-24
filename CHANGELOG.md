@@ -1,3 +1,6 @@
+## [0.3.14+32] - 2023-07-24
+* Pre-release state removed
+
 ## [0.3.14-dev.2] - 2023-07-20
 * new property 'wide' for controlling the width of the image
 * property 'icon' now optional
