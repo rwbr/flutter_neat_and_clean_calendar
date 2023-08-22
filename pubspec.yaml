@@ -7,7 +7,7 @@ version: 0.3.14+32
 homepage: https://github.com/rwbr/flutter_neat_and_clean_calendar
 
 environment:
-  sdk: ">=2.12.0 <4.0.0"
+  sdk: ">=3.0.0 <4.0.0"
 
 dependencies:
   flutter:
