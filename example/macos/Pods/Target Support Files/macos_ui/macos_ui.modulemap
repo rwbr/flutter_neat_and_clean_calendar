@@ -1,0 +1,6 @@
+framework module macos_ui {
+  umbrella header "macos_ui-umbrella.h"
+
+  export *
+  module * { export * }
+}
