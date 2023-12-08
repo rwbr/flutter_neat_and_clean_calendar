@@ -59,7 +59,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
       color: Colors.pink,
       isAllDay: true,
       icon: 'assets/event1.jpg',
-        wideSpace: false
+        wide: false
     ),
     NeatCleanCalendarEvent(
       'Normal Event D',
@@ -69,7 +69,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
       endTime: DateTime(
           DateTime.now().year, DateTime.now().month, DateTime.now().day, 17, 0),
       color: Colors.indigo,
-      wideSpace: true,
+      wide: true,
       icon: 'assets/events.jpg',
     ),
     NeatCleanCalendarEvent(
@@ -80,7 +80,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
       endTime: DateTime(
           DateTime.now().year, DateTime.now().month, DateTime.now().day, 9, 0),
       color: Colors.indigo,
-      wideSpace: true,
+      wide: true,
       icon: 'assets/profile.jpg',
     ),
   ];
@@ -121,6 +121,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
           },
           onMonthChanged: (value) {
             print('Month changed $value');
+          },
+          onDateSelected: (value) {
+            print('Date selected $value');
           },
           onRangeSelected: (value) {
             print('Range selected ${value.from} - ${value.to}');

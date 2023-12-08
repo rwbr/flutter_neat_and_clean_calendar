@@ -232,19 +232,25 @@ Calendar(
 
 ![Screenshot](https://github.com/rwbr/flutter_neat_and_clean_calendar/blob/main/img/usage1.png)
 
-### Display an icon button to open a date picker to jump to a certain date
+### Display a date picker to jump to a certain date
 
 ```dart
 Calendar(
-  isJumpDateButtonEnabled: true
+  datePickerType: DatePickerType.date
 )
 ```
+These options are available:
+* 'DatePickerType.date'
+* 'DatePickerType.year'
+* 'DatePickerType.hidden'
 
-This shows a button in the upper tool bar. 
+If you set the option to 'DatePickerType.date' or 'DatePickerType.year' an icon to load the date picker is shown.
 
 ![Jump-To-Date button](img/jump-date-button.png)
 
 Pressing this button opens a date picker, that allows the user to jump to a certain date.
+
+If you set the option to 'DatePickerType.hidden' no icon is displaysed. This logic replaces the option 'isJumpDateButtonEnabled' which was present in earlier releases.
 
 ### Handling all-day events
 

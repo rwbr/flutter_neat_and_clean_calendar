@@ -128,28 +128,47 @@ class Utils {
   }
 
   static DateTime previousMonth(DateTime m) {
-    var year = m.year;
-    var month = m.month;
-    if (month == 1) {
-      year--;
+    int year = m.year;
+    int month = m.month;
+    int day = m.day;
+
+    // Decrease the month
+    month--;
+
+    // If month goes below January, switch to December of the previous year
+    if (month < 1) {
       month = 12;
-    } else {
-      month--;
+      year--;
     }
-    return DateTime(year, month);
+
+    // Handle cases where the day might not exist in the previous month (e.g., March 31st)
+    while (day > DateTime(year, month + 1, 0).day) {
+      day--;
+    }
+
+    return DateTime(year, month, day);
   }
 
   static DateTime nextMonth(DateTime m) {
-    var year = m.year;
-    var month = m.month;
+    int year = m.year;
+    int month = m.month;
+    int day = m.day;
 
-    if (month == 12) {
-      year++;
+    // Increase the month
+    month++;
+
+    // If month goes beyond December, switch to January of the next year
+    if (month > 12) {
       month = 1;
-    } else {
-      month++;
+      year++;
     }
-    return DateTime(year, month);
+
+    // Handle cases where the day might not exist in the next month (e.g., January 31st)
+    while (day > DateTime(year, month + 1, 0).day) {
+      day--;
+    }
+
+    return DateTime(year, month, day);
   }
 
   static DateTime previousWeek(DateTime w) {

@@ -186,7 +186,11 @@ class _CalendarState extends State<Calendar> {
   late List<DateTime> selectedMonthsDays;
   late Iterable<DateTime> selectedWeekDays;
   late Map<DateTime, List<NeatCleanCalendarEvent>>? eventsMap;
+  // selectedDate is the date, that is currently selected. It is highlighted with a circle.
   DateTime _selectedDate = DateTime.now();
+  // chosenDate is the date, that is temporarily selected. This applies for the moment, when the user
+  // taps on a date, but has not yet lifted the finger, before _selectedDate gets updated.
+  DateTime _chosenDate = DateTime.now();
   String? currentMonth;
   late bool isExpanded;
   String displayMonth = '';
@@ -807,6 +811,7 @@ class _CalendarState extends State<Calendar> {
     onJumpToDateSelected(DateTime.now());
   }
 
+  /// The function [nextMonth] sets _selectedDate to the first day of the next month.
   void nextMonth() {
     setState(() {
       _selectedDate = Utils.nextMonth(_selectedDate);
@@ -822,9 +827,9 @@ class _CalendarState extends State<Calendar> {
               _selectedDate.year, _selectedDate.month, _selectedDate.day)] ??
           [];
     });
-    _launchDateSelectionCallback(_selectedDate);
   }
 
+  /// The function [nextMonth] sets _selectedDate to the first day of the previous month.
   void previousMonth() {
     setState(() {
       _selectedDate = Utils.previousMonth(_selectedDate);
@@ -840,7 +845,6 @@ class _CalendarState extends State<Calendar> {
               _selectedDate.year, _selectedDate.month, _selectedDate.day)] ??
           [];
     });
-    _launchDateSelectionCallback(_selectedDate);
   }
 
   void nextWeek() {
@@ -860,7 +864,6 @@ class _CalendarState extends State<Calendar> {
               _selectedDate.year, _selectedDate.month, _selectedDate.day)] ??
           [];
     });
-    _launchDateSelectionCallback(_selectedDate);
   }
 
   void previousWeek() {
@@ -880,7 +883,6 @@ class _CalendarState extends State<Calendar> {
               _selectedDate.year, _selectedDate.month, _selectedDate.day)] ??
           [];
     });
-    _launchDateSelectionCallback(_selectedDate);
   }
 
   void updateSelectedRange(DateTime start, DateTime end) {
@@ -890,8 +892,11 @@ class _CalendarState extends State<Calendar> {
     }
   }
 
-  void onJumpToDateSelected(DateTime selectedDate) {
-    _selectedDate = selectedDate;
+  void onJumpToDateSelected(DateTime day) {
+    // Fire onDateSelected callback and onMonthChanged callback.
+    _launchDateSelectionCallback(day);
+
+    _selectedDate = day;
     var firstDayOfCurrentWeek = _firstDayOfWeek(_selectedDate);
     var lastDayOfCurrentWeek = _lastDayOfWeek(_selectedDate);
 
@@ -909,7 +914,6 @@ class _CalendarState extends State<Calendar> {
           [];
     });
 
-    _launchDateSelectionCallback(_selectedDate);
   }
 
   void _onSwipeUp() {
@@ -946,11 +950,11 @@ class _CalendarState extends State<Calendar> {
 
   void handleSelectedDateAndUserCallback(DateTime day) {
     print('daySelected: $day');
+    // Fire onDateSelected callback and onMonthChanged callback.
+    _launchDateSelectionCallback(day);
+
     var firstDayOfCurrentWeek = _firstDayOfWeek(day);
     var lastDayOfCurrentWeek = _lastDayOfWeek(day);
-    // Flag to decide if we should trigger "onDateSelected" callback
-    // This avoids doule executing the callback when selecting a date in the next month
-    bool isCallback = true;
     // Check if the selected day falls into the next month. If this is the case,
     // then we need to additionaly check, if a day in next year was selected.
     if (_selectedDate.month > day.month) {
@@ -960,9 +964,6 @@ class _CalendarState extends State<Calendar> {
       } else {
         previousMonth();
       }
-      // Callback already fired in nextMonth() or previoisMonth(). Dont
-      // execute it again.
-      isCallback = false;
     }
     // Check if the selected day falls into the last month. If this is the case,
     // then we need to additionaly check, if a day in last year was selected.
@@ -973,9 +974,6 @@ class _CalendarState extends State<Calendar> {
       } else {
         nextMonth();
       }
-      // Callback already fired in nextMonth() or previoisMonth(). Dont
-      // execute it again.
-      isCallback = false;
     }
     setState(() {
       _selectedDate = day;
@@ -985,10 +983,6 @@ class _CalendarState extends State<Calendar> {
       selectedMonthsDays = _daysInMonth(day);
       _selectedEvents = eventsMap?[_selectedDate] ?? [];
     });
-    // Check, if the callback was already executed before.
-    if (isCallback) {
-      _launchDateSelectionCallback(_selectedDate);
-    }
   }
 
   void _launchDateSelectionCallback(DateTime day) {
