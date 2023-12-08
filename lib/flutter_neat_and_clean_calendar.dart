@@ -188,9 +188,6 @@ class _CalendarState extends State<Calendar> {
   late Map<DateTime, List<NeatCleanCalendarEvent>>? eventsMap;
   // selectedDate is the date, that is currently selected. It is highlighted with a circle.
   DateTime _selectedDate = DateTime.now();
-  // chosenDate is the date, that is temporarily selected. This applies for the moment, when the user
-  // taps on a date, but has not yet lifted the finger, before _selectedDate gets updated.
-  DateTime _chosenDate = DateTime.now();
   String? currentMonth;
   late bool isExpanded;
   String displayMonth = '';
