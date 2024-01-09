@@ -825,8 +825,10 @@ class _CalendarState extends State<Calendar> {
 
   /// The function [nextMonth] sets _selectedDate to the first day of the next month.
   void nextMonth() {
+    DateTime _newDate = Utils.nextMonth(_selectedDate);
+    _launchDateSelectionCallback(_newDate);
     setState(() {
-      _selectedDate = Utils.nextMonth(_selectedDate);
+      _selectedDate = _newDate;
       var firstDateOfNewMonth = Utils.firstDayOfMonth(_selectedDate);
       var lastDateOfNewMonth = Utils.lastDayOfMonth(_selectedDate);
       updateSelectedRange(firstDateOfNewMonth, lastDateOfNewMonth);
@@ -843,8 +845,10 @@ class _CalendarState extends State<Calendar> {
 
   /// The function [nextMonth] sets _selectedDate to the first day of the previous month.
   void previousMonth() {
+    DateTime _newDate = Utils.previousMonth(_selectedDate);
+    _launchDateSelectionCallback(_newDate);
     setState(() {
-      _selectedDate = Utils.previousMonth(_selectedDate);
+      _selectedDate = _newDate;
       var firstDateOfNewMonth = Utils.firstDayOfMonth(_selectedDate);
       var lastDateOfNewMonth = Utils.lastDayOfMonth(_selectedDate);
       updateSelectedRange(firstDateOfNewMonth, lastDateOfNewMonth);
@@ -860,8 +864,10 @@ class _CalendarState extends State<Calendar> {
   }
 
   void nextWeek() {
+    DateTime _newDate = Utils.nextWeek(_selectedDate);
+    _launchDateSelectionCallback(_newDate);
     setState(() {
-      _selectedDate = Utils.nextWeek(_selectedDate);
+      _selectedDate = _newDate;
       var firstDayOfCurrentWeek = _firstDayOfWeek(_selectedDate);
       var lastDayOfCurrentWeek = _lastDayOfWeek(_selectedDate);
       updateSelectedRange(firstDayOfCurrentWeek, lastDayOfCurrentWeek);
@@ -879,8 +885,10 @@ class _CalendarState extends State<Calendar> {
   }
 
   void previousWeek() {
+    DateTime _newDate = Utils.previousWeek(_selectedDate);
+    _launchDateSelectionCallback(_newDate);
     setState(() {
-      _selectedDate = Utils.previousWeek(_selectedDate);
+      _selectedDate = _newDate;
       var firstDayOfCurrentWeek = _firstDayOfWeek(_selectedDate);
       var lastDayOfCurrentWeek = _lastDayOfWeek(_selectedDate);
       updateSelectedRange(firstDayOfCurrentWeek, lastDayOfCurrentWeek);
