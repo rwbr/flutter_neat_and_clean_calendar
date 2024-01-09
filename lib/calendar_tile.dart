@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_neat_and_clean_calendar/platform_widgets.dart';
 import './date_utils.dart';
@@ -213,8 +212,6 @@ class NeatCleanCalendarTile extends StatelessWidget {
         ),
       )
       .icon;
-
-
 
   @override
   Widget build(BuildContext context) {
