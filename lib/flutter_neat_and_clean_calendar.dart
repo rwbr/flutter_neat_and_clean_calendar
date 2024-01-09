@@ -307,11 +307,11 @@ class _CalendarState extends State<Calendar> {
 
     if (!widget.hideArrows) {
       leftArrow = PlatformIconButton(
-        onPressed: isExpanded ? previousMonth : previousWeek,
+        onPressed: isExpanded ? () => previousMonth(true) : previousWeek,
         icon: Icon(Icons.chevron_left),
       );
       rightArrow = PlatformIconButton(
-        onPressed: isExpanded ? nextMonth : nextWeek,
+        onPressed: isExpanded ? () => nextMonth(true) : nextWeek,
         icon: Icon(Icons.chevron_right),
       );
     } else {
@@ -823,10 +823,16 @@ class _CalendarState extends State<Calendar> {
     onJumpToDateSelected(DateTime.now());
   }
 
-  /// The function [nextMonth] sets _selectedDate to the first day of the next month.
-  void nextMonth() {
+  // The function [nextMonth] updates the "_selectedDate" to the first day of the previous month.
+  // If "launchCallback" is true, it also triggers the date selection callback with the new date.
+  // The state is then updated with the new selected date, the days in the new month, the display month, and any events on the new date.
+  // This function is typically used to navigate to the previous month in a calendar widget.
+  void nextMonth(bool launchCallback) {
     DateTime _newDate = Utils.nextMonth(_selectedDate);
-    _launchDateSelectionCallback(_newDate);
+    // Parameter "launchCallback" is there to avoid triggering the callback twice.
+    if (launchCallback) {
+      _launchDateSelectionCallback(_newDate);
+    }
     setState(() {
       _selectedDate = _newDate;
       var firstDateOfNewMonth = Utils.firstDayOfMonth(_selectedDate);
@@ -843,10 +849,16 @@ class _CalendarState extends State<Calendar> {
     });
   }
 
-  /// The function [nextMonth] sets _selectedDate to the first day of the previous month.
-  void previousMonth() {
+  // The function [previousMonth] updates the "_selectedDate" to the first day of the previous month.
+  // If "launchCallback" is true, it also triggers the date selection callback with the new date.
+  // The state is then updated with the new selected date, the days in the new month, the display month, and any events on the new date.
+  // This function is typically used to navigate to the previous month in a calendar widget.
+  void previousMonth(bool launchCallback) {
     DateTime _newDate = Utils.previousMonth(_selectedDate);
-    _launchDateSelectionCallback(_newDate);
+    // Parameter "launchCallback" is there to avoid triggering the callback twice.
+    if (launchCallback) {
+      _launchDateSelectionCallback(_newDate);
+    }
     setState(() {
       _selectedDate = _newDate;
       var firstDateOfNewMonth = Utils.firstDayOfMonth(_selectedDate);
@@ -945,7 +957,9 @@ class _CalendarState extends State<Calendar> {
 
   void _onSwipeRight() {
     if (isExpanded) {
-      previousMonth();
+      // Here _launchDateSelectionCallback was not called before. That's why set the
+      // "launchCallback" parameter to true.
+      previousMonth(true);
     } else {
       previousWeek();
     }
@@ -953,7 +967,9 @@ class _CalendarState extends State<Calendar> {
 
   void _onSwipeLeft() {
     if (isExpanded) {
-      nextMonth();
+      // Here _launchDateSelectionCallback was not called before. That's why set the
+      // "launchCallback" parameter to true.
+      nextMonth(true);
     } else {
       nextWeek();
     }
@@ -985,9 +1001,13 @@ class _CalendarState extends State<Calendar> {
     if (_selectedDate.month > day.month) {
       // Day in next year selected? Switch to next month.
       if (_selectedDate.year < day.year) {
-        nextMonth();
+        // _launchDateSelectionCallback was already called befor. That's why set the
+        // "launchCallback" parameter to false, to avoid calling the callback twice.
+        nextMonth(false);
       } else {
-        previousMonth();
+        // _launchDateSelectionCallback was already called befor. That's why set the
+        // "launchCallback" parameter to false, to avoid calling the callback twice.
+        previousMonth(false);
       }
     }
     // Check if the selected day falls into the last month. If this is the case,
@@ -995,9 +1015,13 @@ class _CalendarState extends State<Calendar> {
     if (_selectedDate.month < day.month) {
       // Day in next last selected? Switch to next month.
       if (_selectedDate.year > day.year) {
-        previousMonth();
+        // _launchDateSelectionCallback was already called befor. That's why set the
+        // "launchCallback" parameter to false, to avoid calling the callback twice.
+        previousMonth(false);
       } else {
-        nextMonth();
+        // _launchDateSelectionCallback was already called befor. That's why set the
+        // "launchCallback" parameter to false, to avoid calling the callback twice.
+        nextMonth(false);
       }
     }
     setState(() {

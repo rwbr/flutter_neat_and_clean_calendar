@@ -1,5 +1,6 @@
 ## [0.3.16+36] - 2024-01-09
-* Issue #61: onMonthChanged now also triggers, when using the date picker and the arrow buttons
+* Issue #64: onDateSelected now delivers the correct date
+* Issue #67: onMonthChanged now also triggers, when using the date picker and the arrow buttons
 * Issue #68: eventDoneColor gets used, when isDone is set to true
 
 ## [0.3.15+35] - 2023-12-08
