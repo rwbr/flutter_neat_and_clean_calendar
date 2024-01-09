@@ -376,6 +376,16 @@ class _CalendarState extends State<Calendar> {
               lastDate: DateTime(2100),
             ).then((date) {
               if (date != null) {
+                // The selected date is printed to the console in ISO 8601 format for debugging purposes.
+                // The "onJumpToDateSelected" callback is then invoked with the selected date.
+                // These lines have been moved outside of the "setState" block to
+                // trigger the callback methods (i.e. onMonthChanged) in the parent widget.
+                // After the callback methods are invoked, the "setState" block is called and the
+                // _selectedDate is updated. This must be done after the callback methods are invoked,
+                // otherwise the callback methods will not trigger, if the current date is equal to the
+                // selected date.
+                print('Date chosen: ${_selectedDate.toIso8601String()}');
+                onJumpToDateSelected(date);
                 setState(() {
                   _selectedDate = date;
                   selectedMonthsDays = _daysInMonth(_selectedDate);
@@ -391,8 +401,6 @@ class _CalendarState extends State<Calendar> {
                           _selectedDate.month, _selectedDate.day)] ??
                       [];
                 });
-                print('Date chosen: ${_selectedDate.toIso8601String()}');
-                onJumpToDateSelected(_selectedDate);
               }
             });
           }
@@ -917,7 +925,6 @@ class _CalendarState extends State<Calendar> {
               _selectedDate.year, _selectedDate.month, _selectedDate.day)] ??
           [];
     });
-
   }
 
   void _onSwipeUp() {
@@ -952,6 +959,12 @@ class _CalendarState extends State<Calendar> {
     }
   }
 
+  // The "handleSelectedDateAndUserCallback" method is responsible for processing the
+  // selected date and invoking the corresponding user callback.
+  // It is expected to be called when a user selects a date.
+  // The exact functionality can vary depending on the implementation,
+  // but typically this method will store the selected date and then call a
+  // user-defined callback function based on this date.
   void handleSelectedDateAndUserCallback(DateTime day) {
     print('daySelected: $day');
     // Fire onDateSelected callback and onMonthChanged callback.
@@ -989,6 +1002,12 @@ class _CalendarState extends State<Calendar> {
     });
   }
 
+  // The "_launchDateSelectionCallback" method is used to trigger the date selection callbacks.
+  // If the "onDateSelected" callback is not null, it is invoked with the selected day.
+  // Additionally, if the "onMonthChanged" callback is not null and the selected day is in
+  // a different month or year than the previously selected date,
+  // the "onMonthChanged" callback is invoked with the selected day.
+  // This additional condition prevents the "onMonthChanged" callback from being invoked twice when a date in the same month is selected.
   void _launchDateSelectionCallback(DateTime day) {
     if (widget.onDateSelected != null) {
       widget.onDateSelected!(day);
