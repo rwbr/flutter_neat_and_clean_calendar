@@ -647,7 +647,14 @@ class _CalendarState extends State<Calendar> {
                               padding: const EdgeInsets.all(4.0),
                               child: Container(
                                 decoration: BoxDecoration(
-                                  color: event.color,
+                                  // If no image is provided, use the color of the event.
+                                  // If the event has set isDone to true, use the eventDoneColor
+                                  // gets used. If that eventDoneColor is not set, use the
+                                  // primaryColor of the theme.
+                                  color: event.isDone
+                                      ? widget.eventDoneColor ??
+                                          Theme.of(context).primaryColor
+                                      : event.color,
                                   borderRadius: BorderRadius.circular(10),
                                   image: event.icon != '' && event.icon != null
                                       ? DecorationImage(
