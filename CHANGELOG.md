@@ -1,4 +1,7 @@
 ## [0.3.15+35] - 2023-12-08
+* Issue #68: eventDoneColor gets used, when isDone is set to true
+
+## [0.3.15+35] - 2023-12-08
 * Issue #61: onMonthChanged now correctly triggers
 
 ## [0.3.14+32] - 2023-07-24
