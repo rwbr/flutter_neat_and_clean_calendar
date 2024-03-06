@@ -1,3 +1,6 @@
+## [0.3.17+37] - 2024-03-06
+* Update the intl package to 'any' in order to avoid problems when using this package
+
 ## [0.3.16+36] - 2024-01-09
 * Issue #64: onDateSelected now delivers the correct date
 * Issue #67: onMonthChanged now also triggers, when using the date picker and the arrow buttons
