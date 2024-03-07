@@ -12,11 +12,18 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_platform_widgets: ^6.1.0
   intl: ^0.18.0
-  macos_ui: ^2.0.0
+  macos_ui: ^2.0.5
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
 flutter: null
+
+platforms:
+  ios:
+  android:
+  web:
+  macos:
