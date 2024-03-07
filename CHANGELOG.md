@@ -1,3 +1,7 @@
+## [0.3.18+40] - 2024-03-07
+* Issue #74: Avoid exception, when onDateSelected is null
+* Build for web and macOS
+
 ## [0.3.17+37] - 2024-03-06
 * Update the intl package to 'any' in order to avoid problems when using this package
 
