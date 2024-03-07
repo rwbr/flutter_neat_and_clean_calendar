@@ -4,7 +4,9 @@ library flutter_neat_and_clean_calendar;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_neat_and_clean_calendar/date_picker_config.dart';
-import 'package:flutter_neat_and_clean_calendar/platform_widgets.dart';
+import 'package:flutter_neat_and_clean_calendar/provider_image.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+// import 'package:flutter_neat_and_clean_calendar/platform_widgets.dart';
 import './date_utils.dart';
 import './simple_gesture_detector.dart';
 import './calendar_tile.dart';
@@ -592,15 +594,16 @@ class _CalendarState extends State<Calendar> {
               ),
               PlatformIconButton(
                 onPressed: toggleExpanded,
-                iconSize: 25.0,
                 padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
                 icon: isExpanded
                     ? Icon(
                         Icons.arrow_drop_up,
+                        size: 25.0,
                         color: widget.bottomBarArrowColor ?? Colors.black,
                       )
                     : Icon(
                         Icons.arrow_drop_down,
+                        size: 25.0,
                         color: widget.bottomBarArrowColor ?? Colors.black,
                       ),
               ),
