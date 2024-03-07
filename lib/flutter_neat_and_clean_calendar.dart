@@ -1046,8 +1046,8 @@ class _CalendarState extends State<Calendar> {
     }
     // Additional conditions: Only if month or year changed, then call the callback.
     // This avoids double executing the callback when selecting a date in the same month.
-    if (widget.onMonthChanged != null && day.month != _selectedDate.month ||
-        day.year != _selectedDate.year) {
+    if (widget.onMonthChanged != null &&
+        (day.month != _selectedDate.month || day.year != _selectedDate.year)) {
       widget.onMonthChanged!(day);
     }
   }
