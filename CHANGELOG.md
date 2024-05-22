@@ -1,3 +1,7 @@
+## [0.3.19+41] - 2024-03-07
+* Update dependencies
+* Replace deprecated text-styles for Flutter 3.22
+
 ## [0.3.18+40] - 2024-03-07
 * Issue #74: Avoid exception, when onDateSelected is null
 * Build for web and macOS
