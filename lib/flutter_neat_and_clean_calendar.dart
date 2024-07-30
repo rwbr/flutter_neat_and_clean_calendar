@@ -272,7 +272,10 @@ class _CalendarState extends State<Calendar> {
                     event.startTime.month,
                     event.startTime.day + i,
                     event.endTime.hour,
-                    event.endTime.minute));
+                    event.endTime.minute),
+                // Pass the metadata to the new event.
+                metadata: event.metadata);
+
             if (i == 0) {
               // First day of the event.
               newEvent.multiDaySegement = MultiDaySegement.first;
