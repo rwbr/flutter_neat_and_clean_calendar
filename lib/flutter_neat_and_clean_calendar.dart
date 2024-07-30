@@ -107,7 +107,7 @@ class Calendar extends StatefulWidget {
   final bool hideTodayIcon;
   @Deprecated(
       'Use `eventsList` instead. Will be removed in NeatAndCleanCalendar 0.4.0')
-  final Map<DateTime, List<NeatCleanCalendarEvent>>? events;
+  // final Map<DateTime, List<NeatCleanCalendarEvent>>? events;
   final List<NeatCleanCalendarEvent>? eventsList;
   final Color? defaultDayColor;
   final Color? defaultOutOfMonthDayColor;
@@ -134,50 +134,51 @@ class Calendar extends StatefulWidget {
   final DatePickerConfig? datePickerConfig;
   final double? eventTileHeight;
   final bool showEvents;
+  final bool showEventListView;
 
   /// Configures the date picker if enabled
 
-  Calendar({
-    this.onMonthChanged,
-    this.onDateSelected,
-    this.onRangeSelected,
-    this.onExpandStateChanged,
-    this.onEventSelected,
-    this.onEventLongPressed,
-    this.hideBottomBar = false,
-    this.isExpandable = false,
-    this.events,
-    this.eventsList,
-    this.dayBuilder,
-    this.eventListBuilder,
-    this.datePickerType = DatePickerType.hidden,
-    this.hideTodayIcon = false,
-    this.hideArrows = false,
-    this.defaultDayColor = Colors.black87,
-    this.defaultOutOfMonthDayColor,
-    this.selectedColor = Colors.pink,
-    this.selectedTodayColor,
-    this.todayColor,
-    this.todayButtonText = 'Today',
-    this.allDayEventText = 'All Day',
-    this.multiDayEndText = 'End',
-    this.eventColor,
-    this.eventDoneColor,
-    this.initialDate,
-    this.isExpanded = false,
-    this.weekDays = const ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-    this.locale = 'en_US',
-    this.startOnMonday = false,
-    this.dayOfWeekStyle,
-    this.bottomBarTextStyle,
-    this.bottomBarArrowColor,
-    this.bottomBarColor,
-    this.expandableDateFormat = 'EEEE MMMM dd, yyyy',
-    this.displayMonthTextStyle,
-    this.datePickerConfig,
-    this.eventTileHeight,
-    this.showEvents = true,
-  });
+  Calendar(
+      {this.onMonthChanged,
+      this.onDateSelected,
+      this.onRangeSelected,
+      this.onExpandStateChanged,
+      this.onEventSelected,
+      this.onEventLongPressed,
+      this.hideBottomBar = false,
+      this.isExpandable = false,
+      // this.events,
+      this.eventsList,
+      this.dayBuilder,
+      this.eventListBuilder,
+      this.datePickerType = DatePickerType.hidden,
+      this.hideTodayIcon = false,
+      this.hideArrows = false,
+      this.defaultDayColor = Colors.black87,
+      this.defaultOutOfMonthDayColor,
+      this.selectedColor = Colors.pink,
+      this.selectedTodayColor,
+      this.todayColor,
+      this.todayButtonText = 'Today',
+      this.allDayEventText = 'All Day',
+      this.multiDayEndText = 'End',
+      this.eventColor,
+      this.eventDoneColor,
+      this.initialDate,
+      this.isExpanded = false,
+      this.weekDays = const ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+      this.locale = 'en_US',
+      this.startOnMonday = false,
+      this.dayOfWeekStyle,
+      this.bottomBarTextStyle,
+      this.bottomBarArrowColor,
+      this.bottomBarColor,
+      this.expandableDateFormat = 'EEEE MMMM dd, yyyy',
+      this.displayMonthTextStyle,
+      this.datePickerConfig,
+      this.eventTileHeight,
+      this.showEventListView = false,
+      this.showEvents = true});
 
   @override
   _CalendarState createState() => _CalendarState();
@@ -192,6 +193,7 @@ class _CalendarState extends State<Calendar> {
   DateTime _selectedDate = DateTime.now();
   String? currentMonth;
   late bool isExpanded;
+  late bool showEventListView;
   String displayMonth = '';
   DateTime get selectedDate => _selectedDate;
   List<NeatCleanCalendarEvent>? _selectedEvents;
@@ -199,6 +201,7 @@ class _CalendarState extends State<Calendar> {
   void initState() {
     super.initState();
     isExpanded = widget.isExpanded;
+    showEventListView = widget.showEventListView;
 
     _selectedDate = widget.initialDate ?? DateTime.now();
     initializeDateFormatting(widget.locale, null).then((_) => setState(() {
@@ -213,7 +216,7 @@ class _CalendarState extends State<Calendar> {
   /// renders its view. When this method executes, it fills the eventsMap with the contents of the
   /// given eventsList. This can be used to update the events shown by the calendar.
   void _updateEventsMap() {
-    eventsMap = widget.events ?? {};
+    eventsMap = {};
     // If the user provided a list of events, then convert it to a map, but only if there
     // was no map of events provided. To provide the events in form of a map is the way,
     // the library worked before the v0.3.x release. In v0.3.x the possibility to provide
@@ -419,6 +422,14 @@ class _CalendarState extends State<Calendar> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         leftArrow ?? Container(),
+        PlatformIconButton(
+          onPressed: () {
+            setState(() {
+              showEventListView = !showEventListView;
+            });
+          },
+          icon: Icon(Icons.list),
+        ),
         Expanded(
           child: Column(
             children: <Widget>[
@@ -810,14 +821,133 @@ class _CalendarState extends State<Calendar> {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           nameAndIconRow,
-          ExpansionCrossFade(
-            collapsed: calendarGridView,
-            expanded: calendarGridView,
-            isExpanded: isExpanded,
-          ),
-          expansionButtonRow,
-          if (widget.showEvents) eventList
+          if (showEventListView)
+            buildEventList
+          else ...[
+            ExpansionCrossFade(
+              collapsed: calendarGridView,
+              expanded: calendarGridView,
+              isExpanded: isExpanded,
+            ),
+            expansionButtonRow,
+            if (widget.showEvents) eventList
+          ],
         ],
+      ),
+    );
+  }
+
+  Widget get buildEventList {
+    List<Widget> eventWidgets = [];
+
+    eventsMap!.forEach((date, events) {
+      eventWidgets.add(
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            DateFormat('yyyy-MM-dd').format(date),
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+        ),
+      );
+      // eventWidgets.add(ListView.builder(
+      //   padding: EdgeInsets.all(0.0),
+      //   itemBuilder: (BuildContext context, int index) {
+      //     final NeatCleanCalendarEvent event = events[index];
+      //     final String start =
+      //         DateFormat('HH:mm').format(event.startTime).toString();
+      //     final String end =
+      //         DateFormat('HH:mm').format(event.endTime).toString();
+      //     return Container(
+      //       height: widget.eventTileHeight ??
+      //           MediaQuery.of(context).size.height * 0.08,
+      //       child: GestureDetector(
+      //         behavior: HitTestBehavior.opaque,
+      //         onTap: () {
+      //           if (widget.onEventSelected != null) {
+      //             widget.onEventSelected!(event);
+      //           }
+      //         },
+      //         onLongPress: () {
+      //           if (widget.onEventLongPressed != null) {
+      //             widget.onEventLongPressed!(event);
+      //           }
+      //         },
+      //         child: Row(
+      //           crossAxisAlignment: CrossAxisAlignment.center,
+      //           children: <Widget>[
+      //             Expanded(
+      //               flex: event.wide != null && event.wide! == true ? 25 : 5,
+      //               child: Padding(
+      //                 padding: const EdgeInsets.all(4.0),
+      //                 child: Container(
+      //                   decoration: BoxDecoration(
+      //                     // If no image is provided, use the color of the event.
+      //                     // If the event has set isDone to true, use the eventDoneColor
+      //                     // gets used. If that eventDoneColor is not set, use the
+      //                     // primaryColor of the theme.
+      //                     color: event.isDone
+      //                         ? widget.eventDoneColor ??
+      //                             Theme.of(context).primaryColor
+      //                         : event.color,
+      //                     borderRadius: BorderRadius.circular(10),
+      //                     image: event.icon != '' && event.icon != null
+      //                         ? DecorationImage(
+      //                             fit: BoxFit.cover,
+      //                             image: providerImage(event.icon!),
+      //                           )
+      //                         : null,
+      //                   ),
+      //                 ),
+      //               ),
+      //             ),
+      //             SizedBox(height: 5.0),
+      //             Expanded(
+      //               flex: 60,
+      //               child: Padding(
+      //                 padding: const EdgeInsets.all(8.0),
+      //                 child: Column(
+      //                   crossAxisAlignment: CrossAxisAlignment.start,
+      //                   mainAxisAlignment: MainAxisAlignment.center,
+      //                   children: [
+      //                     Text(event.summary,
+      //                         style: Theme.of(context).textTheme.bodySmall),
+      //                     SizedBox(
+      //                       height: 10.0,
+      //                     ),
+      //                     Text(
+      //                       event.description,
+      //                       overflow: TextOverflow.ellipsis,
+      //                     )
+      //                   ],
+      //                 ),
+      //               ),
+      //             ),
+      //             // This Expanded widget gets used to display the start and end time of the
+      //             // event.
+      //             Expanded(
+      //               flex: 30,
+      //               child: Padding(
+      //                 padding: const EdgeInsets.all(8.0),
+      //                 // If the event is all day, then display the word "All day" with no time.
+      //                 child: event.isAllDay || event.isMultiDay
+      //                     ? allOrMultiDayDayTimeWidget(event)
+      //                     : singleDayTimeWidget(start, end),
+      //               ),
+      //             )
+      //           ],
+      //         ),
+      //       ),
+      //     );
+      //   },
+      //   itemCount: events.length,
+      // ));
+    });
+
+    return Expanded(
+      child: ListView(
+        children: eventWidgets,
+        shrinkWrap: true,
       ),
     );
   }
