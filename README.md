@@ -372,6 +372,92 @@ If the contents of this list change in your app, you have to re-render the calen
 
 The `events`parameter was supported in versions under v0.4.0 of that widget. It is **deprecated** now. So use the `eventList` now in your app.
 
+
+
+
+```dart
+/// [onEventLongPressed] is of type [ValueChanged<NeatCleanCalendarEvent>] and it contains a callback function
+///     executed when an event of the event list is long pressed
+/// [datePickerType] defines, if the date picker should get displayed and selects its type
+///    Choose between datePickerType.hidden, datePickerType.year, datePickerType.date
+/// [isExpandable] is a [bool]. With this parameter you can control, if the view can expand from week view
+///     to month view. Default is [false].
+/// [dayBuilder] can contain a [Widget]. If this property is not null (!= null), this widget will get used to
+///     render the calenar tiles (so you can customize the view)
+/// [eventListBuilder] can optionally contain a [Widget] that gets used to render the event list
+/// [hideArrows] is a bool. When set to [true] the arrows to navigate to the next or previous week/month in the
+///     top bar well get suppressed. Default is [false].
+/// [hideTodayIcon] is a bool. When set to [true] the dispaly of the Today-Icon (button to navigate to today) in the
+///     top bar well get suppressed. Default is [false].
+/// [events] are of type [Map<DateTime, List<NeatCleanCalendarEvent>>]. This data structure containes the events to display
+/// [defaultDayColor] is the color applied to days in the current month, that are not selected.
+/// [defaultOutOfMonthDayColor] is the color applied to days outside the current month.
+/// [selctedColor] this is the color, applied to the circle on the selcted day
+/// [todayColor] this is the color of the date of today
+/// [todayButtonText] is a [String]. With this property you can set the caption of the today icon (button to navigate to today).
+///     If left empty, the calendar will use the string "Today".
+/// [allDayEventText] is a [String]. With this property you can set the caption of the all day event. If left empty, the
+///     calendar will use the string "All day".
+/// [multiDayEndText] is a [String]. With this property you can set the caption of the end of a multi day event. If left empty, the
+///    calendar will use the string "End".
+/// [eventColor] lets you optionally specify the color of the event (dot). If the [CleanCaendarEvents] property color is not set, the
+///     calendar will use this parameter.
+/// [eventDoneColor] with this property you can define the color of "done" events, that is events in the past.
+/// [initialDate] is of type [DateTime]. It can contain an optional start date. This is the day, that gets initially selected
+///     by the calendar. The default is to not set this parameter. Then the calendar uses [DateTime.now()]
+/// [isExpanded] is a bool. If is us set to [true], the calendar gets rendered in month view.
+/// [weekDays] contains a [List<String>] defining the names of the week days, so that it is possible to name them according
+///     to your current locale.
+/// [locale] is a [String]. This setting gets used to format dates according to the current locale.
+/// [startOnMonday] is a [bool]. This parameter allows the calendar to determine the first day of the week.
+/// [dayOfWeekStyle] is a [TextStyle] for styling the text of the weekday names in the top bar.
+/// [bottomBarTextStyle] is a [TextStyle], that sets the style of the text in the bottom bar.
+/// [bottomBarArrowColor] can set the [Color] of the arrow to expand/compress the calendar in the bottom bar.
+/// [bottomBarColor] sets the [Color] of the bottom bar
+/// [expandableDateFormat] defines the formatting of the date in the bottom bar
+/// [displayMonthTextStyle] is a [TextStyle] for styling the month name in the top bar.
+/// [datePickerConfig] is a [DatePickerConfig] object. It contains the configuration of the date picker, if enabled.
+
+final ValueChanged<DateTime>? onDateSelected;
+final ValueChanged<DateTime>? onMonthChanged;
+final ValueChanged<bool>? onExpandStateChanged;
+final ValueChanged? onRangeSelected;
+final ValueChanged<NeatCleanCalendarEvent>? onEventSelected;
+final ValueChanged<NeatCleanCalendarEvent>? onEventLongPressed;
+final bool isExpandable;
+final DayBuilder? dayBuilder;
+final EventListBuilder? eventListBuilder;
+final DatePickerType? datePickerType;
+final bool hideArrows;
+final bool hideTodayIcon;
+@Deprecated(
+    'Use `eventsList` instead. Will be removed in NeatAndCleanCalendar 0.4.0')
+final Map<DateTime, List<NeatCleanCalendarEvent>>? events;
+final List<NeatCleanCalendarEvent>? eventsList;
+final Color? defaultDayColor;
+final Color? defaultOutOfMonthDayColor;
+final Color? selectedColor;
+final Color? selectedTodayColor;
+final Color? todayColor;
+final String todayButtonText;
+final String allDayEventText;
+final String multiDayEndText;
+final Color? eventColor;
+final Color? eventDoneColor;
+final DateTime? initialDate;
+final bool isExpanded;
+final List<String> weekDays;
+final String? locale;
+final bool startOnMonday;
+final TextStyle? dayOfWeekStyle;
+final TextStyle? bottomBarTextStyle;
+final Color? bottomBarArrowColor;
+final Color? bottomBarColor;
+final String? expandableDateFormat;
+final TextStyle? displayMonthTextStyle;
+final DatePickerConfig? datePickerConfig;
+```
+
 ## Sample event data
 
 The syntax of the event map changed due to the introduction of the 'NeatCleanCalendarEvent' class.
