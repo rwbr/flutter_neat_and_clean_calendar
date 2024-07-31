@@ -58,7 +58,6 @@ class Range {
 ///     top bar well get suppressed. Default is [false].
 /// [hideTodayIcon] is a bool. When set to [true] the dispaly of the Today-Icon (button to navigate to today) in the
 ///     top bar well get suppressed. Default is [false].
-/// [hideBottomBar] at the moment has no function. Default is [false].
 /// [events] are of type [Map<DateTime, List<NeatCleanCalendarEvent>>]. This data structure contains the events to display
 /// [defaultDayColor] is the color applied to days in the current month, that are not selected.
 /// [defaultOutOfMonthDayColor] is the color applied to days outside the current month.
@@ -124,7 +123,6 @@ class Calendar extends StatefulWidget {
   final List<String> weekDays;
   final String? locale;
   final bool startOnMonday;
-  final bool hideBottomBar;
   final TextStyle? dayOfWeekStyle;
   final TextStyle? bottomBarTextStyle;
   final Color? bottomBarArrowColor;
@@ -145,7 +143,6 @@ class Calendar extends StatefulWidget {
       this.onExpandStateChanged,
       this.onEventSelected,
       this.onEventLongPressed,
-      this.hideBottomBar = false,
       this.isExpandable = false,
       // this.events,
       this.eventsList,
