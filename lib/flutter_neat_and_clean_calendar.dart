@@ -167,7 +167,7 @@ class Calendar extends StatefulWidget {
       this.initialDate,
       this.isExpanded = false,
       this.weekDays = const ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-      this.locale = 'en_US',
+      this.locale = 'us_US',
       this.startOnMonday = false,
       this.dayOfWeekStyle,
       this.bottomBarTextStyle,
@@ -200,6 +200,7 @@ class _CalendarState extends State<Calendar> {
 
   void initState() {
     super.initState();
+
     isExpanded = widget.isExpanded;
     showEventListView = widget.showEventListView;
 
@@ -336,11 +337,11 @@ class _CalendarState extends State<Calendar> {
       todayIcon = Container();
     }
 
+    jumpDateIcon = Container();
     if (widget.datePickerType != null &&
         widget.datePickerType != DatePickerType.hidden) {
-      jumpDateIcon = GestureDetector(
-        child: Icon(Icons.date_range_outlined),
-        onTap: () {
+      jumpDateIcon = PlatformIconButton(
+        onPressed: () {
           if (widget.datePickerType == DatePickerType.year) {
             // show year picker
             showDialog(
@@ -413,15 +414,14 @@ class _CalendarState extends State<Calendar> {
             });
           }
         },
+        icon: Icon(Icons.date_range_outlined),
       );
-    } else {
-      jumpDateIcon = Container();
     }
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        leftArrow ?? Container(),
+        showEventListView ? Container() : leftArrow ?? Container(),
         PlatformIconButton(
           onPressed: () {
             setState(() {
@@ -430,22 +430,26 @@ class _CalendarState extends State<Calendar> {
           },
           icon: Icon(Icons.list),
         ),
-        Expanded(
-          child: Column(
-            children: <Widget>[
-              todayIcon ?? Container(),
-              Text(
-                displayMonth,
-                style: widget.displayMonthTextStyle ??
-                    TextStyle(
-                      fontSize: 20.0,
+        showEventListView
+            ? Flexible(
+                child: Container(),
+              )
+            : Expanded(
+                child: Column(
+                  children: <Widget>[
+                    todayIcon ?? Container(),
+                    Text(
+                      displayMonth,
+                      style: widget.displayMonthTextStyle ??
+                          TextStyle(
+                            fontSize: 20.0,
+                          ),
                     ),
+                  ],
+                ),
               ),
-            ],
-          ),
-        ),
-        jumpDateIcon ?? Container(),
-        rightArrow ?? Container(),
+        showEventListView ? Container() : jumpDateIcon ?? Container(),
+        showEventListView ? Container() : rightArrow ?? Container(),
       ],
     );
   }
@@ -630,6 +634,12 @@ class _CalendarState extends State<Calendar> {
     }
   }
 
+  /// Returns a widget representing the event list.
+  ///
+  /// This widget is used to display a list of events.
+  /// It can be used to show events for a specific date or a range of dates.
+  /// The events can be customized and styled according to the application's needs.
+  /// To use this widget, simply call the `eventList` getter and include it in your widget tree.
   Widget get eventList {
     // If eventListBuilder is provided, use it to build the list of events to show.
     // Otherwise use the default list of events.
@@ -646,91 +656,7 @@ class _CalendarState extends State<Calendar> {
                       DateFormat('HH:mm').format(event.startTime).toString();
                   final String end =
                       DateFormat('HH:mm').format(event.endTime).toString();
-                  return Container(
-                    height: widget.eventTileHeight ??
-                        MediaQuery.of(context).size.height * 0.08,
-                    child: GestureDetector(
-                      behavior: HitTestBehavior.opaque,
-                      onTap: () {
-                        if (widget.onEventSelected != null) {
-                          widget.onEventSelected!(event);
-                        }
-                      },
-                      onLongPress: () {
-                        if (widget.onEventLongPressed != null) {
-                          widget.onEventLongPressed!(event);
-                        }
-                      },
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          Expanded(
-                            flex: event.wide != null && event.wide! == true
-                                ? 25
-                                : 5,
-                            child: Padding(
-                              padding: const EdgeInsets.all(4.0),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  // If no image is provided, use the color of the event.
-                                  // If the event has set isDone to true, use the eventDoneColor
-                                  // gets used. If that eventDoneColor is not set, use the
-                                  // primaryColor of the theme.
-                                  color: event.isDone
-                                      ? widget.eventDoneColor ??
-                                          Theme.of(context).primaryColor
-                                      : event.color,
-                                  borderRadius: BorderRadius.circular(10),
-                                  image: event.icon != '' && event.icon != null
-                                      ? DecorationImage(
-                                          fit: BoxFit.cover,
-                                          image: providerImage(event.icon!),
-                                        )
-                                      : null,
-                                ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(height: 5.0),
-                          Expanded(
-                            flex: 60,
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(event.summary,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodySmall),
-                                  SizedBox(
-                                    height: 10.0,
-                                  ),
-                                  Text(
-                                    event.description,
-                                    overflow: TextOverflow.ellipsis,
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                          // This Expanded widget gets used to display the start and end time of the
-                          // event.
-                          Expanded(
-                            flex: 30,
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              // If the event is all day, then display the word "All day" with no time.
-                              child: event.isAllDay || event.isMultiDay
-                                  ? allOrMultiDayDayTimeWidget(event)
-                                  : singleDayTimeWidget(start, end),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  );
+                  return eventCell(event, start, end);
                 },
                 itemCount: _selectedEvents!.length,
               )
@@ -822,7 +748,7 @@ class _CalendarState extends State<Calendar> {
         children: <Widget>[
           nameAndIconRow,
           if (showEventListView)
-            buildEventList
+            eventlistView
           else ...[
             ExpansionCrossFade(
               collapsed: calendarGridView,
@@ -837,117 +763,126 @@ class _CalendarState extends State<Calendar> {
     );
   }
 
-  Widget get buildEventList {
+  Widget get eventlistView {
     List<Widget> eventWidgets = [];
 
     eventsMap!.forEach((date, events) {
       eventWidgets.add(
-        Padding(
+        Container(
+          color: widget.bottomBarColor ?? Color.fromRGBO(200, 200, 200, 0.2),
+          height: 40,
+          margin: EdgeInsets.only(top: 8.0),
           padding: const EdgeInsets.all(8.0),
           child: Text(
-            DateFormat('yyyy-MM-dd').format(date),
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            DateFormat.yMMMMEEEEd(widget.locale).format(date),
+            style: widget.bottomBarTextStyle ?? TextStyle(fontSize: 13),
           ),
         ),
       );
-      // eventWidgets.add(ListView.builder(
-      //   padding: EdgeInsets.all(0.0),
-      //   itemBuilder: (BuildContext context, int index) {
-      //     final NeatCleanCalendarEvent event = events[index];
-      //     final String start =
-      //         DateFormat('HH:mm').format(event.startTime).toString();
-      //     final String end =
-      //         DateFormat('HH:mm').format(event.endTime).toString();
-      //     return Container(
-      //       height: widget.eventTileHeight ??
-      //           MediaQuery.of(context).size.height * 0.08,
-      //       child: GestureDetector(
-      //         behavior: HitTestBehavior.opaque,
-      //         onTap: () {
-      //           if (widget.onEventSelected != null) {
-      //             widget.onEventSelected!(event);
-      //           }
-      //         },
-      //         onLongPress: () {
-      //           if (widget.onEventLongPressed != null) {
-      //             widget.onEventLongPressed!(event);
-      //           }
-      //         },
-      //         child: Row(
-      //           crossAxisAlignment: CrossAxisAlignment.center,
-      //           children: <Widget>[
-      //             Expanded(
-      //               flex: event.wide != null && event.wide! == true ? 25 : 5,
-      //               child: Padding(
-      //                 padding: const EdgeInsets.all(4.0),
-      //                 child: Container(
-      //                   decoration: BoxDecoration(
-      //                     // If no image is provided, use the color of the event.
-      //                     // If the event has set isDone to true, use the eventDoneColor
-      //                     // gets used. If that eventDoneColor is not set, use the
-      //                     // primaryColor of the theme.
-      //                     color: event.isDone
-      //                         ? widget.eventDoneColor ??
-      //                             Theme.of(context).primaryColor
-      //                         : event.color,
-      //                     borderRadius: BorderRadius.circular(10),
-      //                     image: event.icon != '' && event.icon != null
-      //                         ? DecorationImage(
-      //                             fit: BoxFit.cover,
-      //                             image: providerImage(event.icon!),
-      //                           )
-      //                         : null,
-      //                   ),
-      //                 ),
-      //               ),
-      //             ),
-      //             SizedBox(height: 5.0),
-      //             Expanded(
-      //               flex: 60,
-      //               child: Padding(
-      //                 padding: const EdgeInsets.all(8.0),
-      //                 child: Column(
-      //                   crossAxisAlignment: CrossAxisAlignment.start,
-      //                   mainAxisAlignment: MainAxisAlignment.center,
-      //                   children: [
-      //                     Text(event.summary,
-      //                         style: Theme.of(context).textTheme.bodySmall),
-      //                     SizedBox(
-      //                       height: 10.0,
-      //                     ),
-      //                     Text(
-      //                       event.description,
-      //                       overflow: TextOverflow.ellipsis,
-      //                     )
-      //                   ],
-      //                 ),
-      //               ),
-      //             ),
-      //             // This Expanded widget gets used to display the start and end time of the
-      //             // event.
-      //             Expanded(
-      //               flex: 30,
-      //               child: Padding(
-      //                 padding: const EdgeInsets.all(8.0),
-      //                 // If the event is all day, then display the word "All day" with no time.
-      //                 child: event.isAllDay || event.isMultiDay
-      //                     ? allOrMultiDayDayTimeWidget(event)
-      //                     : singleDayTimeWidget(start, end),
-      //               ),
-      //             )
-      //           ],
-      //         ),
-      //       ),
-      //     );
-      //   },
-      //   itemCount: events.length,
-      // ));
+      events.forEach((event) {
+        final String start =
+            DateFormat('HH:mm').format(event.startTime).toString();
+        final String end = DateFormat('HH:mm').format(event.endTime).toString();
+        eventWidgets.add(eventCell(event, start, end));
+      });
     });
 
     return Expanded(
       child: ListView(
         children: eventWidgets,
         shrinkWrap: true,
+      ),
+    );
+  }
+
+  /// A widget that represents a cell for displaying an event in the calendar.
+  ///
+  /// The [eventCell] method returns a [Container] widget that represents a cell for displaying an event in the calendar.
+  /// It takes an [event] of type [NeatCleanCalendarEvent], [start] and [end] strings representing the start and end time of the event.
+  /// The [eventCell] widget is designed to be used within a [NeatCleanCalendar] widget.
+  ///
+  /// The [eventCell] widget displays the event information, including the event icon, summary, description, and start/end time.
+  /// It also handles tap and long press gestures on the event cell.
+  Widget eventCell(NeatCleanCalendarEvent event, String start, String end) {
+    return Container(
+      height:
+          widget.eventTileHeight ?? MediaQuery.of(context).size.height * 0.08,
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: () {
+          if (widget.onEventSelected != null) {
+            widget.onEventSelected!(event);
+          }
+        },
+        onLongPress: () {
+          if (widget.onEventLongPressed != null) {
+            widget.onEventLongPressed!(event);
+          }
+        },
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Expanded(
+              flex: event.wide != null && event.wide! == true ? 25 : 5,
+              child: Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    // If no image is provided, use the color of the event.
+                    // If the event has set isDone to true, use the eventDoneColor
+                    // gets used. If that eventDoneColor is not set, use the
+                    // primaryColor of the theme.
+                    color: event.isDone
+                        ? widget.eventDoneColor ??
+                            Theme.of(context).primaryColor
+                        : event.color,
+                    borderRadius: BorderRadius.circular(10),
+                    image: event.icon != '' && event.icon != null
+                        ? DecorationImage(
+                            fit: BoxFit.cover,
+                            image: providerImage(event.icon!),
+                          )
+                        : null,
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(height: 5.0),
+            Expanded(
+              flex: 60,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(event.summary,
+                        style: Theme.of(context).textTheme.bodySmall),
+                    SizedBox(
+                      height: 10.0,
+                    ),
+                    Text(
+                      event.description,
+                      overflow: TextOverflow.ellipsis,
+                    )
+                  ],
+                ),
+              ),
+            ),
+            // This Expanded widget gets used to display the start and end time of the
+            // event.
+            Expanded(
+              flex: 30,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                // If the event is all day, then display the word "All day" with no time.
+                child: event.isAllDay || event.isMultiDay
+                    ? allOrMultiDayDayTimeWidget(event)
+                    : singleDayTimeWidget(start, end),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
