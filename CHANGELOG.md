@@ -1,3 +1,10 @@
+## [0.4.0+41] - 2024-03-07
+CAUTION: as announced in January 2022 the events map to set the calendar entries got finally removed. This can break your app and you might have to adapt it to use the events list.
+* Issue #80: Multi Day events have empty metadata
+* Issue #79: DatePicker now supports locale settings of the device
+* Some refactoring
+* Improved README
+
 ## [0.3.19+41] - 2024-03-07
 * Update dependencies
 * Replace deprecated text-styles for Flutter 3.22
