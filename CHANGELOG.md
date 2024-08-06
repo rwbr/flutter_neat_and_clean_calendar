@@ -1,4 +1,7 @@
-## [0.4.0+41] - 2024-03-07
+## [0.4.1] - 2024-08-06
+* Issue #78: new property eventCellBuilder for customization of the event list elements
+
+## [0.4.0] - 2024-08-06
 CAUTION: as announced in January 2022 the events map to set the calendar entries got finally removed. This can break your app and you might have to adapt it to use the events list.
 * Issue #80: Multi Day events have empty metadata
 * Issue #79: DatePicker now supports locale settings of the device

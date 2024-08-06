@@ -20,6 +20,8 @@ export './neat_and_clean_calendar_event.dart';
 typedef DayBuilder(BuildContext context, DateTime day);
 typedef EventListBuilder(
     BuildContext context, List<NeatCleanCalendarEvent> events);
+typedef EventCellBuilder(BuildContext context, NeatCleanCalendarEvent event,
+    String start, String end);
 
 enum DatePickerType { hidden, year, date }
 
@@ -54,6 +56,7 @@ class Range {
 /// [dayBuilder] can contain a [Widget]. If this property is not null (!= null), this widget will get used to
 ///     render the calenar tiles (so you can customize the view)
 /// [eventListBuilder] can optionally contain a [Widget] that gets used to render the event list
+/// [eventCellBuilder] can optionally contain a [Widget] that gets used to render the event cells
 /// [hideArrows] is a bool. When set to [true] the arrows to navigate to the next or previous week/month in the
 ///     top bar well get suppressed. Default is [false].
 /// [hideTodayIcon] is a bool. When set to [true] the dispaly of the Today-Icon (button to navigate to today) in the
@@ -101,6 +104,7 @@ class Calendar extends StatefulWidget {
   final bool isExpandable;
   final DayBuilder? dayBuilder;
   final EventListBuilder? eventListBuilder;
+  final EventCellBuilder? eventCellBuilder;
   final DatePickerType? datePickerType;
   final bool hideArrows;
   final bool hideTodayIcon;
@@ -145,6 +149,7 @@ class Calendar extends StatefulWidget {
       this.eventsList,
       this.dayBuilder,
       this.eventListBuilder,
+      this.eventCellBuilder,
       this.datePickerType = DatePickerType.hidden,
       this.hideTodayIcon = false,
       this.hideArrows = false,
@@ -617,7 +622,9 @@ class _CalendarState extends State<Calendar> {
                       DateFormat('HH:mm').format(event.startTime).toString();
                   final String end =
                       DateFormat('HH:mm').format(event.endTime).toString();
-                  return eventCell(event, start, end);
+                  return widget.eventCellBuilder == null
+                      ? eventCell(event, start, end)
+                      : widget.eventCellBuilder!(context, event, start, end);
                 },
                 itemCount: _selectedEvents!.length,
               )

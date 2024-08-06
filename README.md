@@ -160,7 +160,16 @@ Can contain a `Widget`. If this property is not `null`, this widget will get use
 final EventListBuilder? eventListBuilder;
 ```
 
-This parameter can optionally contain a `Widget`]` that gets used to render the event list. Default is `null`.
+This parameter can optionally contain a `Widget`  that gets used to render the event list. Default is `null`.
+
+#### `eventCellBuilder`
+
+```dart
+final EventCellBuilder? evenCellBuilder;
+```
+
+This parameter can optionally contain a `Widget`  that gets used to render the event cells. Default is `null`.
+
 
 #### `datePickerType`
 
