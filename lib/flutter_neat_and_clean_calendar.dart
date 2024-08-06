@@ -104,9 +104,6 @@ class Calendar extends StatefulWidget {
   final DatePickerType? datePickerType;
   final bool hideArrows;
   final bool hideTodayIcon;
-  @Deprecated(
-      'Use `eventsList` instead. Will be removed in NeatAndCleanCalendar 0.4.0')
-  // final Map<DateTime, List<NeatCleanCalendarEvent>>? events;
   final List<NeatCleanCalendarEvent>? eventsList;
   final Color? defaultDayColor;
   final Color? defaultOutOfMonthDayColor;
