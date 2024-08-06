@@ -27,6 +27,10 @@ You can include images in calendar events. The property `icon` takes a String of
 
 To control the width of the image you can use the property `wide`, which is a bool. 
 
+# Breaking Change
+
+> From v0.4.0 on the events map was removed from the properties. You may need to switch to the `eventsList` property in your app now.
+
 ## Usage
 
 Embed the 'Calendar' widget in a column. Below the calendar (as the second widget in the Column) place a 'ListView.builder' widget for rendereing the list of events.
@@ -35,7 +39,7 @@ Embed the 'Calendar' widget in a column. Below the calendar (as the second widge
 
 ```
 dependencies:
-  flutter_neat_and_clean_calendar: ^0.3.0+12
+  flutter_neat_and_clean_calendar: ^0.4.1
 ```
 
 ### Install
@@ -379,7 +383,7 @@ If the contents of this list change in your app, you have to re-render the calen
 
 **This parameter replaces the former parameter `Map<DateTime, List<NeatCleanCalendarEvent>>? events`**. 
 
-The `events`parameter was supported in versions under v0.4.0 of that widget. It is **deprecated** now. So use the `eventList` now in your app.
+The `events`parameter was supported in versions under v0.4.0 of that widget. It is **removed** now. So use the `eventList` now in your app.
 
 
 ## Sample event data
