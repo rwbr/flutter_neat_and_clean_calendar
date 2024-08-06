@@ -339,48 +339,15 @@ class _CalendarState extends State<Calendar> {
         widget.datePickerType != DatePickerType.hidden) {
       jumpDateIcon = PlatformIconButton(
         onPressed: () {
-          if (widget.datePickerType == DatePickerType.year) {
-            // show year picker
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: Text("Select Year"),
-                  content: Container(
-                    // Need to use container to add size constraint.
-                    width: 300,
-                    height: 300,
-                    child: YearPicker(
-                      firstDate: widget.datePickerConfig?.firstDate ??
-                          DateTime(DateTime.now().year - 100, 1),
-                      lastDate: widget.datePickerConfig?.lastDate ??
-                          DateTime(DateTime.now().year + 100, 1),
-                      initialDate: widget.datePickerConfig?.initialDate ??
-                          DateTime.now(),
-                      // save the selected date to _selectedDate DateTime variable.
-                      // It's used to set the previous selected date when
-                      // re-showing the dialog.
-                      selectedDate: _selectedDate,
-                      onChanged: (DateTime dateTime) {
-                        // close the dialog when year is selected.
-                        onJumpToDateSelected(dateTime);
-                        Navigator.pop(context);
-
-                        // Do something with the dateTime selected.
-                        // Remember that you need to use dateTime.year to get the year
-                      },
-                    ),
-                  ),
-                );
-              },
-            );
-          } else if (widget.datePickerType == DatePickerType.date) {
             showDatePicker(
               context: context,
               initialDate: DateTime.now(),
               firstDate: DateTime(1900),
               lastDate: DateTime(2100),
-              locale: Locale(widget.locale!),
+                  initialDatePickerMode:
+                      widget.datePickerType == DatePickerType.date
+                          ? DatePickerMode.day
+                          : DatePickerMode.year
             ).then((date) {
               if (date != null) {
                 // The selected date is printed to the console in ISO 8601 format for debugging purposes.
@@ -409,8 +376,7 @@ class _CalendarState extends State<Calendar> {
                       [];
                 });
               }
-            });
-          }
+          });
         },
         icon: Icon(Icons.date_range_outlined),
       );

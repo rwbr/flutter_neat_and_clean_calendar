@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_neat_and_clean_calendar/flutter_neat_and_clean_calendar.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() => runApp(MyApp());
 
@@ -12,6 +13,15 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Clean Calendar Demo',
       home: CalendarScreen(),
+      localizationsDelegates: [GlobalMaterialLocalizations.delegate],
+      supportedLocales: [
+        const Locale('en'),
+        const Locale('fr'),
+        const Locale('de'),
+        const Locale('es'),
+        const Locale('it'),
+        const Locale('ru'),
+      ],
     );
   }
 }
