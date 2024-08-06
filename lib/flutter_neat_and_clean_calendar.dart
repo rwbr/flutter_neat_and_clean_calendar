@@ -380,6 +380,7 @@ class _CalendarState extends State<Calendar> {
               initialDate: DateTime.now(),
               firstDate: DateTime(1900),
               lastDate: DateTime(2100),
+              locale: Locale(widget.locale!),
             ).then((date) {
               if (date != null) {
                 // The selected date is printed to the console in ISO 8601 format for debugging purposes.
