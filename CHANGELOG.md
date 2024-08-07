@@ -1,3 +1,6 @@
+## [0.4.2] - 2024-08-07
+* New properties for styling the top bar icons and the datepicker
+
 ## [0.4.1] - 2024-08-06
 * Issue #78: new property eventCellBuilder for customization of the event list elements
 
