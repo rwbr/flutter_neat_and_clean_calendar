@@ -67,8 +67,20 @@ class Range {
 /// [selectedColor] this is the color, applied to the circle on the selected day
 /// [selectedTodayColor] is the color, applied to the circle on the selected day, if it is today
 /// [todayColor] this is the color of the date of today
+/// [topRowIconColor] is the color of the icons in the top bar
+/// [datePickerLightModeSelectedDayColor] is the color of the selected day in the date picker in light mode
+/// [datePickerLightModeSelectedDayTextColor] is the color of the text of the selected day in the date picker in light mode
+/// [datePickerLightModeSurfaceColor] is the color of the surface in the date picker in light mode
+/// [datePickerLightModeOnSurfaceColor] is the color of the text on the surface in the date picker in light mode
+/// [datePickerLightModeTextButtonColor] is the color of the text buttons in the date picker in light mode
+/// [datePickerDarkModeSelectedDayColor] is the color of the selected day in the date picker in dark mode
+/// [datePickerDarkModeSelectedDayTextColor] is the color of the text of the selected day in the date picker in dark mode
+/// [datePickerDarkModeSurfaceColor] is the color of the surface in the date picker in dark mode
+/// [datePickerDarkModeOnSurfaceColor] is the color of the text on the surface in the date picker in dark mode
+/// [datePickerDarkModeTextButtonColor] is the color of the text buttons in the date picker in dark mode
 /// [todayButtonText] is a [String]. With this property you can set the caption of the today icon (button to navigate to today).
 ///     If left empty, the calendar will use the string "Today".
+/// [todayButtonColor] sets the [Color] of the today button
 /// [allDayEventText] is a [String]. With this property you can set the caption of the all day event. If left empty, the
 ///     calendar will use the string "All day".
 /// [multiDayEndText] is a [String]. With this property you can set the caption of the end of a multi day event. If left empty, the
@@ -114,7 +126,19 @@ class Calendar extends StatefulWidget {
   final Color? selectedColor;
   final Color? selectedTodayColor;
   final Color? todayColor;
+  final Color? topRowIconColor;
+  final Color? datePickerLightModeSelectedDayColor;
+  final Color? datePickerLightModeSelectedDayTextColor;
+  final Color? datePickerLightModeSurfaceColor;
+  final Color? datePickerLightModeOnSurfaceColor;
+  final Color? datePickerLightModeTextButtonColor;
+  final Color? datePickerDarkModeSelectedDayColor;
+  final Color? datePickerDarkModeSelectedDayTextColor;
+  final Color? datePickerDarkModeSurfaceColor;
+  final Color? datePickerDarkModeOnSurfaceColor;
+  final Color? datePickerDarkModeTextButtonColor;
   final String todayButtonText;
+  final Color? todayButtonColor;
   final String allDayEventText;
   final String multiDayEndText;
   final Color? eventColor;
@@ -157,7 +181,19 @@ class Calendar extends StatefulWidget {
       this.defaultOutOfMonthDayColor,
       this.selectedColor = Colors.pink,
       this.selectedTodayColor,
-      this.todayColor,
+      this.todayColor = Colors.blue,
+      this.todayButtonColor = Colors.blueGrey,
+      this.topRowIconColor = Colors.blue,
+      this.datePickerLightModeSelectedDayColor = Colors.blue,
+      this.datePickerLightModeSelectedDayTextColor = Colors.white,
+      this.datePickerLightModeSurfaceColor = Colors.white,
+      this.datePickerLightModeOnSurfaceColor = Colors.black,
+      this.datePickerLightModeTextButtonColor = Colors.red,
+      this.datePickerDarkModeSelectedDayColor = Colors.blue,
+      this.datePickerDarkModeSelectedDayTextColor = Colors.white,
+      this.datePickerDarkModeSurfaceColor = Colors.white,
+      this.datePickerDarkModeOnSurfaceColor = Colors.black,
+      this.datePickerDarkModeTextButtonColor = Colors.red,
       this.todayButtonText = 'Today',
       this.allDayEventText = 'All Day',
       this.multiDayEndText = 'End',
@@ -316,11 +352,17 @@ class _CalendarState extends State<Calendar> {
     if (!widget.hideArrows) {
       leftArrow = PlatformIconButton(
         onPressed: isExpanded ? () => previousMonth(true) : previousWeek,
-        icon: Icon(Icons.chevron_left),
+        icon: Icon(
+          Icons.chevron_left,
+          color: widget.topRowIconColor,
+        ),
       );
       rightArrow = PlatformIconButton(
         onPressed: isExpanded ? () => nextMonth(true) : nextWeek,
-        icon: Icon(Icons.chevron_right),
+        icon: Icon(
+          Icons.chevron_right,
+          color: widget.topRowIconColor,
+        ),
       );
     } else {
       leftArrow = Container();
@@ -329,7 +371,10 @@ class _CalendarState extends State<Calendar> {
 
     if (!widget.hideTodayIcon) {
       todayIcon = GestureDetector(
-        child: Text(widget.todayButtonText),
+        child: Text(
+          widget.todayButtonText,
+          style: TextStyle(color: widget.todayButtonColor),
+        ),
         onTap: resetToToday,
       );
     } else {
@@ -341,46 +386,94 @@ class _CalendarState extends State<Calendar> {
         widget.datePickerType != DatePickerType.hidden) {
       jumpDateIcon = PlatformIconButton(
         onPressed: () {
-            showDatePicker(
-              context: context,
-              initialDate: DateTime.now(),
-              firstDate: DateTime(1900),
-              lastDate: DateTime(2100),
+          showDatePicker(
+                  builder: (BuildContext context, Widget? child) {
+                    // Check if Dark mode is enabled
+                    bool isDarkMode =
+                        Theme.of(context).brightness == Brightness.dark;
+
+                    // Define Light Theme
+                    ThemeData lightTheme = ThemeData.light().copyWith(
+                      colorScheme: ColorScheme.light(
+                        primary: widget.datePickerLightModeSelectedDayColor!,
+                        onPrimary:
+                            widget.datePickerLightModeSelectedDayTextColor!,
+                        surface: widget.datePickerLightModeSurfaceColor!,
+                        onSurface: widget.datePickerLightModeOnSurfaceColor!,
+                      ),
+                      textButtonTheme: TextButtonThemeData(
+                        style: TextButton.styleFrom(
+                          foregroundColor:
+                              widget.datePickerLightModeTextButtonColor!,
+                        ),
+                      ),
+                    );
+
+                    // Define Dark Theme
+                    ThemeData darkTheme = ThemeData.dark().copyWith(
+                      colorScheme: ColorScheme.dark(
+                        primary: widget.datePickerDarkModeSelectedDayColor!,
+                        onPrimary:
+                            widget.datePickerDarkModeSelectedDayTextColor!,
+                        surface: widget.datePickerDarkModeSurfaceColor!,
+                        onSurface: widget.datePickerDarkModeOnSurfaceColor!,
+                      ),
+                      textButtonTheme: TextButtonThemeData(
+                        style: TextButton.styleFrom(
+                          foregroundColor:
+                              widget.datePickerDarkModeTextButtonColor!,
+                        ),
+                      ),
+                    );
+
+                    // Choose the theme based on the current mode
+                    return Theme(
+                      data: isDarkMode ? darkTheme : lightTheme,
+                      child: child!,
+                    );
+                  },
+                  context: context,
+                  initialDate: DateTime.now(),
+                  firstDate: DateTime(1900),
+                  lastDate: DateTime(2100),
                   initialDatePickerMode:
                       widget.datePickerType == DatePickerType.date
                           ? DatePickerMode.day
-                          : DatePickerMode.year
-            ).then((date) {
-              if (date != null) {
-                // The selected date is printed to the console in ISO 8601 format for debugging purposes.
-                // The "onJumpToDateSelected" callback is then invoked with the selected date.
-                // These lines have been moved outside of the "setState" block to
-                // trigger the callback methods (i.e. onMonthChanged) in the parent widget.
-                // After the callback methods are invoked, the "setState" block is called and the
-                // _selectedDate is updated. This must be done after the callback methods are invoked,
-                // otherwise the callback methods will not trigger, if the current date is equal to the
-                // selected date.
-                print('Date chosen: ${_selectedDate.toIso8601String()}');
-                onJumpToDateSelected(date);
-                setState(() {
-                  _selectedDate = date;
-                  selectedMonthsDays = _daysInMonth(_selectedDate);
-                  selectedWeekDays = Utils.daysInRange(
-                          _firstDayOfWeek(_selectedDate),
-                          _lastDayOfWeek(_selectedDate))
-                      .toList();
-                  var monthFormat = DateFormat('MMMM yyyy', widget.locale)
-                      .format(_selectedDate);
-                  displayMonth =
-                      '${monthFormat[0].toUpperCase()}${monthFormat.substring(1)}';
-                  _selectedEvents = eventsMap?[DateTime(_selectedDate.year,
-                          _selectedDate.month, _selectedDate.day)] ??
-                      [];
-                });
-              }
+                          : DatePickerMode.year)
+              .then((date) {
+            if (date != null) {
+              // The selected date is printed to the console in ISO 8601 format for debugging purposes.
+              // The "onJumpToDateSelected" callback is then invoked with the selected date.
+              // These lines have been moved outside of the "setState" block to
+              // trigger the callback methods (i.e. onMonthChanged) in the parent widget.
+              // After the callback methods are invoked, the "setState" block is called and the
+              // _selectedDate is updated. This must be done after the callback methods are invoked,
+              // otherwise the callback methods will not trigger, if the current date is equal to the
+              // selected date.
+              print('Date chosen: ${_selectedDate.toIso8601String()}');
+              onJumpToDateSelected(date);
+              setState(() {
+                _selectedDate = date;
+                selectedMonthsDays = _daysInMonth(_selectedDate);
+                selectedWeekDays = Utils.daysInRange(
+                        _firstDayOfWeek(_selectedDate),
+                        _lastDayOfWeek(_selectedDate))
+                    .toList();
+                var monthFormat = DateFormat('MMMM yyyy', widget.locale)
+                    .format(_selectedDate);
+                displayMonth =
+                    '${monthFormat[0].toUpperCase()}${monthFormat.substring(1)}';
+                _selectedEvents = eventsMap?[DateTime(_selectedDate.year,
+                        _selectedDate.month, _selectedDate.day)] ??
+                    [];
+              });
+            }
           });
         },
-        icon: Icon(Icons.date_range_outlined),
+        icon: Icon(
+          Icons.date_range_outlined,
+          color: widget.topRowIconColor,
+        ),
       );
     }
 
@@ -394,7 +487,10 @@ class _CalendarState extends State<Calendar> {
               showEventListView = !showEventListView;
             });
           },
-          icon: Icon(Icons.list),
+          icon: Icon(
+            Icons.list,
+            color: widget.topRowIconColor,
+          ),
         ),
         showEventListView
             ? Flexible(
@@ -403,12 +499,15 @@ class _CalendarState extends State<Calendar> {
             : Expanded(
                 child: Column(
                   children: <Widget>[
+                    // Text 'Today' in the top bar (or what you set as todayButtonText)
                     todayIcon ?? Container(),
+                    // Month and year in the top bar
                     Text(
                       displayMonth,
                       style: widget.displayMonthTextStyle ??
                           TextStyle(
                             fontSize: 20.0,
+                            color: widget.todayButtonColor
                           ),
                     ),
                   ],

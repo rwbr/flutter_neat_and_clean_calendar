@@ -235,6 +235,69 @@ final Color? todayColor;
 ```
 This parameter is the `Color` value of the date of today, when it is not selected.
 
+#### `topRowIconColor`
+
+```dart
+final Color? topRowIconColor;
+```
+
+Sets the color of the icons in the top bar
+
+#### `datePickerLightModeSelectedDayColor`
+
+```dart
+final Color? datePickerLightModeSelectedDayColor;
+```
+Color of the circle of the selected day in the datepicker for light mode.
+
+#### `datePickerLightModeSelectedDayTextColor`
+
+```dart
+final Color? datePickerLightModeSelectedDayTextColor
+```
+
+Sets the color of the text of the selected day in the date picker in light mode
+
+#### `datePickerLightModeSurfaceColor`
+
+```dart
+final Color? datePickerLightModeSurfaceColor
+```
+
+Sets the color of the surface in the date picker in light mode
+
+#### `datePickerLightModeOnSurfaceColor`
+
+```dart
+final Color? datePickerLightModeOnSurfaceColor
+```
+
+Sets the color of the text on the surface in the date picker in light mode
+
+#### `datePickerLightModeTextButtonColor`
+
+```dart
+final Color? datePickerLightModeTextButtonColor
+```
+
+Sets the color of the text buttons in the date picker in light mode ("Cancel", "OK")
+
+These properties also exist for **dark mode**
+
+- datePickerDarkModeSelectedDayColor
+- datePickerDarkModeSelectedDayTextColor
+- datePickerDarkModeSurfaceColor
+- datePickerDarkModeOnSurfaceColor
+- datePickerDarkModeTextButtonColor
+
+#### `todayButtonColor`
+
+```dart
+final Color? todayButtonColor
+```
+
+Sets the color of the today button. The same color is applied to the month and year in the top row.
+
 #### `todayButtonText`
 
 ```dart
