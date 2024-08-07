@@ -80,7 +80,6 @@ class Range {
 /// [datePickerDarkModeTextButtonColor] is the color of the text buttons in the date picker in dark mode
 /// [todayButtonText] is a [String]. With this property you can set the caption of the today icon (button to navigate to today).
 ///     If left empty, the calendar will use the string "Today".
-/// [todayButtonColor] sets the [Color] of the today button
 /// [allDayEventText] is a [String]. With this property you can set the caption of the all day event. If left empty, the
 ///     calendar will use the string "All day".
 /// [multiDayEndText] is a [String]. With this property you can set the caption of the end of a multi day event. If left empty, the
@@ -138,7 +137,6 @@ class Calendar extends StatefulWidget {
   final Color? datePickerDarkModeOnSurfaceColor;
   final Color? datePickerDarkModeTextButtonColor;
   final String todayButtonText;
-  final Color? todayButtonColor;
   final String allDayEventText;
   final String multiDayEndText;
   final Color? eventColor;
@@ -182,7 +180,6 @@ class Calendar extends StatefulWidget {
       this.selectedColor = Colors.pink,
       this.selectedTodayColor,
       this.todayColor = Colors.blue,
-      this.todayButtonColor = Colors.blueGrey,
       this.topRowIconColor = Colors.blue,
       this.datePickerLightModeSelectedDayColor = Colors.blue,
       this.datePickerLightModeSelectedDayTextColor = Colors.white,
@@ -373,7 +370,7 @@ class _CalendarState extends State<Calendar> {
       todayIcon = GestureDetector(
         child: Text(
           widget.todayButtonText,
-          style: TextStyle(color: widget.todayButtonColor),
+            style: widget.displayMonthTextStyle ?? null
         ),
         onTap: resetToToday,
       );
@@ -507,7 +504,6 @@ class _CalendarState extends State<Calendar> {
                       style: widget.displayMonthTextStyle ??
                           TextStyle(
                             fontSize: 20.0,
-                            color: widget.todayButtonColor
                           ),
                     ),
                   ],

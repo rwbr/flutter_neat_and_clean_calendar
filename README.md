@@ -290,14 +290,6 @@ These properties also exist for **dark mode**
 - datePickerDarkModeOnSurfaceColor
 - datePickerDarkModeTextButtonColor
 
-#### `todayButtonColor`
-
-```dart
-final Color? todayButtonColor
-```
-
-Sets the color of the today button. The same color is applied to the month and year in the top row.
-
 #### `todayButtonText`
 
 ```dart
