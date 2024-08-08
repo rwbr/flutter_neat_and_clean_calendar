@@ -1,3 +1,6 @@
+## [0.4.4] - 2024-08-08
+* Individual color values for date picker style exchange against ThemeData objects
+
 ## [0.4.3] - 2024-08-07
 * Bug-fix for styling today text in top bar
 

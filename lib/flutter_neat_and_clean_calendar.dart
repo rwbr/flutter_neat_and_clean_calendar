@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_neat_and_clean_calendar/date_picker_config.dart';
 import 'package:flutter_neat_and_clean_calendar/provider_image.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-// import 'package:flutter_neat_and_clean_calendar/platform_widgets.dart';
 import './date_utils.dart';
 import './simple_gesture_detector.dart';
 import './calendar_tile.dart';
@@ -68,16 +67,8 @@ class Range {
 /// [selectedTodayColor] is the color, applied to the circle on the selected day, if it is today
 /// [todayColor] this is the color of the date of today
 /// [topRowIconColor] is the color of the icons in the top bar
-/// [datePickerLightModeSelectedDayColor] is the color of the selected day in the date picker in light mode
-/// [datePickerLightModeSelectedDayTextColor] is the color of the text of the selected day in the date picker in light mode
-/// [datePickerLightModeSurfaceColor] is the color of the surface in the date picker in light mode
-/// [datePickerLightModeOnSurfaceColor] is the color of the text on the surface in the date picker in light mode
-/// [datePickerLightModeTextButtonColor] is the color of the text buttons in the date picker in light mode
-/// [datePickerDarkModeSelectedDayColor] is the color of the selected day in the date picker in dark mode
-/// [datePickerDarkModeSelectedDayTextColor] is the color of the text of the selected day in the date picker in dark mode
-/// [datePickerDarkModeSurfaceColor] is the color of the surface in the date picker in dark mode
-/// [datePickerDarkModeOnSurfaceColor] is the color of the text on the surface in the date picker in dark mode
-/// [datePickerDarkModeTextButtonColor] is the color of the text buttons in the date picker in dark mode
+/// [datePickerLightTheme] is a [ThemeData] object, that defines the light theme of the date picker.
+/// [datePickerDarkTheme] is a [ThemeData] object, that defines the dark theme of the date picker
 /// [todayButtonText] is a [String]. With this property you can set the caption of the today icon (button to navigate to today).
 ///     If left empty, the calendar will use the string "Today".
 /// [allDayEventText] is a [String]. With this property you can set the caption of the all day event. If left empty, the
@@ -126,16 +117,8 @@ class Calendar extends StatefulWidget {
   final Color? selectedTodayColor;
   final Color? todayColor;
   final Color? topRowIconColor;
-  final Color? datePickerLightModeSelectedDayColor;
-  final Color? datePickerLightModeSelectedDayTextColor;
-  final Color? datePickerLightModeSurfaceColor;
-  final Color? datePickerLightModeOnSurfaceColor;
-  final Color? datePickerLightModeTextButtonColor;
-  final Color? datePickerDarkModeSelectedDayColor;
-  final Color? datePickerDarkModeSelectedDayTextColor;
-  final Color? datePickerDarkModeSurfaceColor;
-  final Color? datePickerDarkModeOnSurfaceColor;
-  final Color? datePickerDarkModeTextButtonColor;
+  final ThemeData? datePickerLightTheme;
+  final ThemeData? datePickerDarkTheme;
   final String todayButtonText;
   final String allDayEventText;
   final String multiDayEndText;
@@ -167,7 +150,6 @@ class Calendar extends StatefulWidget {
       this.onEventSelected,
       this.onEventLongPressed,
       this.isExpandable = false,
-      // this.events,
       this.eventsList,
       this.dayBuilder,
       this.eventListBuilder,
@@ -181,16 +163,8 @@ class Calendar extends StatefulWidget {
       this.selectedTodayColor,
       this.todayColor = Colors.blue,
       this.topRowIconColor = Colors.blue,
-      this.datePickerLightModeSelectedDayColor = Colors.blue,
-      this.datePickerLightModeSelectedDayTextColor = Colors.white,
-      this.datePickerLightModeSurfaceColor = Colors.white,
-      this.datePickerLightModeOnSurfaceColor = Colors.black,
-      this.datePickerLightModeTextButtonColor = Colors.red,
-      this.datePickerDarkModeSelectedDayColor = Colors.blue,
-      this.datePickerDarkModeSelectedDayTextColor = Colors.white,
-      this.datePickerDarkModeSurfaceColor = Colors.white,
-      this.datePickerDarkModeOnSurfaceColor = Colors.black,
-      this.datePickerDarkModeTextButtonColor = Colors.red,
+      this.datePickerLightTheme,
+      this.datePickerDarkTheme,
       this.todayButtonText = 'Today',
       this.allDayEventText = 'All Day',
       this.multiDayEndText = 'End',
@@ -368,10 +342,8 @@ class _CalendarState extends State<Calendar> {
 
     if (!widget.hideTodayIcon) {
       todayIcon = GestureDetector(
-        child: Text(
-          widget.todayButtonText,
-            style: widget.displayMonthTextStyle ?? null
-        ),
+        child: Text(widget.todayButtonText,
+            style: widget.displayMonthTextStyle ?? null),
         onTap: resetToToday,
       );
     } else {
@@ -390,38 +362,36 @@ class _CalendarState extends State<Calendar> {
                         Theme.of(context).brightness == Brightness.dark;
 
                     // Define Light Theme
-                    ThemeData lightTheme = ThemeData.light().copyWith(
-                      colorScheme: ColorScheme.light(
-                        primary: widget.datePickerLightModeSelectedDayColor!,
-                        onPrimary:
-                            widget.datePickerLightModeSelectedDayTextColor!,
-                        surface: widget.datePickerLightModeSurfaceColor!,
-                        onSurface: widget.datePickerLightModeOnSurfaceColor!,
-                      ),
-                      textButtonTheme: TextButtonThemeData(
-                        style: TextButton.styleFrom(
-                          foregroundColor:
-                              widget.datePickerLightModeTextButtonColor!,
-                        ),
-                      ),
-                    );
+                    ThemeData lightTheme = widget.datePickerLightTheme ??
+                        ThemeData.light().copyWith(
+                          colorScheme: ColorScheme.light(
+                            primary: Colors.blue,
+                            onPrimary: Colors.white,
+                            surface: Colors.white,
+                            onSurface: Colors.black,
+                          ),
+                          textButtonTheme: TextButtonThemeData(
+                            style: TextButton.styleFrom(
+                              foregroundColor: Colors.red,
+                            ),
+                          ),
+                        );
 
                     // Define Dark Theme
-                    ThemeData darkTheme = ThemeData.dark().copyWith(
-                      colorScheme: ColorScheme.dark(
-                        primary: widget.datePickerDarkModeSelectedDayColor!,
-                        onPrimary:
-                            widget.datePickerDarkModeSelectedDayTextColor!,
-                        surface: widget.datePickerDarkModeSurfaceColor!,
-                        onSurface: widget.datePickerDarkModeOnSurfaceColor!,
-                      ),
-                      textButtonTheme: TextButtonThemeData(
-                        style: TextButton.styleFrom(
-                          foregroundColor:
-                              widget.datePickerDarkModeTextButtonColor!,
-                        ),
-                      ),
-                    );
+                    ThemeData darkTheme = widget.datePickerDarkTheme ??
+                        ThemeData.dark().copyWith(
+                          colorScheme: ColorScheme.dark(
+                            primary: Colors.blue,
+                            onPrimary: Colors.white,
+                            surface: Colors.grey,
+                            onSurface: Colors.white,
+                          ),
+                          textButtonTheme: TextButtonThemeData(
+                            style: TextButton.styleFrom(
+                              foregroundColor: Colors.white,
+                            ),
+                          ),
+                        );
 
                     // Choose the theme based on the current mode
                     return Theme(
