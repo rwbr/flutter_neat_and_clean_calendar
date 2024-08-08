@@ -203,6 +203,7 @@ class _CalendarState extends State<Calendar> {
   String displayMonth = '';
   DateTime get selectedDate => _selectedDate;
   List<NeatCleanCalendarEvent>? _selectedEvents;
+  bool isDarkMode = false;
 
   void initState() {
     super.initState();
@@ -351,16 +352,13 @@ class _CalendarState extends State<Calendar> {
     }
 
     jumpDateIcon = Container();
+
     if (widget.datePickerType != null &&
         widget.datePickerType != DatePickerType.hidden) {
       jumpDateIcon = PlatformIconButton(
         onPressed: () {
           showDatePicker(
                   builder: (BuildContext context, Widget? child) {
-                    // Check if Dark mode is enabled
-                    bool isDarkMode =
-                        Theme.of(context).brightness == Brightness.dark;
-
                     // Define Light Theme
                     ThemeData lightTheme = widget.datePickerLightTheme ??
                         ThemeData.light().copyWith(
@@ -388,7 +386,7 @@ class _CalendarState extends State<Calendar> {
                           ),
                           textButtonTheme: TextButtonThemeData(
                             style: TextButton.styleFrom(
-                              foregroundColor: Colors.white,
+                              foregroundColor: Colors.yellow,
                             ),
                           ),
                         );
@@ -759,6 +757,8 @@ class _CalendarState extends State<Calendar> {
   @override
   Widget build(BuildContext context) {
     _updateEventsMap();
+
+    isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     // If _selectedEvents is not null, then we sort the events by isAllDay propeerty, so that
     // all day events are displayed at the top of the list.

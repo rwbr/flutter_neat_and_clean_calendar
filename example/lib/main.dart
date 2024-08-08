@@ -12,6 +12,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Clean Calendar Demo',
+      theme: ThemeData.light(),
+      darkTheme: ThemeData.dark(),
+      themeMode: ThemeMode.system,
       home: CalendarScreen(),
       localizationsDelegates: [GlobalMaterialLocalizations.delegate],
       supportedLocales: [
@@ -135,6 +138,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
           selectedColor: Colors.blue,
           selectedTodayColor: Colors.green,
           todayColor: Colors.teal,
+          defaultDayColor: Colors.orange,
+          defaultOutOfMonthDayColor: Colors.grey,
           datePickerDarkTheme: ThemeData.dark().copyWith(
             colorScheme: ColorScheme.dark(
               primary: Colors.blue,
@@ -185,7 +190,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
           },
           datePickerType: DatePickerType.date,
           dayOfWeekStyle: TextStyle(
-              color: Colors.black, fontWeight: FontWeight.w800, fontSize: 11),
+              color: Colors.red, fontWeight: FontWeight.w800, fontSize: 11),
           showEvents: showEvents,
         ),
       ),
