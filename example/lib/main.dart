@@ -135,6 +135,32 @@ class _CalendarScreenState extends State<CalendarScreen> {
           selectedColor: Colors.blue,
           selectedTodayColor: Colors.green,
           todayColor: Colors.teal,
+          datePickerDarkTheme: ThemeData.dark().copyWith(
+            colorScheme: ColorScheme.dark(
+              primary: Colors.blue,
+              onPrimary: Colors.yellow,
+              surface: Colors.grey,
+              onSurface: Colors.yellow,
+            ),
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.orange,
+              ),
+            ),
+          ),
+          datePickerLightTheme: ThemeData.dark().copyWith(
+            colorScheme: ColorScheme.dark(
+              primary: Colors.blue,
+              onPrimary: Colors.white,
+              surface: Colors.white,
+              onSurface: Colors.teal,
+            ),
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.orange,
+              ),
+            ),
+          ),
           eventColor: null,
           locale: 'de_DE',
           todayButtonText: 'Heute',
