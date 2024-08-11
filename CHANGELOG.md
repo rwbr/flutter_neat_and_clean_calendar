@@ -1,3 +1,8 @@
+## [0.4.5] - 2024-08-11
+* Two new callback functions
+  * onListViewStateChanged
+  * onEventsUpdated
+
 ## [0.4.4] - 2024-08-08
 * Individual color values for date picker style exchange against ThemeData objects
 

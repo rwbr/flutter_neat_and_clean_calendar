@@ -140,6 +140,22 @@ final ValueChanged<NeatCleanCalendarEvent>? onEventLongPressed;
 
 Similar to `onEventSelected`, but for long press events.
 
+#### `onListViewStateChanged`
+
+´´´dart
+final ValueChanged? onListViewStateChanged;
+```
+
+The parameter `onListViewStateChanged` is a callback function. It gets executed, when the state of list view changes.
+
+#### `onEventsUpdated`
+
+```dart
+final ValueChanged<Map<DateTime, List<NeatCleanCalendarEvent>>>?
+```
+
+This callback function gets executed, when the `eventsMap` gets updated. This happens in the `initState` method. This callback function can be used to pass the content of the `eventsMap` to the parent widget. There are some cases, where this is useful.
+
 ### Options
 
 ### `isExpandable`
@@ -256,6 +272,58 @@ Sets the `ColorScheme` and `TextButtonThemeData` for styling the date picker in 
 final ThemeData? datePickerDarkTheme;
 ```
 Sets the `ColorScheme` and `TextButtonThemeData` for styling the date picker in dark mode
+
+##### Using themes for the date picker
+
+In order to apply a light theme and a dark theme to the date picker, your app must support a light theme and a dark theme. This means, your app needs to implement the following code block setting the properties of `MaterialApp`:
+
+```dart
+    return MaterialApp(
+      title: 'Flutter Clean Calendar Demo',
+      theme: ThemeData.light(),
+      darkTheme: ThemeData.dark(),
+      themeMode: ThemeMode.system,
+      home: CalendarScreen(),
+      ...
+```
+
+Then you can set the date picker themes when you initialize the Calendar widget like this:
+
+```dart
+        ...
+        child: Calendar(
+          startOnMonday: true,
+          weekDays: ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'],
+          eventsList: _eventList,
+          ...
+          datePickerDarkTheme: ThemeData.dark().copyWith(
+            colorScheme: ColorScheme.dark(
+              primary: Colors.blue,
+              onPrimary: Colors.yellow,
+              surface: Colors.grey,
+              onSurface: Colors.yellow,
+            ),
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.orange,
+              ),
+            ),
+          ),
+          datePickerLightTheme: ThemeData.dark().copyWith(
+            colorScheme: ColorScheme.dark(
+              primary: Colors.blue,
+              onPrimary: Colors.white,
+              surface: Colors.white,
+              onSurface: Colors.teal,
+            ),
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.orange,
+              ),
+            ),
+          ),
+          ...
+```
 
 #### `todayButtonText`
 

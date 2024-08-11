@@ -48,6 +48,10 @@ class Range {
 ///     executed when an event of the event list is selected
 /// [onEventLongPressed] is of type [ValueChanged<NeatCleanCalendarEvent>] and it contains a callback function
 ///     executed when an event of the event list is long pressed
+/// [onListViewStateChanged] is of type [ValueChanged] and it contains a callback function
+///    executed when the list view state changes
+/// [onEventsUpdated] is of type [ValueChanged<Map<DateTime, List<NeatCleanCalendarEvent>>] and it contains a callback function
+///    executed when the events are updated
 /// [datePickerType] defines, if the date picker should get displayed and selects its type
 ///    Choose between datePickerType.hidden, datePickerType.year, datePickerType.date
 /// [isExpandable] is a [bool]. With this parameter you can control, if the view can expand from week view
@@ -103,6 +107,9 @@ class Calendar extends StatefulWidget {
   final ValueChanged? onRangeSelected;
   final ValueChanged<NeatCleanCalendarEvent>? onEventSelected;
   final ValueChanged<NeatCleanCalendarEvent>? onEventLongPressed;
+  final ValueChanged? onListViewStateChanged;
+  final ValueChanged<Map<DateTime, List<NeatCleanCalendarEvent>>>?
+      onEventsUpdated;
   final bool isExpandable;
   final DayBuilder? dayBuilder;
   final EventListBuilder? eventListBuilder;
@@ -149,6 +156,8 @@ class Calendar extends StatefulWidget {
       this.onExpandStateChanged,
       this.onEventSelected,
       this.onEventLongPressed,
+      this.onListViewStateChanged,
+      this.onEventsUpdated,
       this.isExpandable = false,
       this.eventsList,
       this.dayBuilder,
@@ -210,6 +219,12 @@ class _CalendarState extends State<Calendar> {
 
     isExpanded = widget.isExpanded;
     showEventListView = widget.showEventListView;
+    // When setting the initial date, the eventsmap must be updated. The eventsmap is used to
+    // store the events for each day. The eventsmap is used to display the events in the calendar.
+    // It is basically the internal store of the events. Because the events are passed as a list
+    // to the calendar, the eventsmap must be created from the list. This is done in the
+    // _updateEventsMap method.
+    _updateEventsMap();
 
     _selectedDate = widget.initialDate ?? DateTime.now();
     initializeDateFormatting(widget.locale, null).then((_) => setState(() {
@@ -221,8 +236,9 @@ class _CalendarState extends State<Calendar> {
   }
 
   /// The method [_updateEventsMap] has the purpose to update the eventsMap, when the calendar widget
-  /// renders its view. When this method executes, it fills the eventsMap with the contents of the
+  /// is initiated. When this method executes, it fills the eventsMap with the contents of the
   /// given eventsList. This can be used to update the events shown by the calendar.
+  /// This is done in the initState method.
   void _updateEventsMap() {
     eventsMap = {};
     // If the user provided a list of events, then convert it to a map, but only if there
@@ -313,6 +329,13 @@ class _CalendarState extends State<Calendar> {
         [];
 
     print('eventsMap has ${eventsMap?.length} entries');
+
+    // If the eventsMap is updated, the eventsUpdated callback is invoked. In some cases it is useful
+    // to have a copy of the eventsMap in the parent widget. This can be done by providing a callback
+    // method to the calendar widget.
+    if (widget.onEventsUpdated != null) {
+      widget.onEventsUpdated!(eventsMap!);
+    }
   }
 
   Widget get nameAndIconRow {
@@ -450,6 +473,11 @@ class _CalendarState extends State<Calendar> {
           onPressed: () {
             setState(() {
               showEventListView = !showEventListView;
+              if (widget.onListViewStateChanged != null) {
+                // If the onListViewStateChanged callback is provided, invoke it.
+                // This can be used to trigger actions in the parent widget.
+                widget.onListViewStateChanged!(showEventListView);
+              }
             });
           },
           icon: Icon(
@@ -663,42 +691,6 @@ class _CalendarState extends State<Calendar> {
     }
   }
 
-  /// Returns a widget representing the event list.
-  ///
-  /// This widget is used to display a list of events.
-  /// It can be used to show events for a specific date or a range of dates.
-  /// The events can be customized and styled according to the application's needs.
-  /// To use this widget, simply call the `eventList` getter and include it in your widget tree.
-  Widget get eventList {
-    // If eventListBuilder is provided, use it to build the list of events to show.
-    // Otherwise use the default list of events.
-    if (widget.eventListBuilder == null) {
-      return Expanded(
-        child: _selectedEvents != null && _selectedEvents!.isNotEmpty
-            // Create a list of events that are occurring on the currently selected day, if there are
-            // any. Otherwise, display an empty Container.
-            ? ListView.builder(
-                padding: EdgeInsets.all(0.0),
-                itemBuilder: (BuildContext context, int index) {
-                  final NeatCleanCalendarEvent event = _selectedEvents![index];
-                  final String start =
-                      DateFormat('HH:mm').format(event.startTime).toString();
-                  final String end =
-                      DateFormat('HH:mm').format(event.endTime).toString();
-                  return widget.eventCellBuilder == null
-                      ? eventCell(event, start, end)
-                      : widget.eventCellBuilder!(context, event, start, end);
-                },
-                itemCount: _selectedEvents!.length,
-              )
-            : Container(),
-      );
-    } else {
-      // eventListBuilder is not null
-      return widget.eventListBuilder!(context, _selectedEvents!);
-    }
-  }
-
   Column singleDayTimeWidget(String start, String end) {
     print('SingleDayEvent');
     return Column(
@@ -756,8 +748,6 @@ class _CalendarState extends State<Calendar> {
 
   @override
   Widget build(BuildContext context) {
-    _updateEventsMap();
-
     isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     // If _selectedEvents is not null, then we sort the events by isAllDay propeerty, so that
@@ -789,43 +779,103 @@ class _CalendarState extends State<Calendar> {
               isExpanded: isExpanded,
             ),
             expansionButtonRow,
-            if (widget.showEvents) eventList
+            if (widget.showEvents) eventlistView
           ],
         ],
       ),
     );
   }
 
+  /// A getter that returns a list of widgets representing the events in the event card.
+  ///
+  /// The `eventlistView` method creates a list of widgets that represent the events in the event card.
+  /// Each date in the `eventsMap` is represented by a container widget that displays the date.
+  /// Under each date, the associated events are listed, with each event represented by an `eventCell` widget.
+  ///
+  /// The method iterates through the `eventsMap` to create the widgets for the events.
+  /// For each date, a container widget is created to display the date.
+  /// For each event, an `eventCell` widget is created that displays the event's start and end times.
+  ///
+  /// - Return value: A list of widgets representing the events in the event card.
   Widget get eventlistView {
-    List<Widget> eventWidgets = [];
+    // If the list view is active, show the full list of events. Otherwise only the
+    // events for the selected day are shown.
+    List<NeatCleanCalendarEvent>? _listEvents =
+        showEventListView ? widget.eventsList : _selectedEvents;
 
-    eventsMap!.forEach((date, events) {
-      eventWidgets.add(
-        Container(
-          color: widget.bottomBarColor ?? Color.fromRGBO(200, 200, 200, 0.2),
-          height: 40,
-          margin: EdgeInsets.only(top: 8.0),
-          padding: const EdgeInsets.all(8.0),
-          child: Text(
-            DateFormat.yMMMMEEEEd(widget.locale).format(date),
-            style: widget.bottomBarTextStyle ?? TextStyle(fontSize: 13),
-          ),
-        ),
-      );
-      events.forEach((event) {
-        final String start =
-            DateFormat('HH:mm').format(event.startTime).toString();
-        final String end = DateFormat('HH:mm').format(event.endTime).toString();
-        eventWidgets.add(eventCell(event, start, end));
-      });
-    });
+    // If eventListBuilder is provided, use it to build the list of events to show.
+    // Otherwise use the default list of events.
+    if (widget.eventListBuilder == null) {
+      if (showEventListView == true) {
+        // If the list view is active a different kind of list is shown.
+        final List<dynamic> itemList = [];
 
-    return Expanded(
-      child: ListView(
-        children: eventWidgets,
-        shrinkWrap: true,
-      ),
-    );
+        eventsMap!.forEach((date, events) {
+          itemList.add(date); // Füge das Datum hinzu
+          itemList.addAll(events); // Füge die Events des Datums hinzu
+        });
+
+        return Expanded(
+          child: ListView.builder(
+              itemCount: itemList.length,
+              itemBuilder: (BuildContext context, int index) {
+                final item = itemList[index];
+
+                if (item is DateTime) {
+                  // Date header for the list of events
+                  return Container(
+                    color: Color.fromRGBO(200, 200, 200, 0.2),
+                    height: 40,
+                    margin: EdgeInsets.only(top: 8.0),
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      DateFormat.yMMMMEEEEd('de').format(item),
+                      style: TextStyle(fontSize: 13),
+                    ),
+                  );
+                } else if (item is NeatCleanCalendarEvent) {
+                  // Event cell for the list of events
+                  final NeatCleanCalendarEvent event = item;
+                  final String start =
+                      DateFormat('HH:mm').format(event.startTime).toString();
+                  final String end =
+                      DateFormat('HH:mm').format(event.endTime).toString();
+                  if (widget.eventCellBuilder == null) {
+                    return eventCell(event, start, end);
+                  } else {
+                    return widget.eventCellBuilder!(context, event, start, end);
+                  }
+                }
+                return Container();
+              }),
+        );
+      } else {
+        // List view is not active
+        return Expanded(
+          child: _listEvents != null && _listEvents.isNotEmpty
+              // Create a list of events that are occurring on the currently selected day, if there are
+              // any. Otherwise, display an empty Container.
+              ? ListView.builder(
+                  padding: EdgeInsets.all(0.0),
+                  itemBuilder: (BuildContext context, int index) {
+                    final NeatCleanCalendarEvent event = _listEvents[index];
+                    final String start =
+                        DateFormat('HH:mm').format(event.startTime).toString();
+                    final String end =
+                        DateFormat('HH:mm').format(event.endTime).toString();
+                    return widget.eventCellBuilder == null
+                        ? eventCell(event, start, end)
+                        : widget.eventCellBuilder!(context, event, start, end);
+                  },
+                  itemCount: _listEvents.length,
+                )
+              : Container(),
+        );
+      }
+    } else {
+      // eventListBuilder is not null
+      return widget.eventListBuilder!(context, _selectedEvents!);
+    }
   }
 
   /// A widget that represents a cell for displaying an event in the calendar.

@@ -20,6 +20,7 @@ class NeatCleanCalendarEvent {
   Map<String, dynamic>? metadata;
   String? icon;
   bool? wide = false;
+  String? id;
 
   NeatCleanCalendarEvent(
     this.summary, {
@@ -35,5 +36,6 @@ class NeatCleanCalendarEvent {
     this.metadata,
     this.icon,
     this.wide,
+    this.id,
   });
 }
