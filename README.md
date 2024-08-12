@@ -156,6 +156,15 @@ final ValueChanged<Map<DateTime, List<NeatCleanCalendarEvent>>>?
 
 This callback function gets executed, when the `eventsMap` gets updated. This happens in the `initState` method. This callback function can be used to pass the content of the `eventsMap` to the parent widget. There are some cases, where this is useful.
 
+#### `onPrintLog`
+
+```dart
+
+  final ValueChanged<String>? onPrintLog;
+```
+
+This callback can be used to pass Strings with logging messages from the widget to its parent widget. By doing so can use your apps logging class to output the messages of the calendar. The only thing you need to do is to implement your allback message and call your logger with the passed String object.
+
 ### Options
 
 ### `isExpandable`

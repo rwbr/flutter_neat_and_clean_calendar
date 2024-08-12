@@ -1,3 +1,6 @@
+## [0.4.6] - 2024-08-12
+* New callback for logging
+
 ## [0.4.5] - 2024-08-11
 * Two new callback functions
   * onListViewStateChanged

@@ -110,6 +110,7 @@ class Calendar extends StatefulWidget {
   final ValueChanged? onListViewStateChanged;
   final ValueChanged<Map<DateTime, List<NeatCleanCalendarEvent>>>?
       onEventsUpdated;
+  final ValueChanged<String>? onPrintLog;
   final bool isExpandable;
   final DayBuilder? dayBuilder;
   final EventListBuilder? eventListBuilder;
@@ -158,6 +159,7 @@ class Calendar extends StatefulWidget {
       this.onEventLongPressed,
       this.onListViewStateChanged,
       this.onEventsUpdated,
+      this.onPrintLog,
       this.isExpandable = false,
       this.eventsList,
       this.dayBuilder,
@@ -328,7 +330,9 @@ class _CalendarState extends State<Calendar> {
             _selectedDate.year, _selectedDate.month, _selectedDate.day)] ??
         [];
 
-    print('eventsMap has ${eventsMap?.length} entries');
+    widget.onPrintLog != null
+        ? widget.onPrintLog!('eventsMap has ${eventsMap?.length} entries')
+        : print('eventsMap has ${eventsMap?.length} entries');
 
     // If the eventsMap is updated, the eventsUpdated callback is invoked. In some cases it is useful
     // to have a copy of the eventsMap in the parent widget. This can be done by providing a callback
@@ -438,7 +442,10 @@ class _CalendarState extends State<Calendar> {
               // _selectedDate is updated. This must be done after the callback methods are invoked,
               // otherwise the callback methods will not trigger, if the current date is equal to the
               // selected date.
-              print('Date chosen: ${_selectedDate.toIso8601String()}');
+              widget.onPrintLog != null
+                  ? widget.onPrintLog!(
+                      'Date chosen: ${_selectedDate.toIso8601String()}')
+                  : print('Date chosen: ${_selectedDate.toIso8601String()}');
               onJumpToDateSelected(date);
               setState(() {
                 _selectedDate = date;
@@ -692,7 +699,9 @@ class _CalendarState extends State<Calendar> {
   }
 
   Column singleDayTimeWidget(String start, String end) {
-    print('SingleDayEvent');
+    widget.onPrintLog != null
+        ? widget.onPrintLog!('SingleDayEvent')
+        : print('SingleDayEvent');
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       mainAxisAlignment: MainAxisAlignment.center,
@@ -704,11 +713,15 @@ class _CalendarState extends State<Calendar> {
   }
 
   Column allOrMultiDayDayTimeWidget(NeatCleanCalendarEvent event) {
-    print('=== Summary: ${event.summary}');
+    widget.onPrintLog != null
+        ? widget.onPrintLog!('=== Summary: ${event.summary}')
+        : print('=== Summary: ${event.summary}');
     String start = DateFormat('HH:mm').format(event.startTime).toString();
     String end = DateFormat('HH:mm').format(event.endTime).toString();
     if (event.isAllDay) {
-      print('AllDayEvent - ${event.summary}');
+      widget.onPrintLog != null
+          ? widget.onPrintLog!('AllDayEvent - ${event.summary}')
+          : print('AllDayEvent - ${event.summary}');
       return Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         mainAxisAlignment: MainAxisAlignment.center,
@@ -723,16 +736,22 @@ class _CalendarState extends State<Calendar> {
     if (event.multiDaySegement == MultiDaySegement.first) {
       // The event begins on the selcted day.
       // Just show the start time, no end time.
-      print('MultiDayEvent: start - ${event.summary}');
+      widget.onPrintLog != null
+          ? widget.onPrintLog!('MultiDayEvent: start - ${event.summary}')
+          : print('MultiDayEvent: start - ${event.summary}');
       end = '';
     } else if (event.multiDaySegement == MultiDaySegement.last) {
       // The event ends on the selcted day.
       // Just show the end time, no start time.
-      print('MultiDayEvent: end - ${event.summary}');
+      widget.onPrintLog != null
+          ? widget.onPrintLog!('MultiDayEvent: end - ${event.summary}')
+          : print('MultiDayEvent: end - ${event.summary}');
       start = widget.multiDayEndText;
     } else {
       // The event spans multiple days.
-      print('MultiDayEvent: middle - ${event.summary}');
+      widget.onPrintLog != null
+          ? widget.onPrintLog!('MultiDayEvent: middle - ${event.summary}')
+          : print('MultiDayEvent: middle - ${event.summary}');
       start = widget.allDayEventText;
       end = '';
     }
@@ -1144,7 +1163,9 @@ class _CalendarState extends State<Calendar> {
   // but typically this method will store the selected date and then call a
   // user-defined callback function based on this date.
   void handleSelectedDateAndUserCallback(DateTime day) {
-    print('daySelected: $day');
+    widget.onPrintLog != null
+        ? widget.onPrintLog!('daySelected: $day')
+        : print('daySelected: $day');
     // Fire onDateSelected callback and onMonthChanged callback.
     _launchDateSelectionCallback(day);
 
