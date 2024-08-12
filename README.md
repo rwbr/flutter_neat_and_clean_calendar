@@ -472,6 +472,13 @@ final bool showEventListView;
 ````
 With this `bool` parameter you can switch the view to a list of events only. If set to `true` the calendar grid gets hidden.
 
+#### `showEventListViewIcon`
+
+```dart
+final bool showEventListViewIcon;
+````
+With this `bool` parameter you can control if the widget will display the list view icon. If the list view icon is hidden, the list view feature is disabled.
+
 ### Setting the calendar events
 
 ```dart

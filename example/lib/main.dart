@@ -191,6 +191,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
           datePickerType: DatePickerType.date,
           dayOfWeekStyle: TextStyle(
               color: Colors.red, fontWeight: FontWeight.w800, fontSize: 11),
+          showEventListViewIcon: true,
           showEvents: showEvents,
         ),
       ),

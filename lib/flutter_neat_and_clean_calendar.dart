@@ -147,6 +147,7 @@ class Calendar extends StatefulWidget {
   final double? eventTileHeight;
   final bool showEvents;
   final bool showEventListView;
+  final bool showEventListViewIcon;
 
   /// Configures the date picker if enabled
 
@@ -195,6 +196,7 @@ class Calendar extends StatefulWidget {
       this.datePickerConfig,
       this.eventTileHeight,
       this.showEventListView = false,
+      this.showEventListViewIcon = true,
       this.showEvents = true});
 
   @override
@@ -220,7 +222,12 @@ class _CalendarState extends State<Calendar> {
     super.initState();
 
     isExpanded = widget.isExpanded;
-    showEventListView = widget.showEventListView;
+
+    if (widget.showEventListViewIcon == true) {
+      showEventListView = widget.showEventListView;
+    } else {
+      showEventListView = false;
+    }
     // When setting the initial date, the eventsmap must be updated. The eventsmap is used to
     // store the events for each day. The eventsmap is used to display the events in the calendar.
     // It is basically the internal store of the events. Because the events are passed as a list
@@ -476,6 +483,8 @@ class _CalendarState extends State<Calendar> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         showEventListView ? Container() : leftArrow ?? Container(),
+        widget.showEventListViewIcon
+            ?
         PlatformIconButton(
           onPressed: () {
             setState(() {
@@ -491,7 +500,10 @@ class _CalendarState extends State<Calendar> {
             Icons.list,
             color: widget.topRowIconColor,
           ),
-        ),
+              )
+            : Container(
+                padding: EdgeInsets.only(left: 24.0),
+              ),
         showEventListView
             ? Flexible(
                 child: Container(),

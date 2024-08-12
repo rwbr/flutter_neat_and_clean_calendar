@@ -1,3 +1,6 @@
+## [0.4.7] - 2024-08-12
+* New parameter showEventListViewIcon to hide the list view icon
+
 ## [0.4.6] - 2024-08-12
 * New callback for logging
 
