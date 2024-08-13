@@ -1,3 +1,6 @@
+## [0.4.8] - 2024-08-13
+* Issue #82: Top row restructured, so that "Today" button is always centered, even when the date picker icon or the list picker icon is hidden
+
 ## [0.4.7] - 2024-08-12
 * New parameter showEventListViewIcon to hide the list view icon
 

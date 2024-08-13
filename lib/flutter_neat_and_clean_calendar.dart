@@ -477,55 +477,51 @@ class _CalendarState extends State<Calendar> {
           color: widget.topRowIconColor,
         ),
       );
+    } else {
+      jumpDateIcon = Container();
     }
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Stack(
+      alignment: Alignment.center,
       children: [
-        showEventListView ? Container() : leftArrow ?? Container(),
-        widget.showEventListViewIcon
-            ?
-        PlatformIconButton(
-          onPressed: () {
-            setState(() {
-              showEventListView = !showEventListView;
-              if (widget.onListViewStateChanged != null) {
-                // If the onListViewStateChanged callback is provided, invoke it.
-                // This can be used to trigger actions in the parent widget.
-                widget.onListViewStateChanged!(showEventListView);
-              }
-            });
-          },
-          icon: Icon(
-            Icons.list,
-            color: widget.topRowIconColor,
-          ),
-              )
-            : Container(
-                padding: EdgeInsets.only(left: 24.0),
-              ),
-        showEventListView
-            ? Flexible(
-                child: Container(),
-              )
-            : Expanded(
-                child: Column(
-                  children: <Widget>[
-                    // Text 'Today' in the top bar (or what you set as todayButtonText)
-                    todayIcon ?? Container(),
-                    // Month and year in the top bar
-                    Text(
-                      displayMonth,
-                      style: widget.displayMonthTextStyle ??
-                          TextStyle(
-                            fontSize: 20.0,
-                          ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            showEventListView ? Container() : leftArrow ?? Container(),
+            widget.showEventListViewIcon
+                ? PlatformIconButton(
+                    onPressed: () {
+                      setState(() {
+                        showEventListView = !showEventListView;
+                        if (widget.onListViewStateChanged != null) {
+                          widget.onListViewStateChanged!(showEventListView);
+                        }
+                      });
+                    },
+                    icon: Icon(
+                      Icons.list,
+                      color: widget.topRowIconColor,
                     ),
-                  ],
+                  )
+                : Container(),
+            Expanded(
+                child:
+                    Container()), // Platzhalter, damit die Row ausgeglichen ist
+            showEventListView ? Container() : jumpDateIcon ?? Container(),
+            showEventListView ? Container() : rightArrow ?? Container(),
+          ],
+        ),
+        // Zentralisiertes Stack-Widget
+        Column(children: [
+          if (todayIcon != null) todayIcon!,
+          Text(
+            displayMonth,
+            style: widget.displayMonthTextStyle ??
+                TextStyle(
+                  fontSize: 20.0,
                 ),
-              ),
-        showEventListView ? Container() : jumpDateIcon ?? Container(),
-        showEventListView ? Container() : rightArrow ?? Container(),
+          ),
+        ]),
       ],
     );
   }
