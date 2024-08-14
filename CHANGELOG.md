@@ -1,3 +1,6 @@
+## [0.4.9] - 2024-08-14
+* Issue #83: Updating the internal data possible again
+
 ## [0.4.8] - 2024-08-13
 * Issue #82: Top row restructured, so that "Today" button is always centered, even when the date picker icon or the list picker icon is hidden
 
