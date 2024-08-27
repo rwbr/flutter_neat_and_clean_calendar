@@ -146,7 +146,7 @@ class Calendar extends StatefulWidget {
   final DatePickerConfig? datePickerConfig;
   final double? eventTileHeight;
   final bool showEvents;
-  final bool showEventListView;
+  final bool forceEventListView;
   final bool showEventListViewIcon;
 
   /// Configures the date picker if enabled
@@ -195,7 +195,7 @@ class Calendar extends StatefulWidget {
       this.displayMonthTextStyle,
       this.datePickerConfig,
       this.eventTileHeight,
-      this.showEventListView = false,
+      this.forceEventListView = false,
       this.showEventListViewIcon = true,
       this.showEvents = true});
 
@@ -212,11 +212,13 @@ class _CalendarState extends State<Calendar> {
   DateTime _selectedDate = DateTime.now();
   String? currentMonth;
   late bool isExpanded;
-  late bool showEventListView;
+  late bool forceEventListView;
   String displayMonth = '';
   DateTime get selectedDate => _selectedDate;
   List<NeatCleanCalendarEvent>? _selectedEvents;
   bool isDarkMode = false;
+  late ScrollController _scrollController;
+  late List<dynamic> itemList = [];
 
   @override
   void initState() {
@@ -224,11 +226,7 @@ class _CalendarState extends State<Calendar> {
 
     isExpanded = widget.isExpanded;
 
-    if (widget.showEventListViewIcon == true) {
-      showEventListView = widget.showEventListView;
-    } else {
-      showEventListView = false;
-    }
+    forceEventListView = widget.forceEventListView;
 
     _selectedDate = widget.initialDate ?? DateTime.now();
     initializeDateFormatting(widget.locale, null).then((_) => setState(() {
@@ -244,7 +242,7 @@ class _CalendarState extends State<Calendar> {
     // to the calendar, the eventsmap must be created from the list. This is done in the
     // _updateEventsMap method.
     _updateEventsMap();
-
+    _scrollController = ScrollController();
   }
 
   @override
@@ -259,6 +257,57 @@ class _CalendarState extends State<Calendar> {
       // _updateEventsMap method.
       _updateEventsMap();
     }
+  }
+
+  void scrollToTop() {
+    // Only scroll to top if the event list view is shown
+    if (forceEventListView == false) return;
+    _scrollController.animateTo(
+      0.0, // Die Scroll-Position (0.0 ist ganz oben)
+      duration: Duration(milliseconds: 300), // Dauer der Animation
+      curve: Curves.easeInOut, // Animationseffekt
+    );
+  }
+
+  void scrollToIndex(int index) {
+    // Only scroll to top if the event list view is shown
+    if (forceEventListView == false) return;
+    double position =
+        index * 60.0; // Annahme: Höhe eines Listenelements = 60.0 Pixel
+
+    _scrollController.animateTo(
+      position,
+      duration: Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+    );
+  }
+
+  int findClosestIndex(DateTime currentDate) {
+    int closestIndex = -1;
+    int minDifference = double.maxFinite.toInt(); // Eine sehr große Zahl
+
+    for (int i = 0; i < itemList.length; i++) {
+      if (itemList[i] is DateTime) {
+        DateTime eventDate = itemList[i] as DateTime;
+
+        // Berechne die Differenz in Tagen zwischen dem Event-Datum und dem aktuellen Datum
+        int difference = (eventDate.difference(currentDate).inDays).abs();
+
+        if (difference < minDifference) {
+          minDifference = difference;
+          closestIndex = i;
+        }
+
+        // Wenn das Event genau am aktuellen Datum stattfindet, direkt zurückgeben
+        if (eventDate.year == currentDate.year &&
+            eventDate.month == currentDate.month &&
+            eventDate.day == currentDate.day) {
+          return i;
+        }
+      }
+    }
+
+    return closestIndex;
   }
 
   /// The method [_updateEventsMap] has the purpose to update the eventsMap, when the calendar widget
@@ -393,11 +442,8 @@ class _CalendarState extends State<Calendar> {
     }
 
     if (!widget.hideTodayIcon) {
-      todayIcon = GestureDetector(
-        child: Text(widget.todayButtonText,
-            style: widget.displayMonthTextStyle ?? null),
-        onTap: resetToToday,
-      );
+      todayIcon = Text(widget.todayButtonText,
+          style: widget.displayMonthTextStyle ?? null);
     } else {
       todayIcon = Container();
     }
@@ -504,14 +550,14 @@ class _CalendarState extends State<Calendar> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            showEventListView ? Container() : leftArrow ?? Container(),
+            forceEventListView ? Container() : leftArrow ?? Container(),
             widget.showEventListViewIcon
                 ? PlatformIconButton(
                     onPressed: () {
                       setState(() {
-                        showEventListView = !showEventListView;
+                        forceEventListView = !forceEventListView;
                         if (widget.onListViewStateChanged != null) {
-                          widget.onListViewStateChanged!(showEventListView);
+                          widget.onListViewStateChanged!(forceEventListView);
                         }
                       });
                     },
@@ -524,21 +570,24 @@ class _CalendarState extends State<Calendar> {
             Expanded(
                 child:
                     Container()), // Platzhalter, damit die Row ausgeglichen ist
-            showEventListView ? Container() : jumpDateIcon ?? Container(),
-            showEventListView ? Container() : rightArrow ?? Container(),
+            forceEventListView ? Container() : jumpDateIcon ?? Container(),
+            forceEventListView ? Container() : rightArrow ?? Container(),
           ],
         ),
         // Zentralisiertes Stack-Widget
-        Column(children: [
-          if (todayIcon != null) todayIcon!,
-          Text(
-            displayMonth,
-            style: widget.displayMonthTextStyle ??
-                TextStyle(
-                  fontSize: 20.0,
-                ),
-          ),
-        ]),
+        GestureDetector(
+          child: Column(children: [
+            if (todayIcon != null) todayIcon!,
+            Text(
+              displayMonth,
+              style: widget.displayMonthTextStyle ??
+                  TextStyle(
+                    fontSize: 20.0,
+                  ),
+            ),
+          ]),
+          onTap: resetToToday,
+        ),
       ],
     );
   }
@@ -814,7 +863,7 @@ class _CalendarState extends State<Calendar> {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           nameAndIconRow,
-          if (showEventListView)
+          if (forceEventListView)
             eventlistView
           else ...[
             ExpansionCrossFade(
@@ -845,14 +894,14 @@ class _CalendarState extends State<Calendar> {
     // If the list view is active, show the full list of events. Otherwise only the
     // events for the selected day are shown.
     List<NeatCleanCalendarEvent>? _listEvents =
-        showEventListView ? widget.eventsList : _selectedEvents;
+        forceEventListView ? widget.eventsList : _selectedEvents;
 
     // If eventListBuilder is provided, use it to build the list of events to show.
     // Otherwise use the default list of events.
     if (widget.eventListBuilder == null) {
-      if (showEventListView == true) {
+      if (forceEventListView == true) {
         // If the list view is active a different kind of list is shown.
-        final List<dynamic> itemList = [];
+        itemList = [];
 
         eventsMap!.forEach((date, events) {
           itemList.add(date); // Füge das Datum hinzu
@@ -861,6 +910,7 @@ class _CalendarState extends State<Calendar> {
 
         return Expanded(
           child: ListView.builder(
+              controller: _scrollController,
               itemCount: itemList.length,
               itemBuilder: (BuildContext context, int index) {
                 final item = itemList[index];
@@ -1018,6 +1068,12 @@ class _CalendarState extends State<Calendar> {
   /// position of the screen. It re-caclulates the range of dates, so that the
   /// month view or week view changes to a range containing the current day.
   void resetToToday() {
+    int index = findClosestIndex(DateTime.now());
+    if (index != -1) {
+      scrollToIndex(index);
+    } else {
+      scrollToTop();
+    }
     onJumpToDateSelected(DateTime.now());
   }
 

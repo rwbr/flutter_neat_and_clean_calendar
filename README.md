@@ -465,10 +465,10 @@ final bool showEvents;
 ```
 This is a `bool`. This parameter allows you to decide, if the calender shows a list of events. Default value is set to `true`, but you can hide the events entirely by setting it to `false`.
 
-#### `showEventListView`
+#### `forceEventListView`
 
 ```dart
-final bool showEventListView;
+final bool forceEventListView;
 ````
 With this `bool` parameter you can switch the view to a list of events only. If set to `true` the calendar grid gets hidden.
 

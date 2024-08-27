@@ -154,6 +154,7 @@ class NeatCleanCalendarTile extends StatelessWidget {
                                     ? defaultOutOfMonthDayColor
                                     : Colors.grey),
                   ),
+                  textScaler: TextScaler.noScaling,
                   // Grey color for previous or next months dates
                 ),
                 // Dots for the events

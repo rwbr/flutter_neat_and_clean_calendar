@@ -1,3 +1,10 @@
+## [0.4.10] - 2024-08-27
+* macos_ui removed as dependency
+* Issue #84: Events added after initial load are not displayed in the monthly view
+* touch target of the today button enlarded
+* event list view now scrolls to today (or closest entry to today's date) when today button is hit
+* CalendarTiles text doesn't scale with system settings
+
 ## [0.4.9] - 2024-08-14
 * Issue #83: Updating the internal data possible again
 
