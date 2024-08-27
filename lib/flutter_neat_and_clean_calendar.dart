@@ -229,12 +229,6 @@ class _CalendarState extends State<Calendar> {
     } else {
       showEventListView = false;
     }
-    // When setting the initial date, the eventsmap must be updated. The eventsmap is used to
-    // store the events for each day. The eventsmap is used to display the events in the calendar.
-    // It is basically the internal store of the events. Because the events are passed as a list
-    // to the calendar, the eventsmap must be created from the list. This is done in the
-    // _updateEventsMap method.
-    _updateEventsMap();
 
     _selectedDate = widget.initialDate ?? DateTime.now();
     initializeDateFormatting(widget.locale, null).then((_) => setState(() {
@@ -243,6 +237,14 @@ class _CalendarState extends State<Calendar> {
           displayMonth =
               '${monthFormat[0].toUpperCase()}${monthFormat.substring(1)}';
         }));
+
+    // When setting the initial date, the eventsmap must be updated. The eventsmap is used to
+    // store the events for each day. The eventsmap is used to display the events in the calendar.
+    // It is basically the internal store of the events. Because the events are passed as a list
+    // to the calendar, the eventsmap must be created from the list. This is done in the
+    // _updateEventsMap method.
+    _updateEventsMap();
+
   }
 
   @override
