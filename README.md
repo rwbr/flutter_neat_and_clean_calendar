@@ -19,7 +19,7 @@ The calendar view shows a list of events for the selected date. This list view s
 * All-day events (Span over a full day with no specific start and end time, property `isAllDay`)
 * Multi-day events (Start at a specific time on one day and end at a specific time on another day, property `isMultiDay`)
 
-![Event types](https://raw.githubusercontent.com/rwbr/flutter_neat_and_clean_calendar/blob/main/img/different-events.png)
+![Event types](https://raw.githubusercontent.com/rwbr/flutter_neat_and_clean_calendar/main/img/different-events.png)
 
 The property `isAllDay` has a higher priority than 'isMultiDay'. This means, that when you set `isAllDay` to `true` for an event, it will show up in the events list als all-day event without start and end times, no matter if `isMultiDay` was also set to `true`.
 
@@ -540,7 +540,7 @@ Calendar(
 )
 ```
 
-![Screenshot](https://raw.githubusercontent.com/rwbr/flutter_neat_and_clean_calendar/blob/main/img/usage1.png)
+![Screenshot](https://raw.githubusercontent.com/rwbr/flutter_neat_and_clean_calendar/main/img/usage1.png)
 
 ### Display a date picker to jump to a certain date
 
@@ -556,7 +556,7 @@ These options are available:
 
 If you set the option to 'DatePickerType.date' or 'DatePickerType.year' an icon to load the date picker is shown.
 
-![Jump-To-Date button](https://raw.githubusercontent.com/rwbr/flutter_neat_and_clean_calendar/blob/main/img/jump-date-button.png)
+![Jump-To-Date button](https://raw.githubusercontent.com/rwbr/flutter_neat_and_clean_calendar/main/img/jump-date-button.png)
 
 Pressing this button opens a date picker, that allows the user to jump to a certain date.
 
@@ -568,7 +568,7 @@ The class `NeatAndCleanCalendarEvent` has a boolean property called ìsAllDay`. 
 define events, that last all day with now start or end time. These events get sorted at the top of the 
 events list.
 
-![All day event at the top of the list](https://raw.githubusercontent.com/rwbr/flutter_neat_and_clean_calendar/blob/main/img/all-day-event.png)
+![All day event at the top of the list](https://raw.githubusercontent.com/rwbr/flutter_neat_and_clean_calendar/main/img/all-day-event.png)
 
 With the property `allDayEventText` you define the string displayed for that type of events. If you
 don't set this option the calendar will display `All day` for these events.
@@ -581,8 +581,8 @@ Calendar(
 )
 ```
 
-![Screenshot](https://raw.githubusercontent.com/rwbr/flutter_neat_and_clean_calendar/blob/main/img/usage2.png)
-![Screenshot](https://raw.githubusercontent.com/rwbr/flutter_neat_and_clean_calendar/blob/main/img/usage3.png)
+![Screenshot](https://raw.githubusercontent.com/rwbr/flutter_neat_and_clean_calendar/main/img/usage2.png)
+![Screenshot](https://raw.githubusercontent.com/rwbr/flutter_neat_and_clean_calendar/main/img/usage3.png)
 
 ### Custom day builder
 
@@ -596,7 +596,7 @@ Calendar(
 )
 ```
 
-![Screenshot](https://raw.githubusercontent.com/rwbr/flutter_neat_and_clean_calendar/blob/main/img/usage4.png)
+![Screenshot](https://raw.githubusercontent.com/rwbr/flutter_neat_and_clean_calendar/main/img/usage4.png)
 
 ### Custom event list builder
 
@@ -611,4 +611,4 @@ Calendar(
 )
 ```
 
-![Screenshot](https://raw.githubusercontent.com/rwbr/flutter_neat_and_clean_calendar/blob/main/img/usage5.png)
+![Screenshot](https://raw.githubusercontent.com/rwbr/flutter_neat_and_clean_calendar/main/img/usage5.png)
