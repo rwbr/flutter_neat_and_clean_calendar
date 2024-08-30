@@ -1,3 +1,7 @@
+## [0.4.11] - 2024-08-29
+* Automatic scrolling to nearest date from today on loading the event list view
+* New callback method parameter onTodayButtonPressed
+
 ## [0.4.10] - 2024-08-27
 * macos_ui removed as dependency
 * Issue #84: Events added after initial load are not displayed in the monthly view

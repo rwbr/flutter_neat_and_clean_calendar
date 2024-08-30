@@ -159,11 +159,19 @@ This callback function gets executed, when the `eventsMap` gets updated. This ha
 #### `onPrintLog`
 
 ```dart
-
   final ValueChanged<String>? onPrintLog;
 ```
 
 This callback can be used to pass Strings with logging messages from the widget to its parent widget. By doing so can use your apps logging class to output the messages of the calendar. The only thing you need to do is to implement your allback message and call your logger with the passed String object.
+
+
+#### `onTodayButtonPressed`
+
+```dart
+  final ValueChanged? onTodayButtonPressed;
+```
+
+That callback gets called, when the user taps the "today" button. The purpose of that callback is to inform the parent widget, that the users tapped this button. It can be necessary to capture that event in the paren widget, especially if you use a custom widget with `eventListBuilder`. 
 
 ### Options
 

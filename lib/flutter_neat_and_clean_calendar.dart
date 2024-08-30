@@ -111,6 +111,7 @@ class Calendar extends StatefulWidget {
   final ValueChanged<Map<DateTime, List<NeatCleanCalendarEvent>>>?
       onEventsUpdated;
   final ValueChanged<String>? onPrintLog;
+  final ValueChanged<DateTime>? onTodayButtonPressed;
   final bool isExpandable;
   final DayBuilder? dayBuilder;
   final EventListBuilder? eventListBuilder;
@@ -161,6 +162,7 @@ class Calendar extends StatefulWidget {
       this.onListViewStateChanged,
       this.onEventsUpdated,
       this.onPrintLog,
+      this.onTodayButtonPressed,
       this.isExpandable = false,
       this.eventsList,
       this.dayBuilder,
@@ -586,7 +588,17 @@ class _CalendarState extends State<Calendar> {
                   ),
             ),
           ]),
-          onTap: resetToToday,
+            onTap: () {
+              if (widget.onTodayButtonPressed != null) {
+                widget.onTodayButtonPressed!(_selectedDate);
+              }
+              // TOday-Button should only trigger a reset to today, if the event list view is not showwn
+              // or if the event list is shown and the ScrollController is connected to the list view.
+              if (!forceEventListView ||
+                  (forceEventListView && _scrollController.hasClients)) {
+                resetToToday();
+              }
+            }
         ),
       ],
     );
