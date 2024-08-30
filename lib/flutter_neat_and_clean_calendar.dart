@@ -215,6 +215,7 @@ class _CalendarState extends State<Calendar> {
   String? currentMonth;
   late bool isExpanded;
   late bool forceEventListView;
+  bool _didScroll = false;
   String displayMonth = '';
   DateTime get selectedDate => _selectedDate;
   List<NeatCleanCalendarEvent>? _selectedEvents;
@@ -261,6 +262,10 @@ class _CalendarState extends State<Calendar> {
     }
   }
 
+  /// Scrolls the list view to the top if the event list view is shown.
+  ///
+  /// This method animates the scroll position to 0.0 (the top) using the [_scrollController].
+  /// The animation has a duration of 300 milliseconds and uses the [Curves.easeInOut] animation effect.
   void scrollToTop() {
     // Only scroll to top if the event list view is shown
     if (forceEventListView == false) return;
@@ -269,8 +274,16 @@ class _CalendarState extends State<Calendar> {
       duration: Duration(milliseconds: 300), // Dauer der Animation
       curve: Curves.easeInOut, // Animationseffekt
     );
+    _didScroll = true;
   }
 
+  /// Scrolls the list view to the specified [index].
+  ///
+  /// This method is used to scroll the calendar to a specific index in the event list view.
+  /// It only scrolls to the top if the event list view is currently shown.
+  /// The [index] parameter represents the position in the list, and it is multiplied by 60.0
+  /// to calculate the scroll position in pixels.
+  /// The scroll animation has a duration of 300 milliseconds and uses the ease-in-out curve.
   void scrollToIndex(int index) {
     // Only scroll to top if the event list view is shown
     if (forceEventListView == false) return;
@@ -282,6 +295,7 @@ class _CalendarState extends State<Calendar> {
       duration: Duration(milliseconds: 300),
       curve: Curves.easeInOut,
     );
+    _didScroll = true;
   }
 
   int findClosestIndex(DateTime currentDate) {
@@ -559,6 +573,7 @@ class _CalendarState extends State<Calendar> {
                       setState(() {
                         forceEventListView = !forceEventListView;
                         if (widget.onListViewStateChanged != null) {
+                          _didScroll = false;
                           widget.onListViewStateChanged!(forceEventListView);
                         }
                       });
@@ -570,8 +585,7 @@ class _CalendarState extends State<Calendar> {
                   )
                 : Container(),
             Expanded(
-                child:
-                    Container()), // Platzhalter, damit die Row ausgeglichen ist
+                child: Container()), // Placeholder to balance the Row
             forceEventListView ? Container() : jumpDateIcon ?? Container(),
             forceEventListView ? Container() : rightArrow ?? Container(),
           ],
@@ -875,9 +889,28 @@ class _CalendarState extends State<Calendar> {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           nameAndIconRow,
-          if (forceEventListView)
-            eventlistView
-          else ...[
+          if (forceEventListView) ...[
+            eventlistView,
+            if (!_didScroll) ...[
+              // When the widget is built, a PostFrameCallback is added to scroll the widget
+              // after it has been built.
+              Builder(
+                builder: (context) {
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    Future.delayed(Duration(milliseconds: 100), () {
+                      // Only execute the scroll to top, if the scroll
+                      // controller has clients (was properly attached to a
+                      // list view).
+                      if (_scrollController.hasClients) {
+                        resetToToday();
+                      }
+                    });
+                  });
+                  return Container();
+                },
+              ),
+            ]
+          ] else ...[
             ExpansionCrossFade(
               collapsed: calendarGridView,
               expanded: calendarGridView,
@@ -1080,13 +1113,18 @@ class _CalendarState extends State<Calendar> {
   /// position of the screen. It re-caclulates the range of dates, so that the
   /// month view or week view changes to a range containing the current day.
   void resetToToday() {
-    int index = findClosestIndex(DateTime.now());
-    if (index != -1) {
-      scrollToIndex(index);
-    } else {
-      scrollToTop();
+    // Only scroll if the integrated list view is used
+    // When the parent app provides its own list view,
+    // dont scroll to top. It woudl cause an exception.
+    if (widget.eventListBuilder != null) {
+      int index = findClosestIndex(DateTime.now());
+      if (index != -1) {
+        scrollToIndex(index);
+      } else {
+        scrollToTop();
+      }
+      onJumpToDateSelected(DateTime.now());
     }
-    onJumpToDateSelected(DateTime.now());
   }
 
   // The function [nextMonth] updates the "_selectedDate" to the first day of the previous month.
