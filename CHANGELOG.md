@@ -1,3 +1,6 @@
+## [0.4.12] - 2024-08-30
+* Issue 86: Updtae of the eventlist now works every time
+
 ## [0.4.11] - 2024-08-29
 * Automatic scrolling to nearest date from today on loading the event list view
 * New callback method parameter onTodayButtonPressed
