@@ -232,13 +232,26 @@ class _CalendarState extends State<Calendar> {
     forceEventListView = widget.forceEventListView;
 
     _selectedDate = widget.initialDate ?? DateTime.now();
-    initializeDateFormatting(widget.locale, null).then((_) => setState(() {
-          var monthFormat =
-              DateFormat('MMMM yyyy', widget.locale).format(_selectedDate);
-          displayMonth =
-              '${monthFormat[0].toUpperCase()}${monthFormat.substring(1)}';
-        }));
-
+    if (widget.locale != null) {
+      initializeDateFormatting(widget.locale, null).then((_) {
+        if (mounted) {
+          setState(() {
+            var monthFormat =
+                DateFormat('MMMM yyyy', widget.locale).format(_selectedDate);
+            displayMonth =
+                '${monthFormat[0].toUpperCase()}${monthFormat.substring(1)}';
+          });
+        }
+      }).catchError((error) {
+        widget.onPrintLog != null
+            ? widget.onPrintLog!('Error initializing date formatting: $error')
+            : print('Error initializing date formatting: $error');
+      });
+    } else {
+      widget.onPrintLog != null
+          ? widget.onPrintLog!('widget.locale is null')
+          : print('widget.locale is null');
+    }
     // When setting the initial date, the eventsmap must be updated. The eventsmap is used to
     // store the events for each day. The eventsmap is used to display the events in the calendar.
     // It is basically the internal store of the events. Because the events are passed as a list
@@ -334,6 +347,7 @@ class _CalendarState extends State<Calendar> {
     // at the same time. In that case the map will be used, while the list is omitted.
     if (widget.eventsList != null &&
         widget.eventsList!.isNotEmpty &&
+        eventsMap != null &&
         eventsMap!.isEmpty) {
       widget.eventsList!.forEach((event) {
         final int range = event.endTime.difference(event.startTime).inDays;
@@ -354,7 +368,7 @@ class _CalendarState extends State<Calendar> {
                     event.startTime.month,
                     event.startTime.day + i)] ??
                 [];
-            // Iteration over the range (diferrence between start and end time in days).
+            // Iteration over the range (difference between start and end time in days).
             NeatCleanCalendarEvent newEvent = NeatCleanCalendarEvent(
                 event.summary,
                 description: event.description,
@@ -419,7 +433,7 @@ class _CalendarState extends State<Calendar> {
     // If the eventsMap is updated, the eventsUpdated callback is invoked. In some cases it is useful
     // to have a copy of the eventsMap in the parent widget. This can be done by providing a callback
     // method to the calendar widget.
-    if (widget.onEventsUpdated != null) {
+    if (widget.onEventsUpdated != null && eventsMap != null) {
       widget.onEventsUpdated!(eventsMap!);
     }
   }
@@ -577,24 +591,23 @@ class _CalendarState extends State<Calendar> {
                     ),
                   )
                 : Container(),
-            Expanded(
-                child: Container()), // Placeholder to balance the Row
+            Expanded(child: Container()), // Placeholder to balance the Row
             forceEventListView ? Container() : jumpDateIcon ?? Container(),
             forceEventListView ? Container() : rightArrow ?? Container(),
           ],
         ),
         // Zentralisiertes Stack-Widget
         GestureDetector(
-          child: Column(children: [
-            if (todayIcon != null) todayIcon!,
-            Text(
-              displayMonth,
-              style: widget.displayMonthTextStyle ??
-                  TextStyle(
-                    fontSize: 20.0,
-                  ),
-            ),
-          ]),
+            child: Column(children: [
+              if (todayIcon != null) todayIcon!,
+              Text(
+                displayMonth,
+                style: widget.displayMonthTextStyle ??
+                    TextStyle(
+                      fontSize: 20.0,
+                    ),
+              ),
+            ]),
             onTap: () {
               if (widget.onTodayButtonPressed != null) {
                 widget.onTodayButtonPressed!(_selectedDate);
@@ -605,8 +618,7 @@ class _CalendarState extends State<Calendar> {
                   (forceEventListView && _scrollController.hasClients)) {
                 resetToToday();
               }
-            }
-        ),
+            }),
       ],
     );
   }

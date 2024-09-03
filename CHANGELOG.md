@@ -1,3 +1,6 @@
+## [0.4.13] - 2024-09-03
+* Some more null checks in reaction to an app crash log possibly related to this package
+
 ## [0.4.12] - 2024-08-30
 * Issue 86: Updtae of the eventlist now works every time
 
