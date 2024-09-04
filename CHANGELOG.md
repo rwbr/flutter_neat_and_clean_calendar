@@ -1,3 +1,6 @@
+## [0.4.14] - 2024-09-04
+* Issue #87: Fixed calculation of multiday events
+
 ## [0.4.13] - 2024-09-03
 * Some more null checks in reaction to an app crash log possibly related to this package
 

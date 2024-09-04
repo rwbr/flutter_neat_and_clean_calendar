@@ -350,7 +350,14 @@ class _CalendarState extends State<Calendar> {
         eventsMap != null &&
         eventsMap!.isEmpty) {
       widget.eventsList!.forEach((event) {
-        final int range = event.endTime.difference(event.startTime).inDays;
+        int range = event.endTime.difference(event.startTime).inDays;
+
+        // Check if the end time is before the start time and adjust the calculation.
+        if (event.endTime.hour < event.startTime.hour ||
+            (event.endTime.hour == event.startTime.hour &&
+                event.endTime.minute < event.startTime.minute)) {
+          range += 1; // Add one day because the end time is earlier.
+        }
         // Event starts and ends on the same day.
         if (range == 0) {
           List<NeatCleanCalendarEvent> dateList = eventsMap![DateTime(
