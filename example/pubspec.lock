@@ -73,7 +73,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "0.4.10"
+    version: "0.4.14"
   flutter_platform_widgets:
     dependency: transitive
     description:

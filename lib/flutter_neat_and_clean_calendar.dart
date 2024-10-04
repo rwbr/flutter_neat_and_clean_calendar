@@ -980,7 +980,7 @@ class _CalendarState extends State<Calendar> {
                     margin: EdgeInsets.only(top: 8.0),
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      DateFormat.yMMMMEEEEd('de').format(item),
+                      DateFormat.yMMMMEEEEd(widget.locale).format(item),
                       style: TextStyle(fontSize: 13),
                     ),
                   );
