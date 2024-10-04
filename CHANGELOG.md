@@ -1,3 +1,6 @@
+## [0.4.15] - 2024-10-04
+* Issue #88: The calendar list view now considers the 'locale' parameter
+
 ## [0.4.14] - 2024-09-04
 * Issue #87: Fixed calculation of multiday events
 
