@@ -406,7 +406,9 @@ class _CalendarState extends State<Calendar> {
                     event.endTime.hour,
                     event.endTime.minute),
                 // Pass the metadata to the new event.
-                metadata: event.metadata);
+                metadata: event.metadata,
+                id: event.id,
+                wide: event.wide);
 
             if (i == 0) {
               // First day of the event.
