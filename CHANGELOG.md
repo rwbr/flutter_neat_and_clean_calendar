@@ -1,3 +1,7 @@
+## [0.4.16] - 2025-02-03
+* PR #89: If range > 0, the ID was cleared
+* PR #91, Issue #90: intl-dependency loosened
+
 ## [0.4.15] - 2024-10-04
 * Issue #88: The calendar list view now considers the 'locale' parameter
 
