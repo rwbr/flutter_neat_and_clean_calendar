@@ -2,10 +2,10 @@
 
 library flutter_neat_and_clean_calendar;
 
+import 'package:adaptive_platform_ui/adaptive_platform_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_neat_and_clean_calendar/date_picker_config.dart';
 import 'package:flutter_neat_and_clean_calendar/provider_image.dart';
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import './date_utils.dart';
 import './simple_gesture_detector.dart';
 import './calendar_tile.dart';
@@ -454,19 +454,17 @@ class _CalendarState extends State<Calendar> {
     var jumpDateIcon;
 
     if (!widget.hideArrows) {
-      leftArrow = PlatformIconButton(
+      leftArrow = AdaptiveButton.icon(
         onPressed: isExpanded ? () => previousMonth(true) : previousWeek,
-        icon: Icon(
-          Icons.chevron_left,
-          color: widget.topRowIconColor,
-        ),
+        icon: Icons.chevron_left,
+        color: widget.topRowIconColor,
+        style: AdaptiveButtonStyle.plain,
       );
-      rightArrow = PlatformIconButton(
+      rightArrow = AdaptiveButton.icon(
         onPressed: isExpanded ? () => nextMonth(true) : nextWeek,
-        icon: Icon(
-          Icons.chevron_right,
-          color: widget.topRowIconColor,
-        ),
+        icon: Icons.chevron_right,
+        color: widget.topRowIconColor,
+        style: AdaptiveButtonStyle.plain,
       );
     } else {
       leftArrow = Container();
@@ -484,7 +482,7 @@ class _CalendarState extends State<Calendar> {
 
     if (widget.datePickerType != null &&
         widget.datePickerType != DatePickerType.hidden) {
-      jumpDateIcon = PlatformIconButton(
+      jumpDateIcon = AdaptiveButton.icon(
         onPressed: () {
           showDatePicker(
                   builder: (BuildContext context, Widget? child) {
@@ -567,10 +565,9 @@ class _CalendarState extends State<Calendar> {
             }
           });
         },
-        icon: Icon(
-          Icons.date_range_outlined,
-          color: widget.topRowIconColor,
-        ),
+        icon: Icons.date_range_outlined,
+        color: widget.topRowIconColor,
+        style: AdaptiveButtonStyle.plain,
       );
     } else {
       jumpDateIcon = Container();
@@ -584,7 +581,7 @@ class _CalendarState extends State<Calendar> {
           children: [
             forceEventListView ? Container() : leftArrow ?? Container(),
             widget.showEventListViewIcon
-                ? PlatformIconButton(
+                ? AdaptiveButton.icon(
                     onPressed: () {
                       setState(() {
                         forceEventListView = !forceEventListView;
@@ -594,10 +591,9 @@ class _CalendarState extends State<Calendar> {
                         }
                       });
                     },
-                    icon: Icon(
-                      Icons.list,
-                      color: widget.topRowIconColor,
-                    ),
+                    icon: Icons.list,
+                    color: widget.topRowIconColor,
+                    style: AdaptiveButtonStyle.plain,
                   )
                 : Container(),
             Expanded(child: Container()), // Placeholder to balance the Row
@@ -788,20 +784,12 @@ class _CalendarState extends State<Calendar> {
                     .format(_selectedDate),
                 style: widget.bottomBarTextStyle ?? TextStyle(fontSize: 13),
               ),
-              PlatformIconButton(
+              AdaptiveButton.icon(
                 onPressed: toggleExpanded,
                 padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
-                icon: isExpanded
-                    ? Icon(
-                        Icons.arrow_drop_up,
-                        size: 25.0,
-                        color: widget.bottomBarArrowColor ?? Colors.black,
-                      )
-                    : Icon(
-                        Icons.arrow_drop_down,
-                        size: 25.0,
-                        color: widget.bottomBarArrowColor ?? Colors.black,
-                      ),
+                icon: isExpanded ? Icons.arrow_drop_up : Icons.arrow_drop_down,
+                color: widget.bottomBarArrowColor ?? Colors.black,
+                style: AdaptiveButtonStyle.plain,
               ),
             ],
           ),
