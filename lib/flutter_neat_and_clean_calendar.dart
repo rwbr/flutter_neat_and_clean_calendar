@@ -457,13 +457,13 @@ class _CalendarState extends State<Calendar> {
       leftArrow = AdaptiveButton.icon(
         onPressed: isExpanded ? () => previousMonth(true) : previousWeek,
         icon: Icons.chevron_left,
-        color: widget.topRowIconColor,
+        iconColor: widget.topRowIconColor,
         style: AdaptiveButtonStyle.plain,
       );
       rightArrow = AdaptiveButton.icon(
         onPressed: isExpanded ? () => nextMonth(true) : nextWeek,
         icon: Icons.chevron_right,
-        color: widget.topRowIconColor,
+        iconColor: widget.topRowIconColor,
         style: AdaptiveButtonStyle.plain,
       );
     } else {
@@ -482,92 +482,97 @@ class _CalendarState extends State<Calendar> {
 
     if (widget.datePickerType != null &&
         widget.datePickerType != DatePickerType.hidden) {
-      jumpDateIcon = AdaptiveButton.icon(
-        onPressed: () {
-          showDatePicker(
-                  builder: (BuildContext context, Widget? child) {
-                    // Define Light Theme
-                    ThemeData lightTheme = widget.datePickerLightTheme ??
-                        ThemeData.light().copyWith(
-                          colorScheme: ColorScheme.light(
-                            primary: Colors.blue,
-                            onPrimary: Colors.white,
-                            surface: Colors.white,
-                            onSurface: Colors.black,
-                          ),
-                          textButtonTheme: TextButtonThemeData(
-                            style: TextButton.styleFrom(
-                              foregroundColor: Colors.red,
+      jumpDateIcon = Padding(
+        padding: PlatformInfo.isIOS26OrHigher()
+            ? EdgeInsets.only(right: 25.0)
+            : EdgeInsets.zero,
+        child: AdaptiveButton.icon(
+          onPressed: () {
+            showDatePicker(
+                    builder: (BuildContext context, Widget? child) {
+                      // Define Light Theme
+                      ThemeData lightTheme = widget.datePickerLightTheme ??
+                          ThemeData.light().copyWith(
+                            colorScheme: ColorScheme.light(
+                              primary: Colors.blue,
+                              onPrimary: Colors.white,
+                              surface: Colors.white,
+                              onSurface: Colors.black,
                             ),
-                          ),
-                        );
-
-                    // Define Dark Theme
-                    ThemeData darkTheme = widget.datePickerDarkTheme ??
-                        ThemeData.dark().copyWith(
-                          colorScheme: ColorScheme.dark(
-                            primary: Colors.blue,
-                            onPrimary: Colors.white,
-                            surface: Colors.grey,
-                            onSurface: Colors.white,
-                          ),
-                          textButtonTheme: TextButtonThemeData(
-                            style: TextButton.styleFrom(
-                              foregroundColor: Colors.yellow,
+                            textButtonTheme: TextButtonThemeData(
+                              style: TextButton.styleFrom(
+                                foregroundColor: Colors.red,
+                              ),
                             ),
-                          ),
-                        );
+                          );
 
-                    // Choose the theme based on the current mode
-                    return Theme(
-                      data: isDarkMode ? darkTheme : lightTheme,
-                      child: child!,
-                    );
-                  },
-                  context: context,
-                  initialDate: DateTime.now(),
-                  firstDate: DateTime(1900),
-                  lastDate: DateTime(2100),
-                  initialDatePickerMode:
-                      widget.datePickerType == DatePickerType.date
-                          ? DatePickerMode.day
-                          : DatePickerMode.year)
-              .then((date) {
-            if (date != null) {
-              // The selected date is printed to the console in ISO 8601 format for debugging purposes.
-              // The "onJumpToDateSelected" callback is then invoked with the selected date.
-              // These lines have been moved outside of the "setState" block to
-              // trigger the callback methods (i.e. onMonthChanged) in the parent widget.
-              // After the callback methods are invoked, the "setState" block is called and the
-              // _selectedDate is updated. This must be done after the callback methods are invoked,
-              // otherwise the callback methods will not trigger, if the current date is equal to the
-              // selected date.
-              widget.onPrintLog != null
-                  ? widget.onPrintLog!(
-                      'Date chosen: ${_selectedDate.toIso8601String()}')
-                  : print('Date chosen: ${_selectedDate.toIso8601String()}');
-              onJumpToDateSelected(date);
-              setState(() {
-                _selectedDate = date;
-                selectedMonthsDays = _daysInMonth(_selectedDate);
-                selectedWeekDays = Utils.daysInRange(
-                        _firstDayOfWeek(_selectedDate),
-                        _lastDayOfWeek(_selectedDate))
-                    .toList();
-                var monthFormat = DateFormat('MMMM yyyy', widget.locale)
-                    .format(_selectedDate);
-                displayMonth =
-                    '${monthFormat[0].toUpperCase()}${monthFormat.substring(1)}';
-                _selectedEvents = eventsMap?[DateTime(_selectedDate.year,
-                        _selectedDate.month, _selectedDate.day)] ??
-                    [];
-              });
-            }
-          });
-        },
-        icon: Icons.date_range_outlined,
-        color: widget.topRowIconColor,
-        style: AdaptiveButtonStyle.plain,
+                      // Define Dark Theme
+                      ThemeData darkTheme = widget.datePickerDarkTheme ??
+                          ThemeData.dark().copyWith(
+                            colorScheme: ColorScheme.dark(
+                              primary: Colors.blue,
+                              onPrimary: Colors.white,
+                              surface: Colors.grey,
+                              onSurface: Colors.white,
+                            ),
+                            textButtonTheme: TextButtonThemeData(
+                              style: TextButton.styleFrom(
+                                foregroundColor: Colors.yellow,
+                              ),
+                            ),
+                          );
+
+                      // Choose the theme based on the current mode
+                      return Theme(
+                        data: isDarkMode ? darkTheme : lightTheme,
+                        child: child!,
+                      );
+                    },
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime(1900),
+                    lastDate: DateTime(2100),
+                    initialDatePickerMode:
+                        widget.datePickerType == DatePickerType.date
+                            ? DatePickerMode.day
+                            : DatePickerMode.year)
+                .then((date) {
+              if (date != null) {
+                // The selected date is printed to the console in ISO 8601 format for debugging purposes.
+                // The "onJumpToDateSelected" callback is then invoked with the selected date.
+                // These lines have been moved outside of the "setState" block to
+                // trigger the callback methods (i.e. onMonthChanged) in the parent widget.
+                // After the callback methods are invoked, the "setState" block is called and the
+                // _selectedDate is updated. This must be done after the callback methods are invoked,
+                // otherwise the callback methods will not trigger, if the current date is equal to the
+                // selected date.
+                widget.onPrintLog != null
+                    ? widget.onPrintLog!(
+                        'Date chosen: ${_selectedDate.toIso8601String()}')
+                    : print('Date chosen: ${_selectedDate.toIso8601String()}');
+                onJumpToDateSelected(date);
+                setState(() {
+                  _selectedDate = date;
+                  selectedMonthsDays = _daysInMonth(_selectedDate);
+                  selectedWeekDays = Utils.daysInRange(
+                          _firstDayOfWeek(_selectedDate),
+                          _lastDayOfWeek(_selectedDate))
+                      .toList();
+                  var monthFormat = DateFormat('MMMM yyyy', widget.locale)
+                      .format(_selectedDate);
+                  displayMonth =
+                      '${monthFormat[0].toUpperCase()}${monthFormat.substring(1)}';
+                  _selectedEvents = eventsMap?[DateTime(_selectedDate.year,
+                          _selectedDate.month, _selectedDate.day)] ??
+                      [];
+                });
+              }
+            });
+          },
+          icon: Icons.date_range_outlined,
+          iconColor: widget.topRowIconColor,
+          style: AdaptiveButtonStyle.plain,
+        ),
       );
     } else {
       jumpDateIcon = Container();
@@ -581,19 +586,24 @@ class _CalendarState extends State<Calendar> {
           children: [
             forceEventListView ? Container() : leftArrow ?? Container(),
             widget.showEventListViewIcon
-                ? AdaptiveButton.icon(
-                    onPressed: () {
-                      setState(() {
-                        forceEventListView = !forceEventListView;
-                        if (widget.onListViewStateChanged != null) {
-                          _didScroll = false;
-                          widget.onListViewStateChanged!(forceEventListView);
-                        }
-                      });
-                    },
-                    icon: Icons.list,
-                    color: widget.topRowIconColor,
-                    style: AdaptiveButtonStyle.plain,
+                ? Padding(
+                    padding: PlatformInfo.isIOS26OrHigher()
+                        ? EdgeInsets.only(left: 25.0)
+                        : EdgeInsets.zero,
+                    child: AdaptiveButton.icon(
+                      onPressed: () {
+                        setState(() {
+                          forceEventListView = !forceEventListView;
+                          if (widget.onListViewStateChanged != null) {
+                            _didScroll = false;
+                            widget.onListViewStateChanged!(forceEventListView);
+                          }
+                        });
+                      },
+                      icon: Icons.list,
+                      iconColor: widget.topRowIconColor,
+                      style: AdaptiveButtonStyle.plain,
+                    ),
                   )
                 : Container(),
             Expanded(child: Container()), // Placeholder to balance the Row
@@ -784,12 +794,19 @@ class _CalendarState extends State<Calendar> {
                     .format(_selectedDate),
                 style: widget.bottomBarTextStyle ?? TextStyle(fontSize: 13),
               ),
-              AdaptiveButton.icon(
-                onPressed: toggleExpanded,
-                padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
-                icon: isExpanded ? Icons.arrow_drop_up : Icons.arrow_drop_down,
-                color: widget.bottomBarArrowColor ?? Colors.black,
-                style: AdaptiveButtonStyle.plain,
+              Padding(
+                padding: PlatformInfo.isIOS26OrHigher()
+                    ? EdgeInsets.only(right: 5.0)
+                    : EdgeInsets.zero,
+                child: AdaptiveButton.icon(
+                  onPressed: toggleExpanded,
+                  padding:
+                      EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
+                  icon:
+                      isExpanded ? Icons.arrow_drop_up : Icons.arrow_drop_down,
+                  iconColor: widget.bottomBarArrowColor ?? Colors.black,
+                  style: AdaptiveButtonStyle.plain,
+                ),
               ),
             ],
           ),
