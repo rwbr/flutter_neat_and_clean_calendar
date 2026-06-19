@@ -1,3 +1,6 @@
+## [0.4.18] - 2026-04-29
+* PR #94: Fixed icon spacing on iOS26+
+
 ## [0.4.17] - 2026-04-29
 * PR #93: Discontinued package `flutter_platform_widgets` replaced by `adaptive_platform_ui`
 
